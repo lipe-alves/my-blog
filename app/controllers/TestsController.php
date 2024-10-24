@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Core\Controller;
+use App\Core\Request;
+use App\Core\Response;
+
+class TestsController extends Controller
+{
+    public function ping(Request $request, Response $response)
+    {
+        $response->setStatus(200)->setJson([
+            "path"    => $request->getPath(),
+            "headers" => $request->getHeader(),
+            "post"    => $request->getPost(),
+            "get"     => $request->getGet(),
+            "params"  => $request->getParams(),
+            "method"  => $request->getMethod(),
+            "date"    => date("D, d M Y H:i:s")
+        ])->send();
+    }
+}

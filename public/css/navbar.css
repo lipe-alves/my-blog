@@ -1,0 +1,20 @@
+.Navbar {
+    --bulma-navbar-height: 80px;
+    --bulma-navbar-background-color: #fff;
+    --bulma-navbar-item-color: #444444;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-bottom: solid rgba(0, 0, 0, 0.1) 1px;
+}
+
+.Navbar .navbar-item {
+    transition: opacity ease-in-out 0.5s;
+}
+
+.Navbar .navbar-item:active,
+.Navbar .navbar-item:hover {
+    background-color: var(--bulma-navbar-background-color);
+    opacity: 0.5;
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <?php
+    $this->partial("meta-tags", [
+        "description" => $description,
+        "keywords"    => $keywords
+    ])
+    ?>
+    <title><?= $title ?></title>
+    <?php $this->partial("dependencies") ?>
+    <link rel="stylesheet" href="app/views/pages/home/styles.css" />
+    <script type="text/javascript" href="app/views/pages/home/script.js"></script>
+</head>
+
+<body>
+    <?php $this->partial("navbar") ?>
+</body>
+
+</html>
