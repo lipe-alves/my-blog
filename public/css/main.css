@@ -1,3 +1,15 @@
 :root {
     --bulma-body-background-color: #fff;
 }
+
+body {
+    font-family: "Josefin Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.input {
+    background-color: var(--bulma-body-background-color) !important;
+    color: #444444 !important;
+}

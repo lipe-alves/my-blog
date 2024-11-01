@@ -4,12 +4,9 @@ namespace App\Core;
 
 class Response
 {
-    /** @property integer */
-    private $status;
-    /** @property array */
-    private $headers;
-    /** @property mixed */
-    private $body;
+    private int $status;
+    private array $headers;
+    private mixed $body;
 
     public function __construct()
     {
@@ -18,26 +15,26 @@ class Response
         $this->body = "";
     }
 
-    public function setStatus(int $status)
+    public function setStatus(int $status): self
     {
         $this->status = $status;
         http_response_code($status);
         return $this;
     }
 
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
 
-    public function setHeader(string $key, string $value)
+    public function setHeader(string $key, string $value): self
     {
         $this->headers[$key] = $value;
         header("$key: $value");
         return $this;
     }
 
-    public function setJson(array $data)
+    public function setJson(array $data): self
     {
         $this->setHeader("Content-Type", "application/json");
         $this->body = json_encode(
@@ -46,7 +43,7 @@ class Response
         return $this;
     }
 
-    public function setBody(mixed $body)
+    public function setBody(mixed $body): self
     {
         $this->body = $body;
         return $this;

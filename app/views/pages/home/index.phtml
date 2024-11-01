@@ -10,12 +10,17 @@
     ?>
     <title><?= $title ?></title>
     <?php $this->partial("dependencies") ?>
+    <?php $this->partial("fonts") ?>
     <link rel="stylesheet" href="app/views/pages/home/styles.css" />
     <script type="text/javascript" href="app/views/pages/home/script.js"></script>
 </head>
 
 <body>
     <?php $this->partial("navbar") ?>
+    <?php
+    $version = phpversion();
+    echo $version;
+    ?>
 </body>
 
 </html>
