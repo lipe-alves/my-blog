@@ -1,0 +1,31 @@
+.Header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #fff;
+}
+
+.Header-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1em;
+    width: Max(60%, 400px);
+    min-height: 30em;
+    background-image: var(--header-background-image);
+    background-size: 361px 256px;
+    background-repeat: no-repeat;
+    background-position: right top;
+    background-color: transparent;
+    border-bottom: 1px dashed #efefef;
+}
+
+.Header-title a {
+    font-family: Georgia, serif;
+    text-decoration: none;
+    color: var(--bulma-title-color);
+    font-weight: 400;
+}

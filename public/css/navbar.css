@@ -1,22 +1,42 @@
 .Navbar {
-    --bulma-navbar-height: 80px;
-    --bulma-navbar-background-color: #fff;
+    --bulma-navbar-height: 60px;
+    --bulma-navbar-background-color: #f5f4f4;
     --bulma-navbar-item-color: #444444;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     border-bottom: solid rgba(0, 0, 0, 0.1) 1px;
     padding: 0 1em;
+    text-transform: uppercase;
+    font-family: "Open Sans", sans-serif;
+    letter-spacing: 0.2rem;
+    font-size: 0.9rem;
+}
+
+.Navbar #main-menu {
+    background-color: transparent;
+    max-width: 900px;
+    transform: translateY(10px);
 }
 
 .Navbar .navbar-item {
+    font-size: 0.85em;
     flex: 1;
     transition: opacity ease-in-out 0.5s;
+    padding: 1em;
+    border-radius: 5px;
 }
 
-.Navbar .navbar-item:active,
-.Navbar .navbar-item:hover {
+.Navbar .navbar-item.active {
+    background-color: #fff;
+    border-top: solid rgba(0, 0, 0, 0.1) 1px;
+    border-left: solid rgba(0, 0, 0, 0.1) 1px;
+    border-right: solid rgba(0, 0, 0, 0.1) 1px;
+}
+
+.Navbar .navbar-item:not(.active):active,
+.Navbar .navbar-item:not(.active):hover {
     background-color: var(--bulma-navbar-background-color);
     opacity: 0.5;
 }

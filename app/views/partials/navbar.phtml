@@ -1,14 +1,15 @@
-<nav class="Navbar navbar is-fixed-top" role="navigation" aria-label="main navigation">
-    <div class="navbar-item">
-
-    </div>
+<nav
+    class="Navbar navbar is-fixed-top"
+    role="navigation"
+    aria-label="main navigation">
 
     <div class="navbar-brand">
-        <a class="Navbar-title navbar-item" href="<?= BASE_URI ?>">
-            <?= APP_NAME ?>
-        </a>
-
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <a
+            class="navbar-burger"
+            role="button"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="main-menu">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -16,17 +17,33 @@
         </a>
     </div>
 
-    <label class="Navbar-search navbar-item">
-        <span class="Navbar-search-icon">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </span>
-        <span class="Navbar-search-label">
-            Pesquisar
-            <input
-                id="search-input"
-                class="Navbar-search-input input is-transparent"
-                type="text"
-                placeholder="Preencha com uma palavra-chave e aperte Enter..." />
-        </span>
-    </label>
+    <div id="main-menu" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item<?= $active_page === "home" ? " active" : "" ?>" href="/">
+                Início
+            </a>
+            <a class="navbar-item<?= $active_page === "about" ? " active" : "" ?>" href="/about">
+                Sobre
+            </a>
+            <a class="navbar-item<?= $active_page === "contact" ? " active" : "" ?>" href="/contact">
+                Contato
+            </a>
+            <a class="navbar-item<?= $active_page === "archives" ? " active" : "" ?>" href="/archives">
+                Arquivos
+            </a>
+        </div>
+        <!--<label class="Navbar-search navbar-item">
+            <span class="Navbar-search-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <span class="Navbar-search-label">
+                Pesquisar
+                <input
+                    id="search-input"
+                    class="Navbar-search-input input is-transparent"
+                    type="text"
+                    placeholder="Preencha com uma palavra-chave e aperte Enter..." />
+            </span>
+        </label>-->
+    </div>
 </nav>

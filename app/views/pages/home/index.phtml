@@ -11,16 +11,33 @@
     <title><?= $title ?></title>
     <?php $this->partial("dependencies") ?>
     <?php $this->partial("fonts") ?>
-    <link rel="stylesheet" href="app/views/pages/home/styles.css" />
-    <script type="text/javascript" href="app/views/pages/home/script.js"></script>
+    <link rel="stylesheet" href="app/views/pages/home/styles.css?<?= time() ?>" />
+    <script type="text/javascript" href="app/views/pages/home/script.js?<?= time() ?>"></script>
+    <style type="text/css">
+        .Header {
+            --header-background-image: url(<?= $header_image ?>);
+        }
+    </style>
 </head>
 
 <body>
-    <?php $this->partial("navbar") ?>
     <?php
-    $version = phpversion();
-    echo $version;
+    $this->partial("navbar", [
+        "active_page" => "home",
+    ]);
     ?>
+    <header class="Header">
+        <div class="Header-inner">
+            <h1 class="Header-title title is-3">
+                <a href="<?= BASE_URI ?>">
+                    <?= APP_NAME ?>
+                </a>
+            </h1>
+            <h2 class="Header-subtitle subtitle">
+                Minha caixinha de pensamentos
+            </h2>
+        </div>
+    </header>
 </body>
 
 </html>
