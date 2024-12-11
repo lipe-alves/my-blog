@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     border-bottom: solid rgba(0, 0, 0, 0.1) 1px;
     padding: 0 1em;
     text-transform: uppercase;
@@ -18,6 +18,8 @@
     background-color: transparent;
     max-width: 900px;
     transform: translateY(10px);
+    margin: 0 auto;
+    min-width: 60vw;
 }
 
 .Navbar .navbar-item {
