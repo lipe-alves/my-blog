@@ -6,7 +6,7 @@ use App\Core\DatabaseConnection;
 
 class PostModel
 {
-    public static function getPostById(string $id, array $columns = ["*"]): array|null
+    public static function getPostBySlug(string $slug, array $columns = ["*"]): array|null
     {
         $conn = DatabaseConnection::create();
 
@@ -24,12 +24,12 @@ class PostModel
         $sql = "SELECT $columns FROM Post p";
 
         if ($fetch_categories) {
-            $sql .= " LEFT JOIN Category c ON c.id = p.category_id";
+            $sql .= " LEFT JOIN Category c ON c.name = p.category_name";
         }
 
-        $sql .= " WHERE id = ? LIMIT 1";
+        $sql .= " WHERE slug = ? LIMIT 1";
 
-        $data = [$id];
+        $data = [$slug];
 
         $posts = $conn->select($sql, $data);
         return count($posts) === 0 ? null : $posts[0];
@@ -53,7 +53,7 @@ class PostModel
         $sql = "SELECT $columns FROM Post p";
 
         if ($fetch_categories) {
-            $sql .= " LEFT JOIN Category c ON c.id = p.category_id";
+            $sql .= " LEFT JOIN Category c ON c.name = p.category_name";
         }
 
         $sql .= " WHERE p.deleted = 0";
@@ -69,17 +69,17 @@ class PostModel
         return $posts;
     }
 
-    public static function getPostCategories(string $potst_id, array $columns = ["c.*"], int|null $limit = null): array
+    public static function getPostCategories(string $post_slug, array $columns = ["c.*"], int|null $limit = null): array
     {
         $conn = DatabaseConnection::create();
         $columns = implode(", ", $columns);
 
         $sql = "SELECT $columns FROM Post_x_Category pxc
             LEFT JOIN Category c ON pxc.category_id = c.id
-            WHERE pxc.post_id = :post_id
+            WHERE pxc.post_slug = :post_slug
         ";
         $data = [
-            "post_id" => $potst_id
+            "post_slug" => $post_slug
         ];
 
         if ($limit !== null) {

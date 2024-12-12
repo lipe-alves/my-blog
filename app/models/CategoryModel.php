@@ -6,11 +6,11 @@ use App\Core\DatabaseConnection;
 
 class CategoryModel
 {
-    public static function getCategoryById(string $id, array $columns = ["*"])
+    public static function getCategoryByName(string $name, array $columns = ["*"])
     {
         $conn = DatabaseConnection::create();
         $columns = implode(", ", $columns);
-        $categories = $conn->select("SELECT $columns FROM Category WHERE id = ? LIMIT 1", ["$id"]);
+        $categories = $conn->select("SELECT $columns FROM Category WHERE name = ? LIMIT 1", ["$name"]);
         return count($categories) === 0 ? null : $categories[0];
     }
 
