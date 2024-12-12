@@ -19,31 +19,18 @@
 
     <div id="main-menu" class="navbar-menu">
         <div class="navbar-start">
-            <a class="navbar-item<?= $active_page === "home" ? " active" : "" ?>" href="/">
+            <a class="navbar-item<?= $active_page === "home" ? " active" : "" ?>" href="<?= BASE_URI ?>">
                 Início
             </a>
-            <a class="navbar-item<?= $active_page === "about" ? " active" : "" ?>" href="/about">
+            <a class="navbar-item<?= $active_page === "about" ? " active" : "" ?>" href="<?= BASE_URI ?>/about">
                 Sobre
             </a>
-            <a class="navbar-item<?= $active_page === "contact" ? " active" : "" ?>" href="/contact">
+            <a class="navbar-item<?= $active_page === "contact" ? " active" : "" ?>" href="<?= BASE_URI ?>/contact">
                 Contato
             </a>
-            <a class="navbar-item<?= $active_page === "archives" ? " active" : "" ?>" href="/archives">
+            <a class="navbar-item<?= $active_page === "archives" ? " active" : "" ?>" href="<?= BASE_URI ?>/archives">
                 Arquivos
             </a>
         </div>
-        <!--<label class="Navbar-search navbar-item">
-            <span class="Navbar-search-icon">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </span>
-            <span class="Navbar-search-label">
-                Pesquisar
-                <input
-                    id="search-input"
-                    class="Navbar-search-input input is-transparent"
-                    type="text"
-                    placeholder="Preencha com uma palavra-chave e aperte Enter..." />
-            </span>
-        </label>-->
     </div>
 </nav>

@@ -29,3 +29,81 @@
     color: var(--bulma-title-color);
     font-weight: 400;
 }
+
+.Main {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    gap: 1em;
+    background-color: #fff;
+}
+
+.Filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1em;
+    flex: 1;
+}
+
+.RecentPosts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1em;
+    list-style: none;
+    margin: 0;
+    flex: 1;
+}
+
+.Searchbar-label {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5em;
+    cursor: pointer;
+    background-color: var(--input-background-color);
+    padding: 0.8em 1.1em;
+    border-radius: 6px;
+}
+
+.Searchbar-text {
+    text-align: center;
+    align-content: center;
+    cursor: pointer;
+}
+
+.Searchbar-input {
+    font-family: var(--bulma-body-family);
+    align-items: center;
+    appearance: none;
+    display: inline-flex;
+    font-size: var(--bulma-control-size);
+    height: var(--bulma-control-height);
+    justify-content: flex-start;
+    line-height: var(--bulma-control-line-height);
+    transition-duration: var(--bulma-duration);
+    transition-property: background-color, border-color, box-shadow, color;
+    vertical-align: top;
+    position: relative;
+    width: 250px;
+    opacity: 1;
+    background-color: transparent;
+    padding: 0;
+    outline: none;
+    border: none;
+}
+
+.Searchbar-input:focus {
+    box-shadow: none;
+}
+
+.Searchbar-icon {
+    z-index: 1;
+}

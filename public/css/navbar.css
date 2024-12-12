@@ -47,37 +47,3 @@
     font-weight: 600;
     font-size: 1.2em;
 }
-
-.Navbar-search {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.5em;
-    cursor: pointer;
-}
-
-.Navbar-search:hover {
-    opacity: 1 !important;
-}
-
-.Navbar-search-label {
-    text-align: center;
-    align-content: center;
-    cursor: pointer;
-}
-
-.Navbar-search-input {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 0;
-    opacity: 0;
-    transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out; 
-}
-
-.Navbar-search-input:focus {
-    width: 300px;
-    opacity: 1;
-}

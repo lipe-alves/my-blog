@@ -11,13 +11,13 @@
     <title><?= $title ?></title>
     <?php $this->partial("dependencies") ?>
     <?php $this->partial("fonts") ?>
-    <link rel="stylesheet" href="app/views/pages/home/styles.css?<?= time() ?>" />
-    <script type="text/javascript" href="app/views/pages/home/script.js?<?= time() ?>"></script>
+    <link rel="stylesheet" href="app/views/pages/home/styles.css?v=<?= time() ?>" />
     <style type="text/css">
         .Header {
             --header-background-image: url(<?= $header_image ?>);
         }
     </style>
+    <script type="text/javascript" src="app/views/pages/home/script.js?v=<?= time() ?>"></script>
 </head>
 
 <body>
@@ -38,6 +38,29 @@
             </h2>
         </div>
     </header>
+    <main class="Main">
+        <ul class="RecentPosts">
+            <?php foreach ($recent_posts as $post): ?>
+                
+            <?php endforeach; ?>
+        </ul>
+        <aside class="Filters">
+            <div class="Searchbar-container">
+                <label class="Searchbar-label">
+                    <span class="Searchbar-text">
+                        <input
+                            id="search-input"
+                            class="Searchbar-input"
+                            type="text"
+                            placeholder="Pesquise aqui e aperte Enter..." />
+                    </span>
+                    <span class="Searchbar-icon">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                </label>
+            </div>
+        </aside>
+    </main>
 </body>
 
 </html>

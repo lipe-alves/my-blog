@@ -1,6 +1,9 @@
 :root {
     --bulma-body-background-color: #f5f5f5;
     --bulma-family-primary: "Merriweather", "Josefin Slab", serif;
+    --input-background-color: #f5f4f4;
+    --input-text-color: #444444;
+    --bulma-input-placeholder-color: #abb1c1;
 }
 
 body {
@@ -12,11 +15,11 @@ body {
     position: relative;
 }
 
-.input {
-    background-color: var(--bulma-body-background-color) !important;
-    color: #444444 !important;
-}
-
 .title {
     --bulma-title-color: #272727;
+}
+
+.input {
+    background-color: var(--input-background-color);
+    color: var(--input-text-color);
 }
