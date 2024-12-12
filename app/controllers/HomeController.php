@@ -12,10 +12,9 @@ class HomeController extends Controller
     {
         $categories = CategoryModel::getAllCategories();
         $recent_posts = PostModel::getRecentPosts([
-            "p.id",
+            "p.slug",
             "p.title",
             "p.text",
-            "p.slug",
             "p.created_at",
             "c.name AS category_name"
         ]);
