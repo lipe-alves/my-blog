@@ -56,7 +56,7 @@ class PostModel
             $sql .= " LEFT JOIN Category c ON c.name = p.category_name";
         }
 
-        $sql .= " WHERE p.deleted = 0";
+        $sql .= " WHERE p.deleted = 0 ORDER BY p.created_at DESC";
         $data = [];
 
         if ($limit !== null) {
