@@ -35,8 +35,10 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-    width: 100%;
     gap: 1em;
+    max-width: 900px;
+    min-width: 60vw;
+    margin: 0 auto;
     background-color: #fff;
 }
 
