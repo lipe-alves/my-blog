@@ -41,7 +41,7 @@
     <main class="Main">
         <ul class="RecentPosts">
             <?php foreach ($recent_posts as $post): ?>
-                
+
             <?php endforeach; ?>
         </ul>
         <aside class="Filters">
@@ -59,8 +59,14 @@
                     </span>
                 </label>
             </div>
+            <div class="Categories-container">
+
+            </div>
         </aside>
     </main>
+    <?php
+    $this->partial("back-to-top");
+    ?>
 </body>
 
 </html>
