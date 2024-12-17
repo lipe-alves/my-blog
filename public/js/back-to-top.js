@@ -1,22 +1,18 @@
 $(document).ready(function () {
-    const backToTopBtn = $("#back-to-top");
+    const backToTopBtn = $("#btn-back-to-top");
 
-    $(window).on("scroll", scrollFunction);
-    backToTopBtn.on("click", backToTop);
+    $(window).on("scroll", onWindowScroll);
+    backToTopBtn.on("click", goBackToTop);
 
-    function scrollFunction() {
-        if (
+    function onWindowScroll() {
+        const showButton =
             document.body.scrollTop > 20 ||
-            document.documentElement.scrollTop > 20
-        ) {
-            backToTopBtn.style.display = "block";
-        } else {
-            backToTopBtn.style.display = "none";
-        }
+            document.documentElement.scrollTop > 20;
+        
+        backToTopBtn.css("display", showButton ? "block" : "none");
     }
 
-    function backToTop() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
+    function goBackToTop() {
+        $("html, body").animate({ scrollTop: 0 }, 300);
     }
 });
