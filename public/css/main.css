@@ -4,6 +4,8 @@
     --input-background-color: #f5f4f4;
     --input-text-color: #444444;
     --bulma-input-placeholder-color: #abb1c1;
+    --content-min-width: 55vw;
+    --content-max-width: 900px;
 }
 
 body {

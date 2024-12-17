@@ -13,7 +13,7 @@
     align-items: flex-start;
     justify-content: center;
     gap: 1em;
-    width: Max(60%, 400px);
+    width: Max(var(--content-min-width), 400px);
     min-height: 30em;
     background-image: var(--header-background-image);
     background-size: 361px 256px;
@@ -36,8 +36,8 @@
     align-items: flex-start;
     justify-content: center;
     gap: 1em;
-    max-width: 900px;
-    min-width: 60vw;
+    max-width: var(--content-max-width);
+    min-width: var(--content-min-width);
     margin: 0 auto;
     background-color: #fff;
 }
@@ -60,6 +60,10 @@
     list-style: none;
     margin: 0;
     flex: 1;
+}
+
+.Searchbar-container {
+    width: 100%;
 }
 
 .Searchbar-label {
@@ -108,4 +112,19 @@
 
 .Searchbar-icon {
     z-index: 1;
+}
+
+.Categories-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.Categories-title {
+    text-transform: uppercase;
+    font-family: "Open Sans", sans-serif;
+    letter-spacing: 0.2rem;
+    font-size: 0.9em;
 }

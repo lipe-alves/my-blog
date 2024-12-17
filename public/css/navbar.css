@@ -16,10 +16,10 @@
 
 .Navbar #main-menu {
     background-color: transparent;
-    max-width: 900px;
     transform: translateY(10px);
     margin: 0 auto;
-    min-width: 60vw;
+    max-width: var(--content-max-width);
+    min-width: var(--content-min-width);
 }
 
 .Navbar .navbar-item {
