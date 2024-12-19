@@ -6,6 +6,12 @@ class DatabaseConnection
 {
     private \PDO|null $conn;
     private \PDOStatement|null $stmt;
+    private const DATA_TYPES_X_BIND_TYPES = [
+        "boolean" => \PDO::PARAM_BOOL,
+        "integer" => \PDO::PARAM_INT,
+        "double" => \PDO::PARAM_INT,
+        "string" => \PDO::PARAM_STR
+    ];
 
     protected function __construct()
     {
@@ -24,9 +30,13 @@ class DatabaseConnection
 
         if ($data !== null) {
             foreach ($data as $key => $value) {
-                $this->stmt->bindValue(":$key", $value);
+                $data_type = gettype($value);
+                $bind_type = self::DATA_TYPES_X_BIND_TYPES[$data_type];
+                $this->stmt->bindValue($key, $value, $bind_type);
             }
         }
+
+        $this->stmt->execute();
 
         return $this->stmt->fetchAll();
     }

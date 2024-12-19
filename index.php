@@ -27,9 +27,14 @@ try {
 } catch (\Exception $exception) {
     header("Content-Type: application/json");
 
+    $message = $exception->getMessage();
+    $line = $exception->getLine();
+    $file = $exception->getFile();
+    $message = "$message\nCode line: $line\nFile: $file";
+
     echo json_encode([
         "success" => false,
-        "message" => $exception->getMessage(),
+        "message" => $message,
         "data"    => []
     ]);
 }

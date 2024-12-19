@@ -10,13 +10,16 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = CategoryModel::getAllCategories();
+        $categories = CategoryModel::getAllCategories([
+            "c.*",
+            "count_posts"
+        ]);
         $recent_posts = PostModel::getRecentPosts([
             "p.slug",
             "p.title",
             "p.text",
             "p.created_at",
-            "c.name AS category_name"
+            "category_names"
         ]);
 
         $this->view("home", [

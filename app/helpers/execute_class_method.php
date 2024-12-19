@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Helpers;
-
 function execute_class_method(string $class, array $params)
 {
     $class_parts = explode("::", $class);

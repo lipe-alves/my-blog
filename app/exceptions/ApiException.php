@@ -4,10 +4,13 @@ namespace App\Exceptions;
 
 class ApiException extends \Exception
 {
-    /** @property array */
-    protected $data;
+    protected array $data;
 
-    public function __construct(string $message, int $status, array $data = [])
+    public function __construct(
+        string $message, 
+        int $status, 
+        array $data = []
+    )
     {
         parent::__construct($message, $status);
         $this->data = $data;

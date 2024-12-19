@@ -18,7 +18,10 @@ class ErrorMiddleware extends Middleware
             $exception = new ApiException(
                 $exception->getMessage(),
                 500,
-                []
+                [
+                    "line" => $exception->getLine(),
+                    "file" => $exception->getFile()
+                ]
             );
         }
 

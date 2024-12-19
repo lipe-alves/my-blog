@@ -2,7 +2,6 @@
 
 namespace App\Core;
 
-use App\Helpers;
 use App\Core\Request;
 use App\Core\Response;
 use App\Exceptions\ApiException;
@@ -17,11 +16,11 @@ class Router
 
     public function addRoute(string $method, string $path_template, string $controller, array $middlewares = [])
     {
-        if (!Helpers\starts_with($path_template, "/")) {
+        if (!starts_with($path_template, "/")) {
             $path_template = "/" . $path_template;
         }
 
-        if (!Helpers\ends_with($path_template, "/")) {
+        if (!ends_with($path_template, "/")) {
             $path_template = $path_template . "/";
         }
 
@@ -85,7 +84,7 @@ class Router
                 }
             }
 
-            $is_api = Helpers\str_contains($actual_path, "api");
+            $is_api = str_contains($actual_path, "api");
 
             if ($is_api) {
                 if (isset($route_not_found)) {
@@ -217,11 +216,11 @@ class Router
             $path = substr($path, strlen($base));
         }
 
-        if (!Helpers\starts_with($path, "/")) {
+        if (!starts_with($path, "/")) {
             $path = "/" . $path;
         }
 
-        if (!Helpers\ends_with($path, "/")) {
+        if (!ends_with($path, "/")) {
             $path = $path . "/";
         }
 
@@ -252,6 +251,6 @@ class Router
         Response $response,
         \Exception $exception = null
     ) {
-        Helpers\execute_class_method($controller, [$request, $response, $exception]);
+        execute_class_method($controller, [$request, $response, $exception]);
     }
 }

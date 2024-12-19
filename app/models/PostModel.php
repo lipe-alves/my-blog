@@ -6,14 +6,14 @@ use App\Core\DatabaseConnection;
 
 class PostModel
 {
-    public static function getPostBySlug(string $slug, array $columns = ["*"]): array|null
+    public static function getPostById(string $id, array $columns = ["*"]): array|null
     {
         $conn = DatabaseConnection::create();
 
         $fetch_categories = false;
 
         foreach ($columns as $column) {
-            if (strpos($column, "c.") !== false) {
+            if (str_contains($column, "c.")) {
                 $fetch_categories = true;
                 break;
             }
@@ -24,12 +24,15 @@ class PostModel
         $sql = "SELECT $columns FROM Post p";
 
         if ($fetch_categories) {
-            $sql .= " LEFT JOIN Category c ON c.name = p.category_name";
+            $sql .= " LEFT JOIN Post_x_Category pc ON pc.post_id = p.id";
+            $sql .= " LEFT JOIN Category c ON c.id = pc.category_id";
         }
 
-        $sql .= " WHERE slug = ? LIMIT 1";
+        $sql .= " WHERE p.id = :id LIMIT 1";
 
-        $data = [$slug];
+        $data = [
+            "id" => $id
+        ];
 
         $posts = $conn->select($sql, $data);
         return count($posts) === 0 ? null : $posts[0];
@@ -39,22 +42,23 @@ class PostModel
     {
         $conn = DatabaseConnection::create();
 
-        $fetch_categories = false;
-
-        foreach ($columns as $column) {
-            if (strpos($column, "c.") !== false) {
-                $fetch_categories = true;
-                break;
+        foreach ($columns as $i => $column) {
+            if (str_contains($column, "category_names")) {
+                $columns[$i] = "(
+                    SELECT 
+                        GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') 
+                    FROM 
+                        Post_x_Category pc
+                        JOIN Category c ON c.id = pc.category_id
+                    WHERE
+                        pc.post_id = p.id
+                ) AS category_names";
             }
         }
 
         $columns = implode(", ", $columns);
 
         $sql = "SELECT $columns FROM Post p";
-
-        if ($fetch_categories) {
-            $sql .= " LEFT JOIN Category c ON c.name = p.category_name";
-        }
 
         $sql .= " WHERE p.deleted = 0";
         $data = [];
@@ -69,17 +73,17 @@ class PostModel
         return $posts;
     }
 
-    public static function getPostCategories(string $post_slug, array $columns = ["c.*"], int|null $limit = null): array
+    public static function getPostCategories(string $post_id, array $columns = ["c.*"], int|null $limit = null): array
     {
         $conn = DatabaseConnection::create();
         $columns = implode(", ", $columns);
 
         $sql = "SELECT $columns FROM Post_x_Category pxc
             LEFT JOIN Category c ON pxc.category_id = c.id
-            WHERE pxc.post_slug = :post_slug
+            WHERE pxc.post_id = :post_id
         ";
         $data = [
-            "post_slug" => $post_slug
+            "post_id" => $post_id
         ];
 
         if ($limit !== null) {

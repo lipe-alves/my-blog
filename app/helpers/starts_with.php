@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Helpers;
-
 /** @return bool */
 function starts_with(string $string, string $start_string)
 {

@@ -63,6 +63,11 @@
                 <h3 class="Categories-title title">
                     Categorias
                 </h3>
+                <ul class="Categories-list">
+                    <?php foreach ($categories as $category): ?>
+                        <li><?= $category["name"] ?>(<?= $category["count_posts"] ?>)</li>
+                    <?php endforeach; ?>
+                </ul>
             </div>
         </aside>
     </main>
