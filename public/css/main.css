@@ -27,3 +27,7 @@ body {
     background-color: var(--input-background-color);
     color: var(--input-text-color);
 }
+
+a:hover {
+    text-decoration: underline;
+}

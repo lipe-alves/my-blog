@@ -101,8 +101,33 @@
         };
     }
 
+    /** @param {{ [key: string]: any }} params */
+    function setQueryParams(params) {
+        const url = new URL(window.location.href);
+
+        for (const [key, value] of Object.entries(params)) {
+            url.searchParams.set(key, value);
+        }
+
+        window.history.pushState(null, '', url.toString());
+    }
+
+    /** @returns {{ [key: string]: any }} */
+    function getQueryParams() {
+        const url = new URL(window.location.href);
+        const params = {};
+
+        for (const [key, value] of url.searchParams.entries()) {
+            params[key] = value;
+        }
+
+        return params;
+    }
+
     window.myBlog.functions = {
         onEnterPress,
         createEndpoint,
+        setQueryParams,
+        getQueryParams
     };
 })();

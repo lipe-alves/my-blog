@@ -65,7 +65,15 @@
                 </h3>
                 <ul class="Categories-list">
                     <?php foreach ($categories as $category): ?>
-                        <li><?= $category["name"] ?>(<?= $category["count_posts"] ?>)</li>
+                        <li>
+                            <a 
+                                href="javascript:void(0)" 
+                                data-filter-type="category" 
+                                data-category-id="<?= $category["id"] ?>"
+                            >
+                                <?= $category["name"] ?>
+                            </a>
+                            (<?= $category["count_posts"] ?>)</li>
                     <?php endforeach; ?>
                 </ul>
             </div>
