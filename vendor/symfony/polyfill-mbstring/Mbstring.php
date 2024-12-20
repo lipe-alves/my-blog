@@ -12,7 +12,7 @@
 namespace Symfony\Polyfill\Mbstring;
 
 /**
- * Partial mbstring implementation in PHP, iconv based, UTF-8 centric.
+ * component mbstring implementation in PHP, iconv based, UTF-8 centric.
  *
  * Implemented:
  * - mb_chr                  - Returns a specific character from its Unicode code point

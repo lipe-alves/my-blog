@@ -9,6 +9,9 @@ $router = new Router();
 // Rotas de Home
 $router->get("/", "\\App\\Controllers\\HomeController::index");
 
+// Rotas de Posts
+$router->get("/api/posts", "\\App\\Controllers\\PostsController::listPosts");
+
 // Rotas de Testes
 $router->get("/api/ping", "\\App\\Controllers\\TestsController::ping");
 

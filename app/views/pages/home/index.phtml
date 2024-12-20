@@ -3,14 +3,14 @@
 
 <head>
     <?php
-    $this->partial("meta-tags", [
+    $this->component("meta-tags", [
         "description" => $description,
         "keywords"    => $keywords
     ])
     ?>
     <title><?= $title ?></title>
-    <?php $this->partial("dependencies") ?>
-    <?php $this->partial("fonts") ?>
+    <?php $this->component("dependencies") ?>
+    <?php $this->component("fonts") ?>
     <link rel="stylesheet" href="app/views/pages/home/styles.css?v=<?= time() ?>" />
     <style type="text/css">
         .Header {
@@ -22,7 +22,7 @@
 
 <body>
     <?php
-    $this->partial("navbar", [
+    $this->component("navbar", [
         "active_page" => "home",
     ]);
     ?>
@@ -73,14 +73,14 @@
                             >
                                 <?= $category["name"] ?>
                             </a>
-                            (<?= $category["count_posts"] ?>)</li>
+                            (<?= $category["post_count"] ?>)</li>
                     <?php endforeach; ?>
                 </ul>
             </div>
         </aside>
     </main>
     <?php
-    $this->partial("back-to-top");
+    $this->component("back-to-top");
     ?>
 </body>
 

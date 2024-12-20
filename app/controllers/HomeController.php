@@ -3,18 +3,18 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Models\CategoryModel;
-use App\Models\PostModel;
+use App\Services\CategoryService;
+use App\Services\PostService;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $categories = CategoryModel::getAllCategories([
+        $categories = CategoryService::getAllCategories([
             "c.*",
-            "count_posts"
+            "post_count"
         ]);
-        $recent_posts = PostModel::getRecentPosts([
+        $recent_posts = PostService::getRecentPosts([
             "p.slug",
             "p.title",
             "p.text",

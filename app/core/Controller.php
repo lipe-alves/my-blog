@@ -27,8 +27,8 @@ class Controller
         $this->showHtml("pages/$view", $data);
     }
 
-    protected function partial(string $partial, array $data = [])
+    protected function component(string $component, array $data = [])
     {
-        $this->showHtml("partials/$partial", $data);
+        $this->showHtml("components/$component", $data);
     }
 }
