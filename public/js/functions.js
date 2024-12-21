@@ -124,10 +124,25 @@
         return params;
     }
 
+    /** 
+     * @param {{ [key: string]: any }} 
+     * @returns {string}
+     */
+    function createQueryString(params) {
+        const url = new URL(window.location.href);
+
+        for (const [key, value] of Object.entries(params)) {
+            url.searchParams.set(key, value);
+        }
+
+        return url.search;
+    }
+
     window.myBlog.functions = {
         onEnterPress,
         createEndpoint,
         setQueryParams,
-        getQueryParams
+        getQueryParams,
+        createQueryString
     };
 })();

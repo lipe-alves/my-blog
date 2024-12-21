@@ -11,7 +11,6 @@ $(document).ready(function () {
      * @param {{
      *     categoryId?: number;
      * }} params
-     * @returns {Promise<void>} 
      */
     function setSearchFilters(params) {
         const { getQueryParams, setQueryParams } = window.myBlog.functions;
@@ -24,7 +23,14 @@ $(document).ready(function () {
     }
 
     async function searchPosts() {
+        const { api } = window.myBlog;
         const { getQueryParams } = window.myBlog.functions;
         const query = getQueryParams();
+        const posts = await api.posts.search(query);
+        renderPosts(posts);
+    }
+
+    function renderPosts(posts) {
+
     }
 });

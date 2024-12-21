@@ -40,9 +40,10 @@
     </header>
     <main class="Main">
         <ul class="RecentPosts">
-            <?php foreach ($recent_posts as $post): ?>
-
-            <?php endforeach; ?>
+            <?php $this->view("home/post-card", ["is_template" => true]) ?>
+            <?php foreach ($recent_posts as $post):
+                $this->view("home/post-card", $post);
+            endforeach; ?>
         </ul>
         <aside class="Filters">
             <div class="Searchbar-container">

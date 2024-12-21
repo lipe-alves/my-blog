@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Core\DatabaseConnection;
 
-class PostService {
-    public static function getPosts(array $columns, array $data) {
+class PostService
+{
+    public static function getPosts(array $columns, array $data)
+    {
         $conn = DatabaseConnection::create();
 
         $fetch_categories = false;
@@ -44,14 +46,24 @@ class PostService {
         if (array_key_exists("post_deleted", $data)) {
             $wheres[] = "p.deleted = :post_deleted";
         }
-        
+
         $wheres = implode(" AND ", $wheres);
         $sql .= " WHERE $wheres";
+
+        if (array_key_exists("order", $data)) {
+            extract($data["order"]);
+
+            $data["order_column"] = $column;
+            $data["order_direction"] = $column;
+            unset($data["order"]);
+
+            $sql .= " ORDER BY :order_column :order_direction";
+        }
 
         if (array_key_exists("limit", $data)) {
             $sql .= " LIMIT :limit";
         }
-        
+
         $posts = $conn->select($sql, $data);
         return $posts;
     }
@@ -68,7 +80,12 @@ class PostService {
     public static function getRecentPosts(array $columns = ["*"], int $limit = 5)
     {
         $posts = self::getPosts($columns, [
-            "limit" => $limit
+            "post_deleted" => "0",
+            "order"        => [
+                "column"    => "p.created_at",
+                "direction" => "ASC",
+            ],
+            "limit"        => $limit
         ]);
 
         return $posts;
