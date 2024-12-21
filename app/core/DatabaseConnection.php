@@ -9,8 +9,9 @@ class DatabaseConnection
     private const DATA_TYPES_X_BIND_TYPES = [
         "boolean" => \PDO::PARAM_BOOL,
         "integer" => \PDO::PARAM_INT,
-        "double" => \PDO::PARAM_INT,
-        "string" => \PDO::PARAM_STR
+        "double"  => \PDO::PARAM_INT,
+        "string"  => \PDO::PARAM_STR,
+        "NULL"    => \PDO::PARAM_NULL
     ];
 
     protected function __construct()

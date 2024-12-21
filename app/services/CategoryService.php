@@ -59,7 +59,12 @@ class CategoryService
 
     public static function getAllCategories(array $columns = ["*"], $limit = null)
     {
-        $categories = self::getCategories($columns, ["limit" => $limit]);
+        $data = [];
+        if ($limit !== null) {
+            $data["limit"] = $limit;
+        }
+
+        $categories = self::getCategories($columns, $data);
         return $categories;
     }
 }
