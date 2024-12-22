@@ -15,6 +15,7 @@ class HomeController extends Controller
             "post_count"
         ]);
         $recent_posts = PostService::getRecentPosts([
+            "p.id",
             "p.slug",
             "p.title",
             "p.text",

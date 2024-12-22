@@ -28,6 +28,12 @@ class PostService
             }
         }
 
+        foreach ($data as $key => $value) {
+            if (str_contains($key, "category")) {
+                $fetch_categories = true;
+            }
+        }
+
         $columns = implode(", ", $columns);
 
         $sql = "SELECT $columns FROM Post p";
@@ -39,28 +45,48 @@ class PostService
 
         $wheres = ["1 = 1"];
 
-        if (array_key_exists("post_id", $data)) {
-            $wheres[] = "p.id = :post_id";
-        }
+        $alias_x_column = [
+            "post" => "p",
+            "category" => "c",
+        ];
 
-        if (array_key_exists("post_deleted", $data)) {
-            $wheres[] = "p.deleted = :post_deleted";
+        foreach ($data as $key => $value) {
+            foreach ($alias_x_column as $alias => $column) {
+                if (!str_contains($key, "{$alias}_")) continue;
+
+                $column = str_replace("{$alias}_", "$column.", $key);
+                $operator = "=";
+
+                if (str_contains(",", $value)) {
+                    $operator = "IN";
+                }
+                if (str_contains("*", $value)) {
+                    $operator = "LIKE";
+                    $value = str_replace("*", "%", $value);
+                }
+
+                $data[$key] = $value;
+
+                $wheres[] = "$column $operator :$key";
+            }
         }
 
         $wheres = implode(" AND ", $wheres);
-        $sql .= " WHERE $wheres";
+        $sql .= " WHERE $wheres GROUP BY p.id";
 
         if (array_key_exists("order", $data)) {
             extract($data["order"]);
 
             $data["order_column"] = $column;
-            $data["order_direction"] = $column;
+            $data["order_direction"] = $direction;
             unset($data["order"]);
 
             $sql .= " ORDER BY :order_column :order_direction";
         }
 
-        if (array_key_exists("limit", $data)) {
+        if (array_key_exists("offset", $data) && array_key_exists("limit", $data)) {
+            $sql .= " LIMIT :offset, :limit";
+        } else if (array_key_exists("limit", $data)) {
             $sql .= " LIMIT :limit";
         }
 

@@ -33,14 +33,21 @@
                     <?= APP_NAME ?>
                 </a>
             </h1>
-            <h2 class="Header-subtitle subtitle">
+            <p class="Header-subtitle subtitle">
                 Minha caixinha de pensamentos
-            </h2>
+            </p>
         </div>
     </header>
     <main class="Main">
         <ul class="RecentPosts">
-            <?php $this->view("home/post-card", ["is_template" => true]) ?>
+            <?php $this->view("home/post-card", [
+                "id"             => "",
+                "slug"           => "",
+                "title"          => "",
+                "text"           => "",
+                "created_at"     => "",
+                "category_names" => "",
+            ]) ?>
             <?php foreach ($recent_posts as $post):
                 $this->view("home/post-card", $post);
             endforeach; ?>
@@ -67,14 +74,14 @@
                 <ul class="Categories-list">
                     <?php foreach ($categories as $category): ?>
                         <li>
-                            <a 
-                                href="javascript:void(0)" 
-                                data-filter-type="category" 
-                                data-category-id="<?= $category["id"] ?>"
-                            >
+                            <a
+                                href="javascript:void(0)"
+                                data-filter-key="category"
+                                data-filter-value="<?= $category["name"] ?>">
                                 <?= $category["name"] ?>
                             </a>
-                            (<?= $category["post_count"] ?>)</li>
+                            (<?= $category["post_count"] ?>)
+                        </li>
                     <?php endforeach; ?>
                 </ul>
             </div>

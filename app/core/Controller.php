@@ -14,12 +14,11 @@ class Controller
             $phtml_path = ROOT_PATH . "/app/views/{$path}/index.phtml";
         }
 
-
         if (!file_exists($phtml_path)) {
             throw new \Exception("$path não existe");
         }
 
-        require_once $phtml_path;
+        require $phtml_path;
     }
 
     protected function view(string $view, array $data = [])
