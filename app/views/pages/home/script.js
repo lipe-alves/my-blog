@@ -1,77 +1,91 @@
-$(document).ready(function () {
-    attachFilterEventListeners();
+async function handleApplyFilter(element) {
+    const key = $(element).data("filter-key");
+    const value = $(element).data("filter-value");
+    setFilterParams({ [key]: value });
+    await filterPosts();
+}
 
-    function attachFilterEventListeners() {
-        $("[data-filter-key]").each(function () {
-            $(this).on("click", async function () {
-                const key = $(this).data("filter-key");
-                const value = $(this).data("filter-value");
-                setFilterParams({ [key]: value });
-                await filterPosts();
-            });
-        });
+function handleSearch(evt) {
+    const { onEnterPress } = window.myBlog.functions;
+    const searchInput = $(evt.target);
+
+    onEnterPress(evt, function () {
+        alert("Enter " + searchInput.val());
+    });
+}
+
+/**
+ * @param {{
+ *     category_id?: number;
+ *     category_name?: string;
+ *     page?: number;
+ *     size?: number;
+ * }} params
+ */
+function setFilterParams(params) {
+    const { getQueryParams, setQueryParams } = window.myBlog.functions;
+    const query = getQueryParams();
+
+    for (const [key, value] of Object.entries(params)) {
+        query[key] = value;
     }
 
-    /**
-     * @param {{
-     *     category_id?: number;
-     *     category_name?: string;
-     *     page?: number;
-     *     size?: number;
-     * }} params
-     */
-    function setFilterParams(params) {
-        const { getQueryParams, setQueryParams } = window.myBlog.functions;
-        const query = getQueryParams();
+    setQueryParams(query);
+}
 
-        for (const [key, value] of Object.entries(params)) {
-            query[key] = value;
-        }
+async function filterPosts() {
+    const { api } = window.myBlog;
+    const { getQueryParams } = window.myBlog.functions;
 
-        setQueryParams(query);
-    }
+    const query = getQueryParams();
 
-    async function filterPosts() {
-        const { api } = window.myBlog;
-        const { getQueryParams } = window.myBlog.functions;
+    if (!query.page) query.page = 0;
+    if (!query.size) query.size = 10;
 
-        const query = getQueryParams();
+    query.columns = "p.*,category_names";
 
-        if (!query.page) query.page = 0;
-        if (!query.size) query.size = 10;
+    const resp = await api.posts.search(query);
+    const posts = resp.list;
 
-        query.columns = "p.*,category_names";
+    renderPosts(posts);
+}
 
-        const posts = await api.posts.search(query);
+function renderPosts(posts) {
+    const postCardTemplate = $('.PostCard[data-template="true"]');
+    const postListElement = postCardTemplate.parent();
 
-        renderPosts(posts);
-    }
+    postListElement.find('li[data-template="false"]').each(function () {
+        $(this).remove();
+    });
 
-    function renderPosts(posts) {
-        const postCardTemplate = $('.PostCard[data-template="true"]');
-        const postListElement = postCardTemplate.parent();
+    for (const post of posts) {
+        const postCard = postCardTemplate.clone();
 
-        postListElement.find('li[data-template="false"]').each(function () {
-            $(this).remove();
-        });
+        postCard.attr("data-post-id", post.id);
+        postCard.attr("data-template", "false");
 
-        console.log("posts", posts);
+        for (let [column, value] of Object.entries(post)) {
+            const columnElement = postCard.find(`[data-column="${column}"]`);
 
-        for (const post of posts) {
-            const postCard = postCardTemplate.clone();
+            if (column === "created_at") {
+                value = new Date(value).toLocaleString();
+            } else if (column === "category_names") {
+                const categories = value.split(",").map(c => c.trim());
+                const a = columnElement.find("a");
+                value = [];
+                
+                for (const category of categories) {
+                    a.attr("data-filter-value", category);
+                    a.html(category);
+                    value.push(a.prop("outerHTML"));
+                }
 
-            postCard.data("post-id", post.id);
-            postCard.data("template", "false");
-
-            for (const [column, value] of Object.entries(post)) {
-                postCard.find(`[data-column="${column}"]`).html(value);
+                value = value.join(", ");
             }
-
-            console.log(postCard.html());
-
-            postListElement.append(postCard);
+            
+            columnElement.html(value);
         }
 
-        attachFilterEventListeners();
+        postListElement.append(postCard);
     }
-});
+}

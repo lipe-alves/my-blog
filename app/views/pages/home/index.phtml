@@ -57,10 +57,10 @@
                 <label class="Searchbar-label">
                     <span class="Searchbar-text">
                         <input
-                            id="search-input"
                             class="Searchbar-input"
                             type="text"
-                            placeholder="Pesquise aqui e aperte Enter..." />
+                            placeholder="Pesquise aqui e aperte Enter..." 
+                            onkeypress="handleSearch(event)" />
                     </span>
                     <span class="Searchbar-icon">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -77,7 +77,8 @@
                             <a
                                 href="javascript:void(0)"
                                 data-filter-key="category"
-                                data-filter-value="<?= $category["name"] ?>">
+                                data-filter-value="<?= $category["name"] ?>"
+                                onclick="handleApplyFilter(this)">
                                 <?= $category["name"] ?>
                             </a>
                             (<?= $category["post_count"] ?>)

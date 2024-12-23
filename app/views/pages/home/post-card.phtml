@@ -1,7 +1,7 @@
 <?php
 $is_template = !(bool)$id;
 $created_at = strtotime($created_at);
-$created_at = date("d/m/Y H:i:s", $created_at);
+$created_at = date("d/m/Y, H:i:s", $created_at);
 $post_categories = explode(",", $category_names);
 $total_categories = count($post_categories);
 $last_category_index = $total_categories - 1;
@@ -21,9 +21,7 @@ $last_category_index = $total_categories - 1;
             <div class="PostCard-subheader">
                 <span
                     class="PostCard-createdAt"
-                    data-column="created_at">
-                    <?= $created_at ?>
-                </span>
+                    data-column="created_at"><?= $created_at ?></span>
                 <span
                     class="PostCard-categories"
                     data-column="category_names">
@@ -32,7 +30,8 @@ $last_category_index = $total_categories - 1;
                             class="PostCard-category"
                             href="javascript:void(0)"
                             data-filter-key="category"
-                            data-filter-value="<?= $category_name ?>">
+                            data-filter-value="<?= $category_name ?>"
+                            onclick="handleApplyFilter(this)">
                             <?= $category_name ?>
                         </a><?= $i !== $last_category_index ? ", " : "" ?>
                     <?php endforeach; ?>

@@ -48,7 +48,7 @@ class PostsController extends Controller
 
         $filter_params = [
             "offset" => $offset,
-            "limit" => $limit
+            "limit" => $limit + 1
         ];
 
         if (isset($category)) {
@@ -61,7 +61,19 @@ class PostsController extends Controller
 
         $posts = PostService::getPosts($columns, $filter_params);
 
-        $response->setStatus(200)->setJson($posts)->send();
+        $total_posts = count($posts);
+		$next_page = $total_posts > $size;
+
+		if ($next_page) {
+			unset($posts[$total_posts - 1]);
+		}
+
+        $result = [
+            "list"      => $posts,
+            "next_page" => $next_page
+        ];
+
+        $response->setStatus(200)->setJson($result)->send();
     }
 
     public function index() {}

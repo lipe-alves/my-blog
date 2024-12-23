@@ -1,17 +1,14 @@
 (() => {
     /**
-     * Adds a listener event to the Enter press
      * @param {HTMLElement} htmlElement
      * @param {(evt: MouseEvent) => void} callback
      * @returns {void}
      */
-    function onEnterPress(htmlElement, callback) {
-        $(htmlElement).on("keypress", function (evt) {
-            if (evt.key === "Enter") {
-                evt.preventDefault();
-                callback.bind(this, evt);
-            }
-        });
+    function onEnterPress(evt, callback) {
+        if (evt.key === "Enter") {
+            evt.preventDefault();
+            callback(evt);
+        }
     }
 
     /** @param {string} baseUrl */
