@@ -22,6 +22,7 @@
     background-position: right top;
     background-color: transparent;
     border-bottom: 1px dashed #efefef;
+    padding: 1em;
 }
 
 .Header-title a {
@@ -41,6 +42,7 @@
     min-width: var(--content-min-width);
     margin: 0 auto;
     background-color: #fff;
+    padding: 1em;
 }
 
 .Filters {
