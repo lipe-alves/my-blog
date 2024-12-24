@@ -1,7 +1,16 @@
 async function handleApplyFilter(element) {
+    const { getQueryParams } = window.myBlog.functions;
+
+    const query = getQueryParams();
     const key = $(element).data("filter-key");
     const value = $(element).data("filter-value");
-    setFilterParams({ [key]: value });
+    let params = { [key]: value };
+
+    if (query[key] === value) {
+        params[key] = "";
+    }
+
+    setFilterParams(params);
     await filterPosts();
 }
 
@@ -9,8 +18,9 @@ function handleSearch(evt) {
     const { onEnterPress } = window.myBlog.functions;
     const searchInput = $(evt.target);
 
-    onEnterPress(evt, function () {
-        alert("Enter " + searchInput.val());
+    onEnterPress(evt, async function () {
+        setFilterParams({ search: searchInput.val() });
+        await filterPosts();
     });
 }
 
@@ -23,12 +33,21 @@ function handleSearch(evt) {
  * }} params
  */
 function setFilterParams(params) {
+    console.log('params', params);
+
     const { getQueryParams, setQueryParams } = window.myBlog.functions;
     const query = getQueryParams();
 
     for (const [key, value] of Object.entries(params)) {
+        if (!value) {
+            delete query[key]; 
+            continue;
+        } 
+
         query[key] = value;
     }
+
+    console.log('query', query);
 
     setQueryParams(query);
 }

@@ -101,6 +101,10 @@
     /** @param {{ [key: string]: any }} params */
     function setQueryParams(params) {
         const url = new URL(window.location.href);
+        
+        for (const key of url.searchParams.keys()) {
+            url.searchParams.delete(key);
+        }
 
         for (const [key, value] of Object.entries(params)) {
             url.searchParams.set(key, value);

@@ -57,12 +57,16 @@ class PostService
                 $column = str_replace("{$alias}_", "$column.", $key);
                 $operator = "=";
 
-                if (str_contains(",", $value)) {
+                if (str_contains($value, ",")) {
                     $operator = "IN";
                 }
-                if (str_contains("*", $value)) {
+                if (str_contains($value, "*")) {
                     $operator = "LIKE";
                     $value = str_replace("*", "%", $value);
+                }
+                if (starts_with($value, "!")) {
+                    $operator = "<>";
+                    $value = str_replace("!", "", $value);
                 }
 
                 $data[$key] = $value;
@@ -89,6 +93,9 @@ class PostService
         } else if (array_key_exists("limit", $data)) {
             $sql .= " LIMIT :limit";
         }
+
+        file_put_contents("sql.sql", $sql);
+        file_put_contents("data.json", json_encode($data));
 
         $posts = $conn->select($sql, $data);
         return $posts;

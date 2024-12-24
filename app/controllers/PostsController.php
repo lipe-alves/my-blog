@@ -59,6 +59,14 @@ class PostsController extends Controller
             }
         }
 
+        if (isset($search)) {
+            $search_text_expression = "*$search*";
+            $filter_params["post_title"] = $search_text_expression;
+            $filter_params["post_text"] = $search_text_expression;
+        }
+
+        file_put_contents("filter_params.json", json_encode( $filter_params));
+
         $posts = PostService::getPosts($columns, $filter_params);
 
         $total_posts = count($posts);
