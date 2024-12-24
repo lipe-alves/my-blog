@@ -51,10 +51,23 @@ class PostService
         ];
 
         foreach ($data as $key => $value) {
-            foreach ($alias_x_column as $alias => $column) {
-                if (!str_contains($key, "{$alias}_")) continue;
+            $logical_operator = "AND";
+            $new_key = $key;
+            
+            if (starts_with($key, "&&")) {
+                $new_key = str_replace("&&", "", $key);
+                $logical_operator = "AND";
+            }
 
-                $column = str_replace("{$alias}_", "$column.", $key);
+            if (starts_with($key, "||")) {
+                $new_key = str_replace("||", "", $key);
+                $logical_operator = "OR";
+            }
+
+            foreach ($alias_x_column as $alias => $column) {
+                if (!str_contains($new_key, "{$alias}_")) continue;
+
+                $column = str_replace("{$alias}_", "$column.", $new_key);
                 $operator = "=";
 
                 if (str_contains($value, ",")) {
@@ -69,13 +82,14 @@ class PostService
                     $value = str_replace("!", "", $value);
                 }
 
-                $data[$key] = $value;
+                unset($data[$key]);
+                $data[$new_key] = $value;
 
-                $wheres[] = "$column $operator :$key";
+                $wheres[] = "$logical_operator $column $operator :$new_key";
             }
         }
 
-        $wheres = implode(" AND ", $wheres);
+        $wheres = implode(" ", $wheres);
         $sql .= " WHERE $wheres GROUP BY p.id";
 
         if (array_key_exists("order", $data)) {
@@ -94,8 +108,6 @@ class PostService
             $sql .= " LIMIT :limit";
         }
 
-        file_put_contents("sql.sql", $sql);
-        file_put_contents("data.json", json_encode($data));
 
         $posts = $conn->select($sql, $data);
         return $posts;
