@@ -11,13 +11,6 @@
     <title><?= $title ?></title>
     <?php $this->component("dependencies") ?>
     <?php $this->component("fonts") ?>
-    <link rel="stylesheet" href="app/views/pages/home/styles.css?v=<?= time() ?>" />
-    <style type="text/css">
-        .Header {
-            --header-background-image: url(<?= $header_image ?>);
-        }
-    </style>
-    <script type="text/javascript" src="app/views/pages/home/script.js?v=<?= time() ?>"></script>
 </head>
 
 <body>
@@ -40,17 +33,22 @@
     </header>
     <main class="Main">
         <ul class="RecentPosts">
-            <?php $this->view("home/post-card", [
+            <?php
+            $this->component("loader", [
+                "id" => "postsSpinner",
+            ]);
+            $this->view("home/post-card", [
                 "id"             => "",
                 "slug"           => "",
                 "title"          => "",
                 "text"           => "",
                 "created_at"     => "",
                 "category_names" => "",
-            ]) ?>
-            <?php foreach ($recent_posts as $post):
+            ]);
+            foreach ($recent_posts as $post):
                 $this->view("home/post-card", $post);
-            endforeach; ?>
+            endforeach;
+            ?>
         </ul>
         <aside class="Filters">
             <div class="Searchbar-container">
@@ -59,7 +57,7 @@
                         <input
                             class="Searchbar-input"
                             type="text"
-                            placeholder="Pesquise aqui e aperte Enter..." 
+                            placeholder="Pesquise aqui e aperte Enter..."
                             onkeypress="handleSearch(event)" />
                     </span>
                     <span class="Searchbar-icon">
@@ -91,6 +89,13 @@
     <?php
     $this->component("back-to-top");
     ?>
+    <link rel="stylesheet" href="app/views/pages/home/styles.css?v=<?= time() ?>" />
+    <style type="text/css">
+        .Header {
+            --header-background-image: url(<?= $header_image ?>);
+        }
+    </style>
+    <script type="text/javascript" src="app/views/pages/home/script.js?v=<?= time() ?>"></script>
 </body>
 
 </html>

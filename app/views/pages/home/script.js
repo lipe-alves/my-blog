@@ -33,21 +33,17 @@ function handleSearch(evt) {
  * }} params
  */
 function setFilterParams(params) {
-    console.log('params', params);
-
     const { getQueryParams, setQueryParams } = window.myBlog.functions;
     const query = getQueryParams();
 
     for (const [key, value] of Object.entries(params)) {
         if (!value) {
-            delete query[key]; 
+            delete query[key];
             continue;
-        } 
+        }
 
         query[key] = value;
     }
-
-    console.log('query', query);
 
     setQueryParams(query);
 }
@@ -57,6 +53,8 @@ async function filterPosts() {
     const { getQueryParams } = window.myBlog.functions;
 
     const query = getQueryParams();
+    const hasQuery = Object.keys(query).length > 0;
+    if (!hasQuery) return;
 
     if (!query.page) query.page = 0;
     if (!query.size) query.size = 10;
@@ -92,7 +90,7 @@ function renderPosts(posts) {
                 const categories = value.split(",").map(c => c.trim());
                 const a = columnElement.find("a");
                 value = [];
-                
+
                 for (const category of categories) {
                     a.attr("data-filter-value", category);
                     a.html(category);
@@ -101,10 +99,14 @@ function renderPosts(posts) {
 
                 value = value.join(", ");
             }
-            
+
             columnElement.html(value);
         }
 
         postListElement.append(postCard);
     }
 }
+
+$(document).ready(function () {
+    filterPosts();
+});
