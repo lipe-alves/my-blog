@@ -47,8 +47,13 @@ class PostsController extends Controller
         $offset = min($offset, $limit);
 
         $filter_params = [
-            "offset" => $offset,
-            "limit" => $limit + 1
+            "post_deleted" => "0",
+            "offset"       => $offset,
+            "limit"        => $limit + 1,
+            "order"        => [
+                "column"    => "p.created_at",
+                "direction" => "DESC",
+            ],
         ];
 
         if (isset($category)) {

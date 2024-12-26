@@ -128,7 +128,7 @@ class PostService
             "post_deleted" => "0",
             "order"        => [
                 "column"    => "p.created_at",
-                "direction" => "ASC",
+                "direction" => "DESC",
             ],
             "limit"        => $limit
         ]);
