@@ -1,4 +1,7 @@
 .Loader-wrapper {
+    --loader-color: #75a4ff;
+    --loader-height: 80px;
+    --loader-width: 80px;
     position: absolute;
     top: 0;
     left: 0;
@@ -7,23 +10,36 @@
     background-color: #fff;
     opacity: 1;
     z-index: 10;
-    transition: opacity .3s;
+    transition: opacity .5s;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 6px;
 }
 
-.Loader-wrapper .Loader {
-    height: 80px;
-    width: 80px;
-}
-
 .Loader-wrapper[data-visible="false"] {
     opacity: 0;
     z-index: -1;
 }
-  
-.Loader.is-loading {
+ 
+.Loader {
     position: relative;
+}
+
+.Loader.is-loading:after {
+    content: "";
+    animation: spinAround .5s linear infinite;
+    display: block;
+    position: relative;
+    left: calc(50% - .5em);
+    top: calc(50% - .5em);
+    color: transparent !important;
+    pointer-events: none;
+    border-bottom: 2px solid var(--loader-color);
+    border-left: 2px solid var(--loader-color);
+    border-radius: var(--bulma-radius-rounded);
+    border-right: 2px solid transparent;
+    border-top: 2px solid transparent;
+    height: var(--loader-height);
+    width: var(--loader-width);
 }

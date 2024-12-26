@@ -1,13 +1,18 @@
 <?php
-$width = isset($width) ? $width : "100%";
-$height = isset($height) ? $height : "100%";
+$warpper_width = isset($warpper_width) ? $warpper_width : "100%";
+$wrapper_height = isset($wrapper_height) ? $wrapper_height : "100%";
+
+$loader_width = isset($loader_width) ? $loader_width : "80px";
+$loader_height = isset($loader_height) ? $loader_height : "80px";
 ?>
 <div
     id="<?= $id ?>"
     class="Loader-wrapper"
     data-visible="false"
-    style="width: <?= $width ?>; height: <?= $height ?>;">
-    <div class="Loader is-loading"></div>
+    style="width: <?= $warpper_width ?>; height: <?= $wrapper_height ?>;">
+    <div 
+        class="Loader is-loading" 
+        style="--loader-width: <?= $loader_width ?>; --loader-height: <?= $loader_height ?>;"></div>
 </div>
 <script
     type="text/javascript"

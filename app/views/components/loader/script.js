@@ -12,7 +12,7 @@
             loader.attr("data-visible", "true");
         },
         hide() {
-            loader.attr("data-visible", "false");
+            setTimeout(() => loader.attr("data-visible", "false"), 1000);
         }
     };
 })();
