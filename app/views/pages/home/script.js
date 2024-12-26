@@ -49,8 +49,9 @@ function setFilterParams(params) {
 }
 
 async function filterPosts() {
-    const { api } = window.myBlog;
+    const { api, toast } = window.myBlog;
     const { getQueryParams } = window.myBlog.functions;
+    const { postsLoader } = window.myBlog.loaders;
 
     const query = getQueryParams();
     const hasQuery = Object.keys(query).length > 0;
@@ -61,10 +62,18 @@ async function filterPosts() {
 
     query.columns = "p.*,category_names";
 
-    const resp = await api.posts.search(query);
-    const posts = resp.list;
+    try {
+        postsLoader.show();
 
-    renderPosts(posts);
+        const resp = await api.posts.search(query);
+        const posts = resp.list;
+
+        renderPosts(posts);
+    } catch (err) {
+        toast.error(err.message);
+    } finally {
+        postsLoader.hide();
+    }
 }
 
 function renderPosts(posts) {
