@@ -31,3 +31,14 @@ body {
 a:hover {
     text-decoration: underline;
 }
+
+img {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+*[data-visible="false"] {
+    display: none;
+}

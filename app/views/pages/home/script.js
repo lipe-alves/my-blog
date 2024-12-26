@@ -69,6 +69,9 @@ async function filterPosts() {
         const posts = resp.list;
 
         renderPosts(posts);
+
+        const noPostsMessage = $("#no-posts-message");
+        noPostsMessage.attr("data-visible", String(posts.length === 0));
     } catch (err) {
         toast.error(err.message);
     } finally {

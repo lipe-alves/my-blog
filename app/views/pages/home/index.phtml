@@ -1,3 +1,7 @@
+<?php
+$post_count = count($recent_posts);
+$no_posts = $post_count === 0;
+?>
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -37,6 +41,20 @@
             $this->component("loader", [
                 "id" => "postsLoader",
             ]);
+            ?>
+            <li id="no-posts-message" class="NoPostFound" data-visible="<?= json_encode($no_posts) ?>">
+                <img
+                    class="image is-128x128" 
+                    src="public/images/planet.png" 
+                    alt="Planeta" />
+                <h2 class="title is-4">
+                    Nenhum post encontrado
+                </h2>
+                <p class="subtitle is-6">
+                    Parece que ainda não há posts recentes. Volte mais tarde para ver as novidades!
+                </p>
+            </li>
+            <?php
             $this->view("home/post-card", [
                 "id"             => "",
                 "slug"           => "",
