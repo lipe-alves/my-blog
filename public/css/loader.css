@@ -4,9 +4,9 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background: #fff;
-    opacity: 0;
-    z-index: -1;
+    background-color: #fff;
+    opacity: 1;
+    z-index: 10;
     transition: opacity .3s;
     display: flex;
     justify-content: center;
@@ -18,9 +18,10 @@
     height: 80px;
     width: 80px;
 }
-    
+
 .Loader-wrapper[data-visible="false"] {
-    display: none;
+    opacity: 0;
+    z-index: -1;
 }
   
 .Loader.is-loading {

@@ -1,16 +1,14 @@
+<?php
+$width = isset($width) ? $width : "100%";
+$height = isset($height) ? $height : "100%";
+?>
 <div
     id="<?= $id ?>"
     class="Loader-wrapper"
     data-visible="false"
-    style="
-        width: <?= isset($width) ? $width : "100%" ?>; 
-        height: <?= isset($height) ? $height : "100%" ?>;
-    ">
+    style="width: <?= $width ?>; height: <?= $height ?>;">
     <div class="Loader is-loading"></div>
 </div>
-<link
-    rel="stylesheet"
-    href="<?= BASE_URI ?>/app/views/components/loader/styles.css?v=<?= time() ?>" />
 <script
     type="text/javascript"
     data-loader-id="<?= $id ?>"
