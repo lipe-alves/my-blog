@@ -12,7 +12,12 @@
             loader.attr("data-visible", "true");
         },
         hide() {
-            setTimeout(() => loader.attr("data-visible", "false"), 1000);
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    loader.attr("data-visible", "false");
+                    resolve()
+                }, 1000);
+            });
         }
     };
 })();

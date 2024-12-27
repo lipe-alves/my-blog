@@ -68,14 +68,12 @@ async function filterPosts() {
         const resp = await api.posts.search(query);
         const posts = resp.list;
 
-        renderPosts(posts);
+        await postsLoader.hide();
 
-        const noPostsMessage = $("#no-posts-message");
-        noPostsMessage.attr("data-visible", String(posts.length === 0));
+        renderPosts(posts);
     } catch (err) {
+        await postsLoader.hide();
         toast.error(err.message);
-    } finally {
-        postsLoader.hide();
     }
 }
 
@@ -117,6 +115,9 @@ function renderPosts(posts) {
 
         postListElement.append(postCard);
     }
+
+    const noPostsMessage = $("#no-posts-message");
+    noPostsMessage.attr("data-visible", String(posts.length === 0));
 }
 
 $(document).ready(function () {

@@ -18,11 +18,7 @@ $no_posts = $post_count === 0;
 </head>
 
 <body>
-    <?php
-    $this->component("navbar", [
-        "active_page" => "home",
-    ]);
-    ?>
+    <?php $this->component("navbar", ["active_page" => "home"]) ?>
     <header class="Header">
         <div class="Header-inner">
             <h1 class="Header-title title is-3">
@@ -37,11 +33,7 @@ $no_posts = $post_count === 0;
     </header>
     <main class="Main">
         <ul class="RecentPosts">
-            <?php
-            $this->component("loader", [
-                "id" => "postsLoader",
-            ]);
-            ?>
+            <?php $this->component("loader", ["id" => "postsLoader"]) ?>
             <li id="no-posts-message" class="NoPostFound" data-visible="<?= json_encode($no_posts) ?>">
                 <img
                     class="image is-128x128" 
