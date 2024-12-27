@@ -13,7 +13,8 @@
     align-items: flex-start;
     justify-content: center;
     gap: 1em;
-    width: Max(var(--content-max-width), 400px);
+    max-width: var(--content-max-width);
+    min-width: var(--content-min-width);
     min-height: 30em;
     margin: 0 auto;
     background-image: var(--header-background-image);
@@ -171,4 +172,8 @@
     margin: 1em;
     height: fit-content;
     text-align: center;
+}
+
+[data-filter-key="category"].active {
+    text-decoration: underline;
 }

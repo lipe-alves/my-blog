@@ -1,7 +1,3 @@
-<?php
-$post_count = count($recent_posts);
-$no_posts = $post_count === 0;
-?>
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -33,8 +29,13 @@ $no_posts = $post_count === 0;
     </header>
     <main class="Main">
         <ul class="RecentPosts">
+            <li 
+                id="filter-title" 
+                class="subtitle is-5" 
+                data-visible="<?= $show_filter_title ?>">
+            </li>
             <?php $this->component("loader", ["id" => "postsLoader"]) ?>
-            <li id="no-posts-message" class="NoPostFound" data-visible="<?= json_encode($no_posts) ?>">
+            <li id="no-posts-message" class="NoPostFound" data-visible="<?= $show_no_posts_msg ?>">
                 <img
                     class="image is-128x128" 
                     src="public/images/planet.png" 
@@ -65,12 +66,13 @@ $no_posts = $post_count === 0;
                 <label class="Searchbar-label">
                     <span class="Searchbar-text">
                         <input
+                            id="search-bar"
                             class="Searchbar-input"
                             type="text"
                             placeholder="Pesquise aqui e aperte Enter..."
-                            onkeypress="handleSearch(event)" />
+                            onkeypress="handleSearchOnEnter(event)" />
                     </span>
-                    <span class="Searchbar-icon">
+                    <span class="Searchbar-icon" onclick="handleSearch(event)">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
                 </label>

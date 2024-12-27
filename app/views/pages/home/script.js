@@ -1,3 +1,5 @@
+const searchInput = $("#search-bar");
+
 async function handleApplyFilter(element) {
     const { getQueryParams } = window.myBlog.functions;
 
@@ -6,7 +8,8 @@ async function handleApplyFilter(element) {
     const value = $(element).data("filter-value");
     let params = { [key]: value };
 
-    if (query[key] === value) {
+    const alreadySelected = query[key] === value;
+    if (alreadySelected) {
         params[key] = "";
     }
 
@@ -14,14 +17,14 @@ async function handleApplyFilter(element) {
     await filterPosts();
 }
 
-function handleSearch(evt) {
-    const { onEnterPress } = window.myBlog.functions;
-    const searchInput = $(evt.target);
+async function handleSearch() {
+    setFilterParams({ search: searchInput.val() });
+    await filterPosts();
+}
 
-    onEnterPress(evt, async function () {
-        setFilterParams({ search: searchInput.val() });
-        await filterPosts();
-    });
+function handleSearchOnEnter(evt) {
+    const { onEnterPress } = window.myBlog.functions;
+    onEnterPress(evt, handleSearch);
 }
 
 /**
@@ -46,6 +49,7 @@ function setFilterParams(params) {
     }
 
     setQueryParams(query);
+    updateFilterIndicators();
 }
 
 async function filterPosts() {
@@ -54,8 +58,6 @@ async function filterPosts() {
     const { postsLoader } = window.myBlog.loaders;
 
     const query = getQueryParams();
-    const hasQuery = Object.keys(query).length > 0;
-    if (!hasQuery) return;
 
     if (!query.page) query.page = 0;
     if (!query.size) query.size = 10;
@@ -75,6 +77,41 @@ async function filterPosts() {
         await postsLoader.hide();
         toast.error(err.message);
     }
+}
+
+function updateFilterIndicators() {
+    const { getQueryParams } = window.myBlog.functions;
+
+    const query = getQueryParams();
+    $('[data-filter-key="category"]').each(function () {
+        const categoryValue = $(this).data("filter-value");
+        const active = categoryValue === query.category;
+        if (active) {
+            $(this).addClass("active");
+        } else {
+            $(this).removeClass("active");
+        }
+    });
+
+    if (query.search) {
+        searchInput.val(query.search);
+    }
+
+    const filterTitle = $("#filter-title");
+    const noFilters = !Object.values(query).some(Boolean);
+    filterTitle.attr("data-visible", String(!noFilters));
+
+    let filterMsg = "Posts encontrados";
+
+    if (query.category) {
+        filterMsg += ` em "${query.category}"`
+    }
+
+    if (query.search) {
+        filterMsg += ` com o texto "${query.search}"`
+    }
+
+    filterTitle.html(filterMsg);
 }
 
 function renderPosts(posts) {
@@ -121,5 +158,13 @@ function renderPosts(posts) {
 }
 
 $(document).ready(function () {
+    const { getQueryParams } = window.myBlog.functions;
+    const query = getQueryParams();
+
+    updateFilterIndicators();
+    
+    const hasQuery = Object.keys(query).length > 0;
+    if (!hasQuery) return;
+
     filterPosts();
 });
