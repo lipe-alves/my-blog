@@ -111,6 +111,8 @@ function updateFilterIndicators() {
         filterMsg += ` com o texto "${query.search}"`
     }
 
+    filterMsg += "...";
+
     filterTitle.html(filterMsg);
 }
 
