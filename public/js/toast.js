@@ -1,9 +1,19 @@
 (() => {
+    const consoleMethods = {
+        success: "log",
+        error: "error",
+        warning: "warn",
+        info: "info",
+        default: "log",
+        link: "log",
+        danger: "error",
+    };
+
     /**
      * @typedef ToastConfig
      * @type {{
      *      message: string;
-     *      type: "primary" | "link" | "info" | "success" | "warning" | "danger";
+     *      type: "link" | "info" | "success" | "warning" | "danger";
      *      duration: number;
      *      position: "top-left" | "top-center" | "top-right" | "center" | "bottom-left" | "bottom-center" | "bottom-right";
      * }}
@@ -14,11 +24,14 @@
         show(config) {
             const {
                 message,
-                type = "primary",
+                type = "default",
                 duration = 2000,
                 position = "top-center",
                 ...rest
             } = config;
+
+            const consoleMethod = consoleMethods[type] || "log";
+            console[consoleMethod](message);
 
             bulmaToast.toast({
                 message,

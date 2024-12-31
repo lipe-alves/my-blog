@@ -123,34 +123,37 @@ function renderPosts(posts) {
     });
 
     for (const post of posts) {
-        const postCard = postCardTemplate.clone();
-
-        postCard.attr("data-post-id", post.id);
+        let postCard = postCardTemplate.clone();
         postCard.attr("data-template", "false");
+        let postCardHtml = postCard.prop("outerHTML");
 
         for (let [column, value] of Object.entries(post)) {
-            const columnElement = postCard.find(`[data-column="${column}"]`);
-
             if (column === "created_at") {
                 value = new Date(value).toLocaleString();
             } else if (column === "category_names") {
                 const categories = value.split(",").map(c => c.trim());
-                const a = columnElement.find("a");
+                const a = postCard.find('[data-filter-key="category"]');
                 value = [];
 
-                for (const category of categories) {
-                    a.attr("data-filter-value", category);
-                    a.html(category);
-                    value.push(a.prop("outerHTML"));
+                for (const categoryName of categories) {
+                    let aHtml = a.prop("outerHTML");
+                    aHtml = aHtml.replaceAll(":category_name", categoryName);
+                    value.push(aHtml);
                 }
 
                 value = value.join(", ");
             }
 
-            columnElement.html(value);
+            if (column !== "category_names") {
+                postCardHtml = postCardHtml.replaceAll(`:${column}`, value);
+            } else {
+                const a = postCard.find('[data-filter-key="category"]');
+                postCardHtml = postCardHtml.replace(a.prop("outerHTML"), value);
+            }
         }
 
         postListElement.append(postCard);
+        postCard.prop("outerHTML", postCardHtml);
     }
 
     const noPostsMessage = $("#no-posts-message");

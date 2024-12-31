@@ -1,7 +1,12 @@
 <?php
-$is_template = !(bool)$id;
-$created_at = strtotime($created_at);
-$created_at = date("d/m/Y, H:i:s", $created_at);
+$is_template = !(bool)$id || str_contains($id, ":");
+$date_format = "d/m/Y, H:i:s";
+
+if (date_is_valid($created_at, $date_format)) {
+    $created_at = strtotime($created_at);
+    $created_at = date($date_format, $created_at);
+}
+
 $post_categories = explode(",", $category_names);
 $total_categories = count($post_categories);
 $last_category_index = $total_categories - 1;
@@ -14,17 +19,13 @@ $last_category_index = $total_categories - 1;
     <article class="PostCard-container">
         <header class="PostCard-header">
             <h2 class="PostCard-title title">
-                <a href="<?= BASE_URI ?>/posts/<?= $slug ?>" data-column="title">
+                <a href="<?= BASE_URI ?>/posts/<?= $slug ?>">
                     <?= $title ?>
                 </a>
             </h2>
             <div class="PostCard-subheader">
-                <span
-                    class="PostCard-createdAt"
-                    data-column="created_at"><?= $created_at ?></span>
-                <span
-                    class="PostCard-categories"
-                    data-column="category_names">
+                <span class="PostCard-createdAt"><?= $created_at ?></span>
+                <span class="PostCard-categories">
                     <?php foreach ($post_categories as $i => $category_name): ?>
                         <a
                             class="PostCard-category"
@@ -38,9 +39,7 @@ $last_category_index = $total_categories - 1;
                 </span>
             </div>
         </header>
-        <div
-            class="PostCard-text"
-            data-column="text">
+        <div class="PostCard-text">
             <?= $text ?>
         </div>
     </article>

@@ -49,12 +49,12 @@
             </li>
             <?php
             $this->view("home/post-card", [
-                "id"             => "",
-                "slug"           => "",
-                "title"          => "",
-                "text"           => "",
-                "created_at"     => "",
-                "category_names" => "",
+                "id"             => ":id",
+                "slug"           => ":slug",
+                "title"          => ":title",
+                "text"           => ":text",
+                "created_at"     => ":created_at",
+                "category_names" => ":category_name",
             ]);
             foreach ($recent_posts as $post):
                 $this->view("home/post-card", $post);
