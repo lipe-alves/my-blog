@@ -9,10 +9,10 @@ use App\Exceptions\ResourceNotFoundException;
 
 class Router
 {
-    /** @property array */
-    private $routes = [];
-    /** @property array */
-    private $handlers;
+    private const PATH_PARAM_PATTERN = "[a-zA-Z\d\-_]+"; 
+
+    private array $routes = [];
+    private array $handlers;
 
     public function addRoute(string $method, string $path_template, string $controller, array $middlewares = [])
     {
@@ -46,7 +46,6 @@ class Router
 
     public function dispatch(Request $request, Response $response)
     {
-
         try {
             extract($this->handlers);
 
@@ -202,7 +201,9 @@ class Router
 
     protected function convertPathTemplateToRegex(string $path_template)
     {
-        return "#^" . preg_replace("/:\w+/", "(\w+)", $path_template) . "$#";
+        $pattern = "#^" . preg_replace("/:\w+/", "(".self::PATH_PARAM_PATTERN.")", $path_template) . "$#";
+        $pattern = preg_replace("/\/$/", "/*", $pattern);
+        return $pattern;
     }
 
     protected function getRequestPath(string $request_uri)
@@ -234,7 +235,7 @@ class Router
         if (preg_match($pattern, $actual_path, $matches)) {
             array_shift($matches);
 
-            preg_match_all('/:(\w+)/', $path_template, $param_names);
+            preg_match_all("/:(".self::PATH_PARAM_PATTERN.")/", $path_template, $param_names);
             $param_names = $param_names[1];
 
             $params = array_combine($param_names, $matches);

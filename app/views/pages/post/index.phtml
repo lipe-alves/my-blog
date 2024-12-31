@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <?php
+    $this->component("meta-tags", [
+        "description" => $description,
+        "keywords"    => $keywords
+    ])
+    ?>
+    <title><?= $title ?></title>
+    <?php $this->component("dependencies") ?>
+    <?php $this->component("fonts") ?>
+</head>
+
+<body>
+    <?= json_encode($post) ?>
+</body>
+
+</html>

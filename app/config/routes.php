@@ -10,6 +10,7 @@ $router = new Router();
 $router->get("/", "\\App\\Controllers\\HomeController::index");
 
 // Rotas de Posts
+$router->get("/posts/:slug_or_id", "\\App\\Controllers\\PostsController::index");
 $router->get("/api/posts", "\\App\\Controllers\\PostsController::listPosts");
 
 // Rotas de Testes

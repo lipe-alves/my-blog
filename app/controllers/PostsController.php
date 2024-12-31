@@ -8,6 +8,7 @@ use App\Exceptions\InvalidParamException;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
+use App\Exceptions\ResourceNotFoundException;
 
 class PostsController extends Controller
 {
@@ -87,5 +88,46 @@ class PostsController extends Controller
         $response->setStatus(200)->setJson($result)->send();
     }
 
-    public function index() {}
+    public function index(Request $request)
+    {
+        $params = $request->getParams();
+        $slug_or_id = $params["slug_or_id"];
+        $is_id = is_numeric($slug_or_id);
+        $is_slug = is_string($slug_or_id);
+        $post = null;
+
+        $columns = [
+            "p.id",
+            "p.slug",
+            "p.title",
+            "p.text",
+            "p.created_at",
+            "category_names"
+        ];
+
+        if ($is_id) {
+            $id = (int)$slug_or_id;
+            $post = PostService::getPostById($id, $columns);
+        } else if ($is_slug) {
+            $slug = (string)$slug_or_id;
+            $post = PostService::getPostBySlug($slug, $columns);
+        }
+        
+        if (!$post || !$post["id"]) {
+            return $this->view("post-not-found", [
+                "title"       => "Teste",
+                "description" => "Teste",
+                "keywords"    => [],
+            ]);
+        }
+
+        $keywords = explode(",", $post["category_names"]);
+
+        $this->view("post", [
+            "title"       => $post["title"],
+            "description" => "Teste",
+            "keywords"    => $keywords,
+            "post"        => $post,
+        ]);
+    }
 }

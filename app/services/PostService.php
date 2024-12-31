@@ -122,6 +122,15 @@ class PostService
         return count($posts) === 0 ? null : $posts[0];
     }
 
+    public static function getPostBySlug(string $slug, array $columns = ["*"])
+    {
+        $posts = self::getPosts($columns, [
+            "post_slug" => $slug
+        ]);
+
+        return count($posts) === 0 ? null : $posts[0];
+    }
+
     public static function getRecentPosts(array $columns = ["*"], int $limit = 5)
     {
         $posts = self::getPosts($columns, [
