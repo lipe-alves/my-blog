@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <?php $this->component("navbar", ["active_page" => "home"]) ?>
+    <?php $this->component("navbar", ["current_path" => $current_path]) ?>
     <?php $this->component("header") ?>
     <main class="Main">
         <ul class="RecentPosts">
