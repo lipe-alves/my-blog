@@ -1,0 +1,20 @@
+<header class="Header">
+    <div class="Header-inner">
+        <h1 class="Header-title title is-3">
+            <a href="<?= BASE_URI ?>">
+                <?= APP_NAME ?>
+            </a>
+        </h1>
+        <p class="Header-subtitle subtitle">
+            Minha caixinha de pensamentos
+        </p>
+    </div>
+</header>
+<link
+    rel="stylesheet"
+    href="<?= BASE_URI ?>/app/views/components/header/styles.css?v=<?= time() ?>" />
+<style type="text/css">
+    .Header {
+        --header-background-image: url("<?= BASE_URI . "/public/images/header-plant.png" ?>");
+    }
+</style>

@@ -39,7 +39,6 @@ class HomeController extends Controller
             "keywords"          => [],
             "categories"        => $categories,
             "recent_posts"      => $recent_posts,
-            "header_image"      => BASE_URI . "/public/images/header-plant.png",
             "post_count"        => $post_count,
             "no_posts"          => $no_posts,
             "show_no_posts_msg" => $show_no_posts_msg,

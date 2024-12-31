@@ -15,18 +15,7 @@
 
 <body>
     <?php $this->component("navbar", ["active_page" => "home"]) ?>
-    <header class="Header">
-        <div class="Header-inner">
-            <h1 class="Header-title title is-3">
-                <a href="<?= BASE_URI ?>">
-                    <?= APP_NAME ?>
-                </a>
-            </h1>
-            <p class="Header-subtitle subtitle">
-                Minha caixinha de pensamentos
-            </p>
-        </div>
-    </header>
+    <?php $this->component("header") ?>
     <main class="Main">
         <ul class="RecentPosts">
             <li 
@@ -98,16 +87,13 @@
             </div>
         </aside>
     </main>
-    <?php
-    $this->component("back-to-top");
-    ?>
-    <link rel="stylesheet" href="app/views/pages/home/styles.css?v=<?= time() ?>" />
-    <style type="text/css">
-        .Header {
-            --header-background-image: url(<?= $header_image ?>);
-        }
-    </style>
-    <script type="text/javascript" src="app/views/pages/home/script.js?v=<?= time() ?>"></script>
+    <?php $this->component("back-to-top") ?>
+    <link 
+        rel="stylesheet" 
+        href="<?= BASE_URI ?>/app/views/pages/home/styles.css?v=<?= time() ?>" />
+    <script 
+        type="text/javascript" 
+        src="<?= BASE_URI ?>/app/views/pages/home/script.js?v=<?= time() ?>"></script>
 </body>
 
 </html>

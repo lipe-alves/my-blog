@@ -14,7 +14,9 @@
 </head>
 
 <body>
-    <?= json_encode($post) ?>
+    <?php $this->component("navbar", ["active_page" => "home"]) ?>
+    <?php $this->component("header") ?>
+    <?php $this->component("back-to-top") ?>
 </body>
 
 </html>
