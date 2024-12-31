@@ -27,6 +27,21 @@ function handleSearchOnEnter(evt) {
     onEnterPress(evt, handleSearch);
 }
 
+async function handleClearFilters() {
+    const { getQueryParams } = window.myBlog.functions;
+
+    const query = getQueryParams();
+
+    for (const key in query) {
+        query[key] = "";
+    }
+
+    setFilterParams(query);
+
+    updateFilterIndicators();
+    await filterPosts();
+}
+
 /**
  * @param {{
  *     category_id?: number;
@@ -98,6 +113,7 @@ function updateFilterIndicators() {
     }
 
     const filterTitle = $("#filter-title");
+    const textSpace = filterTitle.find("span");
     const noFilters = !Object.values(query).some(Boolean);
     filterTitle.attr("data-visible", String(!noFilters));
 
@@ -113,7 +129,7 @@ function updateFilterIndicators() {
 
     filterMsg += "...";
 
-    filterTitle.html(filterMsg);
+    textSpace.html(filterMsg);
 }
 
 function renderPosts(posts) {

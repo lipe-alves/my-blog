@@ -19,9 +19,11 @@
     <main class="Main">
         <ul class="RecentPosts">
             <li 
-                id="filter-title" 
+                id="filter-title"
                 class="subtitle is-5 is-italic" 
                 data-visible="<?= $show_filter_title ?>">
+                <span></span>
+                <a href="javascript:void(0)" onclick="handleClearFilters()">Limpar</a>
             </li>
             <?php $this->component("loader", ["id" => "postsLoader"]) ?>
             <li id="no-posts-message" class="NoPostFound" data-visible="<?= $show_no_posts_msg ?>">
