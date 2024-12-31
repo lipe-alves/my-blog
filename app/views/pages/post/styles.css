@@ -1,0 +1,30 @@
+.Post-listItem {
+    width: 100%;
+}
+
+.Post-listItem[data-template="true"] {
+    display: none;
+}
+
+.Post-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1em;
+    padding-bottom: 1.2em;
+    margin-bottom: 3.2em;
+    margin: 0;
+    flex: 2;
+}
+
+.Post-title {
+    margin-bottom: 0 !important;
+}
+
+.Post-createdAt::after {
+    content: "\2022";
+    margin-left: .4rem;
+    margin-right: .2re
+}

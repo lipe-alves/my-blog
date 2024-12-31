@@ -1,10 +1,9 @@
 <?php
 $is_template = !(bool)$id || str_contains($id, ":");
-$date_format = "d/m/Y, H:i:s";
-
-if (date_is_valid($created_at, $date_format)) {
+ 
+if (date_is_valid($created_at)) {
     $created_at = strtotime($created_at);
-    $created_at = date($date_format, $created_at);
+    $created_at = date(DEFAULT_DATE_FORMAT, $created_at);
 }
 
 $post_categories = explode(",", $category_names);

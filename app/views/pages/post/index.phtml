@@ -1,3 +1,12 @@
+<?php 
+if (date_is_valid($post["created_at"])) {
+    $post["created_at"] = strtotime($post["created_at"]);
+    $post["created_at"] = date(DEFAULT_DATE_FORMAT, $post["created_at"]);
+}
+$post["category_names"] = explode(",", $post["category_names"]);
+$total_categories = count($post["category_names"]);
+$last_category_index = $total_categories - 1;
+?>
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -17,6 +26,23 @@
     <?php $this->component("navbar", ["current_path" => $current_path]) ?>
     <?php $this->component("header") ?>
     <main class="Main">
+        <article class="Post-container">
+            <h2 class="Post-title title">
+                <?= $post["title"] ?>
+            </h2>
+            <div class="Post-subheader">
+                <span class="Post-createdAt"><?= $post["created_at"] ?></span>
+                <span class="Post-categories">
+                    <?php foreach ($post["category_names"] as $i => $category_name): ?>
+                        <a
+                            class="Post-category"
+                            href="<?= BASE_URI."/?category=$category_name" ?>">
+                            <?= $category_name ?>
+                        </a><?= $i !== $last_category_index ? ", " : "" ?>
+                    <?php endforeach; ?>
+                </span>
+            </div>
+        </article>
         <?php $this->component("filters", ["current_path" => $current_path]) ?>
     </main>
     <?php $this->component("back-to-top") ?>

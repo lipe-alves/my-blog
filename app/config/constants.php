@@ -19,3 +19,4 @@ define("OPERATORS",  [
 ]);
 define("DEFAULT_PROFILE_PICTURE", "public/images/profile/perfil-padrao.jpeg");
 define("API_URL", $api_url);
+define("DEFAULT_DATE_FORMAT", "d/m/Y, H:i:s");
