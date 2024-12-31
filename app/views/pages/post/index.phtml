@@ -16,7 +16,13 @@
 <body>
     <?php $this->component("navbar", ["active_page" => "home"]) ?>
     <?php $this->component("header") ?>
+    <main class="Main">
+        <?php $this->component("filters", ["current_path" => $current_path]) ?>
+    </main>
     <?php $this->component("back-to-top") ?>
+    <link 
+        rel="stylesheet" 
+        href="<?= BASE_URI ?>/app/views/pages/post/styles.css?v=<?= time() ?>" />
 </body>
 
 </html>

@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Services\CategoryService;
 use App\Services\PostService;
 use App\Core\Request;
 
@@ -12,11 +11,6 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $get = $request->getGet();
-
-        $categories = CategoryService::getAllCategories([
-            "c.*",
-            "post_count"
-        ]);
         $recent_posts = PostService::getRecentPosts([
             "p.id",
             "p.slug",
@@ -37,12 +31,12 @@ class HomeController extends Controller
             "title"             => APP_NAME,
             "description"       => "Teste",
             "keywords"          => [],
-            "categories"        => $categories,
             "recent_posts"      => $recent_posts,
             "post_count"        => $post_count,
             "no_posts"          => $no_posts,
             "show_no_posts_msg" => $show_no_posts_msg,
             "show_filter_title" => $show_filter_title,
+            "current_path"      => $request->getPath()
         ]);
     }
 }

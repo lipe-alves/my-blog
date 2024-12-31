@@ -50,50 +50,12 @@
             endforeach;
             ?>
         </ul>
-        <aside class="Filters">
-            <div class="Searchbar-container">
-                <label class="Searchbar-label">
-                    <span class="Searchbar-text">
-                        <input
-                            id="search-bar"
-                            class="Searchbar-input"
-                            type="text"
-                            placeholder="Pesquise aqui e aperte Enter..."
-                            onkeypress="handleSearchOnEnter(event)" />
-                    </span>
-                    <span class="Searchbar-icon" onclick="handleSearch(event)">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </span>
-                </label>
-            </div>
-            <div class="Categories-container">
-                <h3 class="Categories-title title">
-                    Categorias
-                </h3>
-                <ul class="Categories-list">
-                    <?php foreach ($categories as $category): ?>
-                        <li>
-                            <a
-                                href="javascript:void(0)"
-                                data-filter-key="category"
-                                data-filter-value="<?= $category["name"] ?>"
-                                onclick="handleApplyFilter(this)">
-                                <?= $category["name"] ?>
-                            </a>
-                            (<?= $category["post_count"] ?>)
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        </aside>
+        <?php $this->component("filters", ["current_path" => $current_path]) ?>
     </main>
     <?php $this->component("back-to-top") ?>
     <link 
         rel="stylesheet" 
         href="<?= BASE_URI ?>/app/views/pages/home/styles.css?v=<?= time() ?>" />
-    <script 
-        type="text/javascript" 
-        src="<?= BASE_URI ?>/app/views/pages/home/script.js?v=<?= time() ?>"></script>
 </body>
 
 </html>

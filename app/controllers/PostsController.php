@@ -124,10 +124,11 @@ class PostsController extends Controller
         $keywords = explode(",", $post["category_names"]);
 
         $this->view("post", [
-            "title"       => $post["title"],
-            "description" => "Teste",
-            "keywords"    => $keywords,
-            "post"        => $post,
+            "title"        => $post["title"],
+            "description"  => "Teste",
+            "keywords"     => $keywords,
+            "post"         => $post,
+            "current_path" => $request->getPath()
         ]);
     }
 }

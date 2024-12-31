@@ -1,0 +1,79 @@
+[data-filter-key="category"].active {
+    text-decoration: underline;
+}
+
+.Filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2em;
+    flex: 1;
+}
+
+.Searchbar-container {
+    width: 100%;
+}
+
+.Searchbar-label {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5em;
+    cursor: pointer;
+    background-color: var(--input-background-color);
+    padding: 0.8em 1.1em;
+    border-radius: 6px;
+}
+
+.Searchbar-text {
+    text-align: center;
+    align-content: center;
+    cursor: pointer;
+}
+
+.Searchbar-input {
+    font-family: var(--bulma-body-family);
+    align-items: center;
+    appearance: none;
+    display: inline-flex;
+    font-size: var(--bulma-control-size);
+    height: var(--bulma-control-height);
+    justify-content: flex-start;
+    line-height: var(--bulma-control-line-height);
+    transition-duration: var(--bulma-duration);
+    transition-property: background-color, border-color, box-shadow, color;
+    vertical-align: top;
+    position: relative;
+    width: 250px;
+    opacity: 1;
+    background-color: transparent;
+    padding: 0;
+    outline: none;
+    border: none;
+}
+
+.Searchbar-input:focus {
+    box-shadow: none;
+}
+
+.Searchbar-icon {
+    z-index: 1;
+}
+
+.Categories-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.Categories-title {
+    text-transform: uppercase;
+    font-family: "Open Sans", sans-serif;
+    letter-spacing: 0.2rem;
+    font-size: 0.9em;
+}
