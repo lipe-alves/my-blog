@@ -14,8 +14,8 @@ CREATE TABLE
 
 DELIMITER $$
 
-CREATE TRIGGER settings_after_update
-    AFTER UPDATE
+CREATE TRIGGER IF NOT EXISTS settings_after_update
+    BEFORE UPDATE
     ON Settings FOR EACH ROW
 BEGIN
     SET new.updated_at = CURRENT_TIMESTAMP;
@@ -38,8 +38,8 @@ CREATE TABLE
 
 DELIMITER $$
 
-CREATE TRIGGER post_after_update
-    AFTER UPDATE
+CREATE TRIGGER IF NOT EXISTS post_after_update
+    BEFORE UPDATE
     ON Post FOR EACH ROW
 BEGIN
     SET new.updated_at = CURRENT_TIMESTAMP;
