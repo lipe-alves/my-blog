@@ -2,6 +2,27 @@ CREATE DATABASE IF NOT EXISTS my_blog;
 
 USE my_blog;
 
+CREATE TABLE 
+    IF NOT EXISTS Settings (
+        id VARCHAR(255) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        description TINYTEXT NULL,
+        hint VARCHAR(255) NULL,
+        updated_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+        PRIMARY KEY (id)
+    ) DEFAULT CHARSET = utf8 DEFAULT COLLATE utf8_unicode_ci;
+
+DELIMITER $$
+
+CREATE TRIGGER settings_after_update
+    AFTER UPDATE
+    ON Settings FOR EACH ROW
+BEGIN
+    SET new.updated_at = CURRENT_TIMESTAMP;
+END$$    
+
+DELIMITER ;
+
 CREATE TABLE
     IF NOT EXISTS Post (
         id INT NOT NULL AUTO_INCREMENT,
@@ -9,10 +30,22 @@ CREATE TABLE
         title VARCHAR(60) NOT NULL,
         text TEXT NOT NULL,
         created_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+        updated_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
         deleted TINYINT (1) NOT NULL DEFAULT 0,
         deleted_at DATETIME NULL,
         PRIMARY KEY (id)
     ) DEFAULT CHARSET = utf8 DEFAULT COLLATE utf8_unicode_ci;
+
+DELIMITER $$
+
+CREATE TRIGGER post_after_update
+    AFTER UPDATE
+    ON Post FOR EACH ROW
+BEGIN
+    SET new.updated_at = CURRENT_TIMESTAMP;
+END$$    
+
+DELIMITER ;
 
 CREATE TABLE
     IF NOT EXISTS File (
@@ -75,6 +108,13 @@ CREATE TABLE
         FOREIGN KEY (post_id) REFERENCES Post (id),
         FOREIGN KEY (category_id) REFERENCES Category (id)
     ) DEFAULT CHARSET = utf8 DEFAULT COLLATE utf8_unicode_ci;
+
+INSERT IGNORE INTO Settings 
+    (id, title, description, hint)
+VALUES
+    ("blog_name", "Nome do blog", NULL, NULL),
+    ("blog_catchiline", "Subtítulo do blog", NULL, NULL),
+    ("about_me", "Texto Sobre Mim", NULL, NULL);
 
 INSERT IGNORE INTO Category
     (id, name)
