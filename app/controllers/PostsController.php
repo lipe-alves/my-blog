@@ -102,6 +102,7 @@ class PostsController extends Controller
             "p.title",
             "p.text",
             "p.created_at",
+            "p.updated_at",
             "category_names"
         ];
 

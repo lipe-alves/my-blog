@@ -3,7 +3,12 @@ $is_template = !(bool)$id || str_contains($id, ":");
  
 if (date_is_valid($created_at)) {
     $created_at = strtotime($created_at);
-    $created_at = date(DEFAULT_DATE_FORMAT, $created_at);
+    $created_at = date(DEFAULT_DISPLAY_DATETIME_FORMAT, $created_at);
+}
+
+if (date_is_valid($updated_at)) {
+    $updated_at = strtotime($updated_at);
+    $updated_at = date(DEFAULT_DISPLAY_DATETIME_FORMAT, $updated_at);
 }
 
 $post_categories = explode(",", $category_names);

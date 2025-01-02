@@ -17,6 +17,7 @@ class HomeController extends Controller
             "p.title",
             "p.text",
             "p.created_at",
+            "p.updated_at",
             "category_names"
         ]);
         $post_count = count($recent_posts);

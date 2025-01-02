@@ -1,8 +1,14 @@
 <?php 
 if (date_is_valid($post["created_at"])) {
     $post["created_at"] = strtotime($post["created_at"]);
-    $post["created_at"] = date(DEFAULT_DATE_FORMAT, $post["created_at"]);
+    $post["created_at"] = date(DEFAULT_DISPLAY_DATETIME_FORMAT, $post["created_at"]);
 }
+
+if (date_is_valid($post["updated_at"])) {
+    $post["updated_at"] = strtotime($post["updated_at"]);
+    $post["updated_at"] = date(DEFAULT_DISPLAY_DATETIME_FORMAT, $post["updated_at"]);
+}
+
 $post["category_names"] = explode(",", $post["category_names"]);
 $total_categories = count($post["category_names"]);
 $last_category_index = $total_categories - 1;
