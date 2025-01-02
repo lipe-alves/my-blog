@@ -6,7 +6,6 @@ $server_name = $_SERVER["SERVER_NAME"];
 $is_https = !empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off";
 $api_url = ($is_https ? "https": "http")."://$server_name$base_uri/api";
 
-define("APP_NAME", "Pensamentos de Escrivaninha");
 define("ROOT_PATH", dirname(__DIR__, 2));
 define("BASE_URI", $base_uri);
 define("OPERATORS",  [

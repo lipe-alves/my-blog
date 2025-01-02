@@ -28,9 +28,13 @@ class HomeController extends Controller
             (array_key_exists("category", $get) && (bool)$get["category"])
         );
 
+        $session = $request->getSession();
+        $settings = $session["settings"];
+        extract($settings);
+
         $this->view("home", [
-            "title"             => APP_NAME,
-            "description"       => "Teste",
+            "title"             => $blog_name,
+            "description"       => $blog_catchline,
             "keywords"          => [],
             "recent_posts"      => $recent_posts,
             "post_count"        => $post_count,

@@ -1,12 +1,17 @@
+<?php 
+$session = $this->request->getSession();
+$settings = $session["settings"];
+extract($settings);
+?>
 <header class="Header">
     <div class="Header-inner">
         <h1 class="Header-title title is-3">
             <a href="<?= BASE_URI ?>">
-                <?= APP_NAME ?>
+                <?= $blog_name ?>
             </a>
         </h1>
         <p class="Header-subtitle subtitle">
-            Minha caixinha de pensamentos
+            <?= $blog_catchline ?>
         </p>
     </div>
 </header>

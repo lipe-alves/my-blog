@@ -25,7 +25,7 @@ class DatabaseConnection
         $this->disconnect();
     }
 
-    public function select(string $sql, array|null $data = null): array
+    public function execute(string $sql, array $data = null): bool
     {
         $this->stmt = $this->conn->prepare($sql);
 
@@ -37,15 +37,31 @@ class DatabaseConnection
             }
         }
 
-        $this->stmt->execute();
-
-        return $this->stmt->fetchAll();
+        return $this->stmt->execute();
     }
 
-    public function execute(string $sql, array $data = null): bool
+    public function select(string $sql, array|null $data = null, int $mode = \PDO::FETCH_DEFAULT): array
     {
-        $this->stmt = $this->conn->prepare($sql);
-        return $this->stmt->execute($data);
+        $this->execute($sql, $data);
+        return $this->stmt->fetchAll($mode);
+    }
+
+    public function selectAll(string $sql, array|null $data = null, int $mode = \PDO::FETCH_DEFAULT): array
+    {
+        $this->execute($sql, $data);
+        return $this->stmt->fetchAll($mode);
+    }
+
+    public function selectOne(string $sql, array|null $data = null, int $mode = \PDO::FETCH_DEFAULT): array
+    {
+        $this->execute($sql, $data);
+        return $this->stmt->fetch($mode);
+    }
+
+    public function update(string $sql, array|null $data = null): bool
+    {
+        if (!preg_match("/^UPDATE/i", $sql)) return false;
+        return $this->execute($sql, $data);
     }
 
     public function connect(): self
