@@ -108,6 +108,21 @@ class Request
         return $this->session;
     }
 
+    public function clearSession() 
+    {
+        session_unset();
+    }
+
+    public function destroySession()
+    {
+        session_destroy();
+    }
+
+    public function regenareSessionId($delete_old_session = false)
+    {
+        session_regenerate_id($delete_old_session);
+    }  
+
     public function setSession(string $key, mixed $value)
     {
         $_SESSION[$key] = $value;
