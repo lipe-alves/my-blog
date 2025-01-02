@@ -32,7 +32,7 @@ $last_category_index = $total_categories - 1;
     <?php $this->component("navbar") ?>
     <?php $this->component("header") ?>
     <main class="Main">
-        <article class="Post-container">
+        <div class="Post-container">
             <h2 class="Post-title title">
                 <?= $post["title"] ?>
             </h2>
@@ -48,10 +48,11 @@ $last_category_index = $total_categories - 1;
                     <?php endforeach; ?>
                 </span>
             </div>
-            <div class="Post-text">
-                
-            </div>
-        </article>
+            <article class="Post-text">
+                <?= $post["text"] ?>
+            </article>
+            <hr class="Post-separator">
+        </div>
         <?php $this->component("filters") ?>
     </main>
     <?php $this->component("back-to-top") ?>
