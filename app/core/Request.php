@@ -104,10 +104,11 @@ class Request
 
     public function getSession()
     {
+        $this->session = $_SESSION;
         return $this->session;
     }
 
-    public function setSession(string $key, string $value)
+    public function setSession(string $key, mixed $value)
     {
         $_SESSION[$key] = $value;
         $this->session = $_SESSION;

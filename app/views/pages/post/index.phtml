@@ -29,7 +29,7 @@ $last_category_index = $total_categories - 1;
 </head>
 
 <body>
-    <?php $this->component("navbar", ["current_path" => $current_path]) ?>
+    <?php $this->component("navbar") ?>
     <?php $this->component("header") ?>
     <main class="Main">
         <article class="Post-container">
@@ -49,7 +49,7 @@ $last_category_index = $total_categories - 1;
                 </span>
             </div>
         </article>
-        <?php $this->component("filters", ["current_path" => $current_path]) ?>
+        <?php $this->component("filters") ?>
     </main>
     <?php $this->component("back-to-top") ?>
     <link 

@@ -36,8 +36,7 @@ class HomeController extends Controller
             "post_count"        => $post_count,
             "no_posts"          => $no_posts,
             "show_no_posts_msg" => $show_no_posts_msg,
-            "show_filter_title" => $show_filter_title,
-            "current_path"      => $request->getPath()
+            "show_filter_title" => $show_filter_title
         ]);
     }
 }

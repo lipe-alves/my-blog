@@ -128,8 +128,7 @@ class PostsController extends Controller
             "title"        => $post["title"],
             "description"  => "Teste",
             "keywords"     => $keywords,
-            "post"         => $post,
-            "current_path" => $request->getPath()
+            "post"         => $post
         ]);
     }
 }

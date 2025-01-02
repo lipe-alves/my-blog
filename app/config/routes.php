@@ -18,6 +18,7 @@ $router->get("/api/ping", "\\App\\Controllers\\TestsController::ping");
 
 $router->setHandlers([
     "not_found_page" => "\\App\\Controllers\\NotFoundController::index",
+    "global"         => "\\App\\Middlewares\\SessionMiddleware::execute",
     "error"          => "\\App\\Middlewares\\ErrorMiddleware::execute"
 ]);
 

@@ -2,8 +2,20 @@
 
 namespace App\Core;
 
+use App\Core\Request;
+use App\Core\Response;
+
 class Controller
 {
+    public Request $request;
+    public Response $response;
+
+    public function __construct(Request $request, Response $response)
+    {
+        $this->request = $request;
+        $this->response = $response;
+    }
+
     private function showHtml(string $path, array $data = [])
     {
         extract($data);

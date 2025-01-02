@@ -41,6 +41,7 @@ class Router
             "route_not_found" => isset($route_not_found) ? $route_not_found : null,
             "page_not_found"  => isset($page_not_found)  ? $page_not_found  : null,
             "error"           => isset($error)           ? $error           : null,
+            "global"          => isset($global)  ? $global  : null,
         ];
     }
 
@@ -73,6 +74,10 @@ class Router
                 }
 
                 if ($matched) {
+                    if (isset($global)) {
+                        $this->executeRouteHandler($global, $request, $response);
+                    }
+
                     foreach ($middlewares as $middleware) {
                         $this->executeRouteHandler($middleware, $request, $response);
                     }
