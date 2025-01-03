@@ -3,12 +3,14 @@
 namespace App\Controllers;
 
 use App\Services\PostService;
+use App\Services\CommentsService;
+
 use App\Exceptions\MissingParamException;
 use App\Exceptions\InvalidParamException;
+
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
-use App\Exceptions\ResourceNotFoundException;
 
 class PostsController extends Controller
 {
@@ -122,13 +124,16 @@ class PostsController extends Controller
             ]);
         }
 
+        $comments = CommentsService::getPostComments($post["id"]);
+
         $keywords = explode(",", $post["category_names"]);
 
         $this->view("post", [
             "title"        => $post["title"],
             "description"  => "Teste",
             "keywords"     => $keywords,
-            "post"         => $post
+            "post"         => $post,
+            "comments"     => $comments
         ]);
     }
 }
