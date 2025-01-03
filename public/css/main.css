@@ -55,3 +55,24 @@ img {
     background-color: #fff;
     padding: 1em;
 }
+
+.input, .textarea {
+    font-family: var(--bulma-body-family);
+    align-items: center;
+    appearance: none;
+    display: inline-flex;
+    font-size: var(--bulma-control-size);
+    height: var(--bulma-control-height);
+    justify-content: flex-start;
+    line-height: var(--bulma-control-line-height);
+    transition-duration: var(--bulma-duration);
+    transition-property: background-color, border-color, box-shadow, color;
+    vertical-align: top;
+    position: relative;
+    opacity: 1;
+    background-color: var(--input-background-color);
+    outline: none;
+    border: none;
+    padding: 0.8em 1.1em;
+    border-radius: 6px;
+}
