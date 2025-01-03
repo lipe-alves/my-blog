@@ -11,8 +11,9 @@ try {
     function start_database()
     {
         $sql = file_get_contents("./app/config/start-database.sql");
+        $sql = preg_replace("/[\n\r]+/", "", $sql);
         $conn = new PDO(
-            "mysql:host=$_ENV[DB_HOST]",
+            "mysql:host=$_ENV[DB_HOST];port=$_ENV[DB_PORT];dbname=$_ENV[DB_NAME]",
             $_ENV["DB_USER"],
             $_ENV["DB_PASSWORD"]
         );
