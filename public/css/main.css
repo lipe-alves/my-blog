@@ -48,7 +48,7 @@ img {
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-    gap: 1em;
+    gap: 2em;
     max-width: var(--content-max-width);
     min-width: var(--content-min-width);
     margin: 0 auto;
