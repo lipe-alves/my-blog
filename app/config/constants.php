@@ -3,6 +3,10 @@
 $script_name = dirname($_SERVER["SCRIPT_NAME"]);
 $base_uri = str_replace("/index.php", "", $script_name);
 $server_name = $_SERVER["SERVER_NAME"];
+$server_port = $_SERVER["SERVER_PORT"];
+if ($server_port) {
+    $server_name .= ":$server_port";
+}
 $is_https = !empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off";
 $api_url = ($is_https ? "https": "http")."://$server_name$base_uri/api";
 
