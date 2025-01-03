@@ -42,7 +42,6 @@ CREATE TABLE IF NOT EXISTS Reader (
     first_name VARCHAR(20) NOT NULL,
     last_name VARCHAR(20) NOT NULL,
     photo VARCHAR(500) NOT NULL,
-    password VARCHAR(255) NOT NULL,
     registered_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     PRIMARY KEY (id)
 ) DEFAULT CHARSET = utf8 DEFAULT COLLATE utf8_unicode_ci;

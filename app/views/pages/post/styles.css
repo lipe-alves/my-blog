@@ -45,6 +45,7 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 1em;
+    width: 100%;
 }
 
 .AddComment {
@@ -53,6 +54,7 @@
     align-items: flex-start;
     justify-content: flex-start;
     gap: 1em;
+    width: 100%;
 }
 
 .AddComment-header {
@@ -61,4 +63,13 @@
     align-items: flex-start;
     justify-content: center;
     gap: 1em;
+}
+
+.AddComment-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1em;
+    width: 100%;
 }
