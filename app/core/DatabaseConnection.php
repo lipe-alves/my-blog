@@ -31,6 +31,8 @@ class DatabaseConnection
 
         if ($data !== null) {
             foreach ($data as $key => $value) {
+                if (!str_contains($sql, ":$key")) continue;
+
                 $data_type = gettype($value);
                 $bind_type = self::DATA_TYPES_X_BIND_TYPES[$data_type];
                 $this->stmt->bindValue($key, $value, $bind_type);
