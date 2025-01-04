@@ -9,8 +9,6 @@ class PostService extends DatabaseService
 {
     public static function getPosts(array $columns, array $data)
     {
-        $conn = DatabaseConnection::create();
-
         $fetch_categories = false;
 
         foreach ($columns as $i => $column) {
