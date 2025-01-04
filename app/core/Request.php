@@ -108,7 +108,7 @@ class Request
         return $this->session;
     }
 
-    public function clearSession() 
+    public function clearSession()
     {
         session_unset();
     }
@@ -121,7 +121,12 @@ class Request
     public function regenareSessionId($delete_old_session = false)
     {
         session_regenerate_id($delete_old_session);
-    }  
+    }
+
+    public function startSession(array $options = [])
+    {
+        session_start($options);
+    }
 
     public function setSession(string $key, mixed $value)
     {

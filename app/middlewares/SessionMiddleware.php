@@ -18,11 +18,11 @@ class SessionMiddleware extends Middleware
         if (isset($session["last_activity"]) && (time() - $session["last_activity"] > SESSION_TIMEOUT)) {
             $request->clearSession();
             $request->destroySession();
-            $request->regenareSessionId(true);
+            $request->startSession();
         }
 
         $request->setSession("last_activity", time());
-        
+
         $categories_loaded = array_key_exists("categories", $session) && count($session["categories"]) > 0;
         $settings_loaded = array_key_exists("settings", $session);
 
