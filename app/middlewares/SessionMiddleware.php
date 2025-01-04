@@ -23,6 +23,8 @@ class SessionMiddleware extends Middleware
 
         $request->setSession("last_activity", time());
 
+        $session = $request->getSession();
+
         $categories_loaded = array_key_exists("categories", $session) && count($session["categories"]) > 0;
         $settings_loaded = array_key_exists("settings", $session);
 
