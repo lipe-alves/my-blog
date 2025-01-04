@@ -4,22 +4,14 @@ require_once "./vendor/autoload.php";
 
 use Dotenv\Dotenv;
 
+if (!file_exists("./.env")) {
+    create_default_env_file();
+}
+
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 try {
-    function start_database()
-    {
-        $sql = file_get_contents("./app/config/start-database.sql");
-        $sql = preg_replace("/[\n\r]+/", "", $sql);
-        $conn = new PDO(
-            "mysql:host=$_ENV[DB_HOST];port=$_ENV[DB_PORT];dbname=$_ENV[DB_NAME]",
-            $_ENV["DB_USER"],
-            $_ENV["DB_PASSWORD"]
-        );
-        $conn->exec($sql);
-    }
-
     start_database();
 
     require_once "./app/config/constants.php";
@@ -38,4 +30,25 @@ try {
         "message" => $message,
         "data"    => []
     ]);
+}
+
+function create_default_env_file()
+{
+    file_put_contents(".env", "DB_PORT=3306
+DB_HOST=127.0.0.1
+DB_NAME=my_blog
+DB_USER=root
+DB_PASSWORD=");
+}
+
+function start_database()
+{
+    $sql = file_get_contents("./app/config/start-database.sql");
+    $sql = preg_replace("/[\n\r]+/", "", $sql);
+    $conn = new PDO(
+        "mysql:host=$_ENV[DB_HOST];port=$_ENV[DB_PORT];dbname=$_ENV[DB_NAME]",
+        $_ENV["DB_USER"],
+        $_ENV["DB_PASSWORD"]
+    );
+    $conn->exec($sql);
 }
