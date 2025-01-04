@@ -18,12 +18,30 @@
         posts: {
             async search(params) {
                 const queryString = createQueryString(params);
-                const resp = await apiEndpoint.request(
-                    `/posts/${queryString}`,
-                    {
-                        method: "GET"
-                    }
-                );
+                const resp = await apiEndpoint.get(`/posts/${queryString}`);
+                return resp.json();
+            },
+        },
+
+        comments: {
+            async search(params) {
+                const queryString = createQueryString(params);
+                const resp = await apiEndpoint.get(`/comments/${queryString}`);
+                return resp.json();
+            },
+
+            /**
+             * @param {{
+             *     post_id: string;
+             *     text: string;
+             *     reply_comment_id?: string;
+             *     reader_fullname?: string;
+             *     reader_photo?: string;
+             *     reader_email: string;
+             * }} params 
+             */
+            async send(params) {
+                const resp = await apiEndpoint.post("/comments/", params);
                 return resp.json();
             }
         }

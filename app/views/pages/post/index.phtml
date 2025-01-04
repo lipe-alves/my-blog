@@ -64,6 +64,8 @@ $total_comments = count($comments);
                     ?>
                 </h3>
 
+                <?php $this->component("loader", ["id" => "commentsLoader"]) ?>
+
                 <div class="AddComment">
                     <header class="AddComment-header">
                         <h3 class="title is-5">
@@ -73,28 +75,30 @@ $total_comments = count($comments);
                             Seu endereço de email não será publicado
                         </p>
                     </header>
-                    <form class="AddComment-form">
+                    <form class="AddComment-form" onsubmit="handleSendComment(this, event)">
                         <input
+                            type="hidden"
+                            name="post_id"
+                            value="<?= $post["id"] ?>" />
+                        <input
+                            required
                             class="input is-normal"
                             type="text"
-                            placeholder="Normal input"
-                        />
+                            name="fullname"
+                            placeholder="Seu nome" />
                         <input
+                            required
                             class="input is-normal"
-                            type="text"
-                            placeholder="Normal input"
-                        />
-                        <input
-                            class="input is-normal"
-                            type="text"
-                            placeholder="Normal input"
-                        />
+                            type="email"
+                            name="email"
+                            placeholder="Seu email" />
                         <textarea
+                            required
                             class="textarea"
-                            placeholder="10 lines of textarea"
-                            rows="10"
-                        ></textarea>
-                        <button type="submit">
+                            name="comment"
+                            placeholder="Seu comentário..."
+                            rows="10"></textarea>
+                        <button class="button is-success is-fullwidth" type="submit">
                             Enviar comentário
                         </button>
                     </form>
@@ -107,6 +111,9 @@ $total_comments = count($comments);
     <link
         rel="stylesheet"
         href="<?= BASE_URI ?>/app/views/pages/post/styles.css?v=<?= time() ?>" />
+    <script
+        type="text/javascript"
+        src="<?= BASE_URI ?>/app/views/pages/post/script.js?v=<?= time() ?>"></script>
 </body>
 
 </html>

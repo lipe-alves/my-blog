@@ -26,6 +26,8 @@
                 url += path;
 
                 const resp = await fetch(url, config);
+                if (!resp.ok) throw await resp.json();
+
                 return resp;
             },
 
@@ -101,7 +103,7 @@
     /** @param {{ [key: string]: any }} params */
     function setQueryParams(params) {
         const url = new URL(window.location.href);
-        
+
         for (const key of url.searchParams.keys()) {
             url.searchParams.delete(key);
         }

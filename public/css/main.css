@@ -73,3 +73,7 @@ img {
     padding: 1.8em 1.5em;
     border-radius: 6px;
 }
+
+.button.is-success {
+    color: #fff;
+}
