@@ -66,6 +66,32 @@ class DatabaseConnection
         return $this->execute($sql, $data);
     }
 
+    public function insert(string $sql, array|null $data = null): bool
+    {
+        if (!preg_match("/^INSERT/i", $sql)) return false;
+        return $this->execute($sql, $data);
+    }
+
+    public function getLastInsertedId(): string|false
+    {
+        return $this->conn->lastInsertId();
+    }
+
+    public function startTransaction(): bool 
+    {
+        return $this->conn->beginTransaction();
+    }
+
+    public function commit(): bool 
+    {
+        return $this->conn->commit();
+    }
+
+    public function rollback(): bool 
+    {
+        return $this->conn->rollback();
+    }
+
     public function connect(): self
     {
         $this->conn = new \PDO(

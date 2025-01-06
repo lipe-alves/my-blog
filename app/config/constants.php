@@ -8,12 +8,12 @@ if ($server_port) {
     $server_name .= ":$server_port";
 }
 $is_https = !empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off";
-$website_url = ($is_https ? "https": "http")."://$server_name$base_uri";
+$website_url = ($is_https ? "https" : "http") . "://$server_name$base_uri";
 $api_url = "$website_url/api";
 
 define("ROOT_PATH", dirname(__DIR__, 2));
 define("BASE_URI", $base_uri);
-define("DEFAULT_PROFILE_PICTURE", "$website_url/public/images/profile/perfil-padrao.jpeg");
+define("DEFAULT_PROFILE_PICTURE", "/public/images/profile/perfil-padrao.jpeg");
 define("WEBSITE_URL", $website_url);
 define("API_URL", $api_url);
 define("DEFAULT_DISPLAY_DATETIME_FORMAT", "d/m/Y, H:i:s");

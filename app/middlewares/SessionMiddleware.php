@@ -29,7 +29,9 @@ class SessionMiddleware extends Middleware
         $settings_loaded = array_key_exists("settings", $session);
 
         if (!$categories_loaded) {
-            $categories = CategoryService::getAllCategories([
+            $category_service = new CategoryService();
+
+            $categories = $category_service->getAllCategories([
                 "c.*",
                 "post_count"
             ]);

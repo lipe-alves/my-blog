@@ -4,7 +4,18 @@ namespace App\Core;
 
 class DatabaseService
 {
-    private static function getTableAlias(string $table_name)
+    protected DatabaseConnection $conn;
+
+    public function __construct(DatabaseConnection $conn = null)
+    {
+        if (!$conn) {
+            $conn = DatabaseConnection::create();
+        }
+
+        $this->conn = $conn;
+    }
+
+    private function getTableAlias(string $table_name)
     {
         $table_x_alias = [
             "Post"            => "p",
@@ -21,12 +32,12 @@ class DatabaseService
         return $table_x_alias[$table_name];
     }
 
-    private static function convertKeyValuePairToWhereCondition(string $key, mixed $value, array &$wheres)
+    private function convertKeyValuePairToWhereCondition(string $key, mixed $value, array &$wheres)
     {
         $alias_x_column = [
             "post"     => "p",
             "category" => "c",
-            "comment"  => "c",
+            "comment"  => "comm",
             "reader"   => "r",
         ];
 
@@ -66,13 +77,11 @@ class DatabaseService
         }
     }
 
-    public static function get(array $columns, array $data): array
+    public function select(array $columns, array $data): array
     {
-        $conn = DatabaseConnection::create();
-
         $columns = implode(", ", $columns);
         $table_name = $data["table"];
-        $table_alias = self::getTableAlias($table_name);
+        $table_alias = $this->getTableAlias($table_name);
 
         $sql = "SELECT $columns FROM $table_name $table_alias";
 
@@ -82,23 +91,23 @@ class DatabaseService
             foreach ($joins as $join) {
                 extract($join);
 
-                $table_alias = self::getTableAlias($table_name);
-                $conditions = [];
+                $table_alias = $this->getTableAlias($table_name);
+                $on = [];
 
-                foreach ($on as $key => $value) {
-                    self::convertKeyValuePairToWhereCondition($key, $value, $conditions);
+                foreach ($conditions as $key => $value) {
+                    $this->convertKeyValuePairToWhereCondition($key, $value, $on);
                 }
 
-                $conditions = implode(" ", $conditions);
+                $on = implode(" ", $conditions);
 
-                $sql .= " $type JOIN $table_name $table_alias ON 1 = 1 AND $conditions";
+                $sql .= " $type JOIN $table_name $table_alias ON 1 = 1 AND $on";
             }
         }
 
         $wheres = ["1 = 1"];
 
         foreach ($data as $key => $value) {
-            self::convertKeyValuePairToWhereCondition($key, $value, $wheres);
+            $this->convertKeyValuePairToWhereCondition($key, $value, $wheres);
         }
 
         $wheres = implode(" ", $wheres);
@@ -125,7 +134,64 @@ class DatabaseService
             $sql .= " LIMIT :limit";
         }
 
-        $results = $conn->select($sql, $data);
+        if ($data["table"] === "Comment") {
+            file_put_contents("sql.sql", $sql);
+        }
+
+        $results = $this->conn->select($sql, $data);
         return $results;
+    }
+
+    public function insert(string $table, array $rows): string|false
+    {
+        $columns = [];
+        $values = [];
+        $data = [];
+
+        foreach ($rows as $row) {
+            $keys = array_keys($row);
+            $columns = array_merge($columns, $keys);
+            $columns = array_unique($columns);
+        }
+
+        foreach ($rows as $i => $row) {
+            $row_values = [];
+
+            foreach ($columns as $column) {
+                $row_value = $row[$column];
+                $data["{$column}$i"] = $row_value;
+                $row_values[] = $row_value;
+            }
+
+            $row_values = implode(", ", $row_values);
+            $values[] = $row_values;
+        }
+
+        $columns = implode(", ", $columns);
+        $values = array_map(function ($row) {
+            return "($row)";
+        }, $values);
+        $values = implode(", ", $values);
+
+        $success = $this->conn->insert("INSERT INTO $table ($columns) VALUES $values", $data);
+        if (!$success) return false;
+
+        $last_id = $this->conn->getLastInsertedId();
+        return $last_id;
+    }
+
+    public function startTransaction()
+    {
+        return $this->conn->startTransaction();
+    }
+
+    public function commit()
+    {
+        return $this->conn->commit();
+    }
+
+    public function rollback()
+    {
+        return $this->conn->rollBack();
     }
 }

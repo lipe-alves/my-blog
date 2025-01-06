@@ -73,14 +73,15 @@ class PostsController extends Controller
             $filter_params["||post_text"] = $search_text_expression;
         }
 
-        $posts = PostService::getPosts($columns, $filter_params);
+        $post_service = new PostService();
+        $posts = $post_service->getPosts($columns, $filter_params);
 
         $total_posts = count($posts);
-		$next_page = $total_posts > $size;
+        $next_page = $total_posts > $size;
 
-		if ($next_page) {
-			unset($posts[$total_posts - 1]);
-		}
+        if ($next_page) {
+            unset($posts[$total_posts - 1]);
+        }
 
         $result = [
             "list"      => $posts,
@@ -108,14 +109,17 @@ class PostsController extends Controller
             "category_names"
         ];
 
+        $post_service = new PostService();
+        $comments_service = new CommentsService();
+
         if ($is_id) {
             $id = (int)$slug_or_id;
-            $post = PostService::getPostById($id, $columns);
+            $post = $post_service->getPostById($id, $columns);
         } else if ($is_slug) {
             $slug = (string)$slug_or_id;
-            $post = PostService::getPostBySlug($slug, $columns);
+            $post = $post_service->getPostBySlug($slug, $columns);
         }
-        
+
         if (!$post || !$post["id"]) {
             return $this->view("post-not-found", [
                 "title"       => "Teste",
@@ -124,7 +128,7 @@ class PostsController extends Controller
             ]);
         }
 
-        $comments = CommentsService::getPostComments($post["id"]);
+        $comments = $comments_service->getPostComments($post["id"]);
 
         $keywords = explode(",", $post["category_names"]);
 

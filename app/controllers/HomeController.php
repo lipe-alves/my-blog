@@ -11,7 +11,10 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $get = $request->getGet();
-        $recent_posts = PostService::getRecentPosts([
+
+        $post_service = new PostService();
+
+        $recent_posts = $post_service->getRecentPosts([
             "p.id",
             "p.slug",
             "p.title",

@@ -7,7 +7,7 @@ use App\Core\DatabaseService;
 
 class PostService extends DatabaseService
 {
-    public static function getPosts(array $columns, array $data)
+    public function getPosts(array $columns, array $data)
     {
         $fetch_categories = false;
 
@@ -56,32 +56,32 @@ class PostService extends DatabaseService
 
         $data["table"] = "Post";
 
-        $posts = self::get($columns, $data);
+        $posts = $this->select($columns, $data);
 
         return $posts;
     }
 
-    public static function getPostById(string $id, array $columns = ["*"])
+    public function getPostById(string $id, array $columns = ["*"])
     {
-        $posts = self::getPosts($columns, [
+        $posts = $this->getPosts($columns, [
             "post_id" => $id
         ]);
 
         return count($posts) === 0 ? null : $posts[0];
     }
 
-    public static function getPostBySlug(string $slug, array $columns = ["*"])
+    public function getPostBySlug(string $slug, array $columns = ["*"])
     {
-        $posts = self::getPosts($columns, [
+        $posts = $this->getPosts($columns, [
             "post_slug" => $slug
         ]);
 
         return count($posts) === 0 ? null : $posts[0];
     }
 
-    public static function getRecentPosts(array $columns = ["*"], int $limit = 5)
+    public function getRecentPosts(array $columns = ["*"], int $limit = 5)
     {
-        $posts = self::getPosts($columns, [
+        $posts = $this->getPosts($columns, [
             "post_deleted" => "0",
             "order"        => [
                 "column"    => "p.created_at",
@@ -93,7 +93,7 @@ class PostService extends DatabaseService
         return $posts;
     }
 
-    public static function getPostCategories(string $post_id, array $columns = ["c.*"], int $limit = null)
+    public function getPostCategories(string $post_id, array $columns = ["c.*"], int $limit = null)
     {
         $conn = DatabaseConnection::create();
         $columns = implode(", ", $columns);
