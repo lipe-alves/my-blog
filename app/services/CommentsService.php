@@ -36,7 +36,7 @@ class CommentsService extends DatabaseService
                 "type"       => "LEFT",
                 "table"      => "Reader",
                 "conditions" => [
-                    "comm.reader_id" => "r.id"
+                    "comment_reader_id" => "reader_id"
                 ]
             ];
         }
@@ -50,7 +50,7 @@ class CommentsService extends DatabaseService
                 "type"       => "LEFT",
                 "table"      => "Post",
                 "conditions" => [
-                    "comm.post_id" => "p.id"
+                    "post_id" => "comment_post_id"
                 ]
             ];
         }

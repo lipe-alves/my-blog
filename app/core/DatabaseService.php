@@ -4,6 +4,24 @@ namespace App\Core;
 
 class DatabaseService
 {
+    protected const ALIAS_X_CONNECTOR = [
+        "&&" => "AND",
+        "||" => "OR",
+    ];
+    protected const ALIAS_X_TABLE_ALIAS = [
+        "post"     => "p",
+        "category" => "c",
+        "comment"  => "comm",
+        "reader"   => "r",
+    ];
+    protected const TABLE_X_ALIAS = [
+        "Post"            => "p",
+        "Comment"         => "comm",
+        "Category"        => "c",
+        "Post_x_Category" => "pc",
+        "Reader"          => "r",
+    ];
+
     protected DatabaseConnection $conn;
 
     public function __construct(DatabaseConnection $conn = null)
@@ -17,64 +35,79 @@ class DatabaseService
 
     private function getTableAlias(string $table_name)
     {
-        $table_x_alias = [
-            "Post"            => "p",
-            "Comment"         => "comm",
-            "Category"        => "c",
-            "Post_x_Category" => "pc",
-            "Reader"          => "r",
-        ];
-
-        if (!array_key_exists($table_name, $table_x_alias)) {
+        if (!array_key_exists($table_name, self::TABLE_X_ALIAS)) {
             return strtolower(substr($table_name, 0, 1));
         }
 
-        return $table_x_alias[$table_name];
+        return self::TABLE_X_ALIAS[$table_name];
     }
 
-    private function convertKeyValuePairToWhereCondition(string $key, mixed $value, array &$wheres)
+    private function convertArrayToWhereCondition(array &$data): string
     {
-        $alias_x_column = [
-            "post"     => "p",
-            "category" => "c",
-            "comment"  => "comm",
-            "reader"   => "r",
-        ];
+        $wheres = [];
 
-        $logical_operator = "AND";
-        $new_key = $key;
+        $i = 0;
+        foreach ($data as $key => $value) {
+            $logical_connector = "AND";
 
-        if (starts_with($key, "&&")) {
-            $new_key = str_replace("&&", "", $key);
-            $logical_operator = "AND";
-        }
-
-        if (starts_with($key, "||")) {
-            $new_key = str_replace("||", "", $key);
-            $logical_operator = "OR";
-        }
-
-        foreach ($alias_x_column as $alias => $column) {
-            if (!str_contains($new_key, "{$alias}_")) continue;
-
-            $column = str_replace("{$alias}_", "$column.", $new_key);
-            $operator = "=";
-
-            if (str_contains($value, ",")) {
-                $operator = "IN";
-            }
-            if (str_contains($value, "*")) {
-                $operator = "LIKE";
-                $value = str_replace("*", "%", $value);
-            }
-            if (starts_with($value, "!")) {
-                $operator = "<>";
-                $value = str_replace("!", "", $value);
+            foreach (self::ALIAS_X_CONNECTOR as $alias => $connector) {
+                if (!starts_with($key, "{$alias}_")) continue;
+                $key = str_replace($alias, "", $key);
+                $logical_connector = $connector;
             }
 
+            if ($i === 0) {
+                $logical_connector = "";
+            }
 
-            $wheres[] = "$logical_operator $column $operator :$new_key";
+            $value_is_column = false;
+            $bind = true;
+
+            foreach (self::ALIAS_X_TABLE_ALIAS as $alias => $table_alias) {
+                if (
+                    !is_string($value) || !starts_with($value, "{$alias}_")
+                ) continue;
+
+                $value_is_column = true;
+                $bind = false;
+                $value = str_replace("{$alias}_", "$table_alias.", $value);
+            }
+
+            foreach (self::ALIAS_X_TABLE_ALIAS as $alias => $table_alias) {
+                if (!starts_with($key, "{$alias}_")) continue;
+
+                $column = str_replace("{$alias}_", "$table_alias.", $key);
+                $logical_operator = "=";
+
+                if (!$value_is_column) {
+                    if (str_contains($value, ",")) {
+                        $logical_operator = "IN";
+                        $value = "($value)";
+                        $bind = false;
+                    }
+                    if (str_contains($value, "*")) {
+                        $logical_operator = "LIKE";
+                        $value = str_replace("*", "%", $value);
+                    }
+                    if (starts_with($value, "!")) {
+                        $logical_operator = "<>";
+                        $value = str_replace("!", "", $value);
+                    }
+
+                    $data[$key] = $value;
+                }
+
+                $condition = "$logical_connector $column $logical_operator ";
+                $condition .= $bind ? ":$key" : $value;
+                $wheres[] = $condition;
+
+                $i++;
+            }
         }
+
+        $wheres = implode(" ", $wheres);
+
+        return $wheres;
     }
 
     public function select(array $columns, array $data): array
@@ -88,29 +121,14 @@ class DatabaseService
         if (array_key_exists("join", $data)) {
             $joins = $data["join"];
 
-            foreach ($joins as $join) {
-                extract($join);
-
-                $table_alias = $this->getTableAlias($table_name);
-                $on = [];
-
-                foreach ($conditions as $key => $value) {
-                    $this->convertKeyValuePairToWhereCondition($key, $value, $on);
-                }
-
-                $on = implode(" ", $conditions);
-
-                $sql .= " $type JOIN $table_name $table_alias ON 1 = 1 AND $on";
+            foreach ($joins as $join_config) {
+                $table_alias = $this->getTableAlias($join_config["table"]);
+                $on = $this->convertArrayToWhereCondition($join_config["conditions"]);
+                $sql .= " $join_config[type] JOIN $join_config[table] $table_alias ON $on";
             }
         }
 
-        $wheres = ["1 = 1"];
-
-        foreach ($data as $key => $value) {
-            $this->convertKeyValuePairToWhereCondition($key, $value, $wheres);
-        }
-
-        $wheres = implode(" ", $wheres);
+        $wheres = $this->convertArrayToWhereCondition($data);
         $sql .= " WHERE $wheres";
 
         if (array_key_exists("group_by", $data)) {
@@ -132,10 +150,6 @@ class DatabaseService
             $sql .= " LIMIT :offset, :limit";
         } else if (array_key_exists("limit", $data)) {
             $sql .= " LIMIT :limit";
-        }
-
-        if ($data["table"] === "Comment") {
-            file_put_contents("sql.sql", $sql);
         }
 
         $results = $this->conn->select($sql, $data);
