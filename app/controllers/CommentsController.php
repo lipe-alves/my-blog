@@ -49,6 +49,8 @@ class CommentsController extends Controller
             $success = $last_inserted_comment !== false;
             if (!$success) throw new InternalServerException();
 
+            $comments_service->commit();
+
             $response->setStatus(200)->setJson($last_inserted_comment)->send();
         } catch (\Exception $e) {
             $comments_service->rollback();
