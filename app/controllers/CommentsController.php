@@ -29,16 +29,19 @@ class CommentsController extends Controller
             "photo"      => null,
         ], $post);
 
-        $comment_data = [
-            "post_id"           => $post["post_id"],
-            "comment_id"        => $post["reply_to"],
-            "text"              => $post["comment"],
-            "reader_fullname"   => $post["fullname"],
-            "reader_first_name" => $post["first_name"],
-            "reader_last_name"  => $post["last_name"],
-            "reader_email"      => $post["email"],
-            "reader_photo"      => $post["photo"],
+        $new_keys = [
+            "post_id"           => "post_id",
+            "comment_id"        => "reply_to",
+            "text"              => "comment",
+            "reader_fullname"   => "fullname",
+            "reader_first_name" => "first_name",
+            "reader_last_name"  => "last_name",
+            "reader_email"      => "email",
+            "reader_photo"      => "photo"
         ];
+        $comment_data = array_map(function ($old_key) use ($post) {
+            return $post[$old_key];
+        }, $new_keys);
 
         try {
             $comments_service->startTransaction();
