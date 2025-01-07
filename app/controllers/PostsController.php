@@ -6,7 +6,7 @@ use App\Services\PostService;
 use App\Services\CommentsService;
 
 use App\Exceptions\MissingParamException;
-use App\Exceptions\InvalidParamException;
+use App\Exceptions\InvalidFormatException;
 
 use App\Core\Controller;
 use App\Core\Request;
@@ -27,11 +27,11 @@ class PostsController extends Controller
         }
 
         if (!is_numeric($page)) {
-            throw new InvalidParamException("page", ["int"]);
+            throw new InvalidFormatException("page", ["int"]);
         }
 
         if (!is_numeric($size)) {
-            throw new InvalidParamException("size", ["int"]);
+            throw new InvalidFormatException("size", ["int"]);
         }
 
         if (!isset($columns)) {
