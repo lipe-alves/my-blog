@@ -33,11 +33,11 @@
             /**
              * @param {{
              *     post_id: string;
-             *     text: string;
-             *     reply_comment_id?: string;
-             *     reader_fullname?: string;
-             *     reader_photo?: string;
-             *     reader_email: string;
+             *     comment: string;
+             *     reply_to?: string;
+             *     fullname?: string;
+             *     photo?: string;
+             *     email: string;
              * }} params 
              */
             async send(params) {

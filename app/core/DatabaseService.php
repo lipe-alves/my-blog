@@ -173,8 +173,9 @@ class DatabaseService
 
             foreach ($columns as $column) {
                 $row_value = $row[$column];
-                $data["{$column}$i"] = $row_value;
-                $row_values[] = $row_value;
+                $bind_key = "{$column}$i";
+                $data[$bind_key] = $row_value;
+                $row_values[] = ":$bind_key";
             }
 
             $row_values = implode(", ", $row_values);
@@ -187,7 +188,8 @@ class DatabaseService
         }, $values);
         $values = implode(", ", $values);
 
-        $success = $this->conn->insert("INSERT INTO $table ($columns) VALUES $values", $data);
+        $sql = "INSERT INTO $table ($columns) VALUES $values";
+        $success = $this->conn->insert($sql, $data);
         if (!$success) return false;
 
         $last_id = $this->conn->getLastInsertedId();

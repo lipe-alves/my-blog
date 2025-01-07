@@ -13,14 +13,14 @@ async function handleSendComment(form, evt) {
     try {
         commentsLoader.show();
 
-        const resp = await api.comments.send({
+        await api.comments.send({
             post_id: postId,
-            text: comment,
-            reader_fullname: fullname,
-            reader_email: email
+            comment,
+            fullname,
+            email
         });
 
-        toast.success(resp.message);
+        toast.success("Comentário enviado com sucesso");
     } catch (err) {
         toast.error(err.message);
     } finally {
