@@ -43,6 +43,13 @@ class Response
         return $this;
     }
 
+    public function setHtml(string $html): self
+    {
+        $this->setHeader("Content-Type", "text/html");
+        $this->body = $html;
+        return $this;
+    }
+
     public function setBody(mixed $body): self
     {
         $this->body = $body;

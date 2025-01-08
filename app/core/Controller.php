@@ -30,7 +30,11 @@ class Controller
             throw new \Exception("$path não existe");
         }
 
+        ob_start();
         require $phtml_path;
+        $html = ob_get_clean();
+
+        $this->response->setStatus(200)->setHtml($html)->send();
     }
 
     protected function view(string $view, array $data = [])
