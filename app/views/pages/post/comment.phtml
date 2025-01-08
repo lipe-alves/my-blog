@@ -1,8 +1,11 @@
 <?php
-$is_template = json_encode(!(bool)$id || str_contains($id, ":"));
+$is_template = json_encode(!(bool)$comment_id || str_contains($comment_id, ":"));
+
 $comment = array_find($all_post_comments, function ($comm) use ($comment_id) {
     return $comm["id"] === $comment_id;
 });
+extract($comment);
+
 $fullname = "$first_name $last_name";
 $photo = $photo ?: DEFAULT_PROFILE_PICTURE;
 
