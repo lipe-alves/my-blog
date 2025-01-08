@@ -20,11 +20,17 @@ async function handleSendComment(form, evt) {
             email
         });
 
+        form[0].reset();
+
         toast.success("Comentário enviado com sucesso");
     } catch (err) {
         toast.error(err.message);
     } finally {
         await commentsLoader.hide();
     }
-
 }
+
+$(document).ready(function () {
+    const { avatars } = window.myBlog;
+    avatars.generateAvatarColors();
+});

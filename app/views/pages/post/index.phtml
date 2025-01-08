@@ -69,12 +69,19 @@ $total_comments = count($post_comments);
                 <ul class="Post-comments-list">
                     <?php
                     $this->view("post/comment", [
-                        "comment_id"        => ":id",
+                        "comment"           => [
+                            "id"         => ":id",
+                            "first_name" => ":first_name",
+                            "last_name"  => ":last_name",
+                            "photo"      => ":photo",
+                            "text"       => ":text",
+                            "created_at" => ":created_at",
+                        ],
                         "all_post_comments" => $post_comments
                     ]);
                     foreach ($post_comments as $comment):
                         $this->view("post/comment", [
-                            "comment_id"        => $comment["id"],
+                            "comment"           => $comment,
                             "all_post_comments" => $post_comments
                         ]);
                     endforeach;

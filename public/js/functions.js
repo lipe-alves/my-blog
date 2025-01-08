@@ -141,11 +141,37 @@
         return url.search;
     }
 
+    /** @param {string} str */
+    function stringToColor(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        let color = '#';
+        for (let i = 0; i < 3; i++) {
+            const value = (hash >> (i * 8)) & 0xFF;
+            color += ('00' + value.toString(16)).substr(-2);
+        }
+        return color;
+    }
+
+    /** @param {string} str */
+    function removeWhitespaces(str) {
+        return str.replace(/\s+/g, ' ').trim();
+    }
+
+    function removeNewlines(str) {
+        return str.replace(/\n/g, ' ').trim();
+    }
+
     window.myBlog.functions = {
         onEnterPress,
         createEndpoint,
         setQueryParams,
         getQueryParams,
-        createQueryString
+        createQueryString,
+        stringToColor,
+        removeWhitespaces,
+        removeNewlines
     };
 })();

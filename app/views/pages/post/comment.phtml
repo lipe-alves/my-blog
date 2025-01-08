@@ -1,13 +1,12 @@
 <?php
-$is_template = json_encode(!(bool)$comment_id || str_contains($comment_id, ":"));
-
-$comment = array_find($all_post_comments, function ($comm) use ($comment_id) {
-    return $comm["id"] === $comment_id;
-});
 extract($comment);
 
+$is_template = json_encode(!(bool)$id || str_contains($id, ":"));
 $fullname = "$first_name $last_name";
-$photo = $photo ?: DEFAULT_PROFILE_PICTURE;
+
+$initials = get_initials($fullname);
+$initials = array_map("strtoupper", $initials);
+$initials = implode("", $initials);
 
 if (date_is_valid($created_at)) {
     $created_at = strtotime($created_at);
@@ -15,15 +14,20 @@ if (date_is_valid($created_at)) {
 }
 ?>
 
-<li 
+<li
     class="Comment"
-    data-comment-id="<?= $id ?>" 
+    data-comment-id="<?= $id ?>"
     data-template="<?= $is_template ?>">
-    <img 
-        class="Comment-avatar"
-        src="<?= BASE_URI.$photo ?>"
-        alt="Foto de <?= $fullname ?>"
-    />
+    <?php if (!isset($photo) || !file_exists($photo)): ?>
+        <div class="Comment-avatar" data-avatar="true">
+            <?= $initials ?>
+        </div>
+    <?php else: ?>
+        <img
+            class="Comment-photo"
+            src="<?= BASE_URI . $photo ?>"
+            alt="Foto de <?= $fullname ?>" />
+    <?php endif; ?>
     <div class="Comment-content">
         <div class="Comment-info">
             <p class="Comment-author">
