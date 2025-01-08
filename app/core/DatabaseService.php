@@ -129,7 +129,9 @@ class DatabaseService
         }
 
         $wheres = $this->convertArrayToWhereCondition($data);
-        $sql .= " WHERE $wheres";
+        if ($wheres) {
+            $sql .= " WHERE $wheres";
+        }
 
         if (array_key_exists("group_by", $data)) {
             $group_by_columns = implode(",", $data["group_by"]);
