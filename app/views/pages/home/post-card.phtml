@@ -1,5 +1,5 @@
 <?php
-$is_template = !(bool)$id || str_contains($id, ":");
+$is_template = json_encode(!(bool)$id || str_contains($id, ":"));
  
 if (date_is_valid($created_at)) {
     $created_at = strtotime($created_at);
@@ -19,7 +19,7 @@ $last_category_index = $total_categories - 1;
 <li
     class="PostCard PostCard-listItem"
     data-post-id="<?= $id ?>"
-    data-template="<?= json_encode($is_template) ?>">
+    data-template="<?= $is_template ?>">
     <article class="PostCard-container">
         <header class="PostCard-header">
             <h2 class="PostCard-title title">

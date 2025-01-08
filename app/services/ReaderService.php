@@ -49,7 +49,7 @@ class ReaderService extends DatabaseService
         }
 
         if (!isset($photo)) {
-            $photo = DEFAULT_PROFILE_PICTURE;
+            $photo = null;
         }
 
         $last_id = $this->insert("Reader", [

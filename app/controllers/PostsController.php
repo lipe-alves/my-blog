@@ -128,16 +128,21 @@ class PostsController extends Controller
             ]);
         }
 
-        $comments = $comments_service->getPostComments($post["id"]);
+        $post_comments = $comments_service->getPostComments($post["id"], [
+            "comm.*",
+            "r.first_name",
+            "r.last_name",
+            "r.photo"
+        ]);
 
         $keywords = explode(",", $post["category_names"]);
 
         $this->view("post", [
-            "title"        => $post["title"],
-            "description"  => "Teste",
-            "keywords"     => $keywords,
-            "post"         => $post,
-            "comments"     => $comments
+            "title"         => $post["title"],
+            "description"   => "Teste",
+            "keywords"      => $keywords,
+            "post"          => $post,
+            "post_comments" => $post_comments
         ]);
     }
 }

@@ -73,3 +73,11 @@
     gap: 1.5em;
     width: 100%;
 }
+
+.Comment {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1em;
+}

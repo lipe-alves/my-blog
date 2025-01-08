@@ -1,0 +1,42 @@
+<?php
+$is_template = json_encode(!(bool)$id || str_contains($id, ":"));
+$comment = array_find($all_post_comments, function ($comm) use ($comment_id) {
+    return $comm["id"] === $comment_id;
+});
+$fullname = "$first_name $last_name";
+$photo = $photo ?: DEFAULT_PROFILE_PICTURE;
+
+if (date_is_valid($created_at)) {
+    $created_at = strtotime($created_at);
+    $created_at = date(DEFAULT_DISPLAY_DATETIME_FORMAT, $created_at);
+}
+?>
+
+<li 
+    class="Comment"
+    data-comment-id="<?= $id ?>" 
+    data-template="<?= $is_template ?>">
+    <img 
+        class="Comment-avatar"
+        src="<?= BASE_URI.$photo ?>"
+        alt="Foto de <?= $fullname ?>"
+    />
+    <div class="Comment-content">
+        <div class="Comment-info">
+            <p class="Comment-author">
+                <?= $fullname ?>
+            </p>
+            <div class="Comment-meta">
+                <p class="Comment-time">
+                    <?= $created_at ?>
+                </p>
+                <button class="Comment-reply">
+                    Responder
+                </button>
+            </div>
+        </div>
+        <div class="Comment-text">
+            <?= $text ?>
+        </div>
+    </div>
+</li>

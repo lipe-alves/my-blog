@@ -12,7 +12,7 @@ if (date_is_valid($post["updated_at"])) {
 $post["category_names"] = explode(",", $post["category_names"]);
 $total_categories = count($post["category_names"]);
 $last_category_index = $total_categories - 1;
-$total_comments = count($comments);
+$total_comments = count($post_comments);
 ?>
 <!DOCTYPE html>
 <html lang="pt">
@@ -65,6 +65,21 @@ $total_comments = count($comments);
                 </h3>
 
                 <?php $this->component("loader", ["id" => "commentsLoader"]) ?>
+
+                <ul class="Post-comments-list">
+                    <?php
+                    $this->view("post/comment", [
+                        "comment_id"        => ":id",
+                        "all_post_comments" => $post_comments
+                    ]);
+                    foreach ($post_comments as $comment):
+                        $this->view("post/comment", [
+                            "comment_id"        => $comment["id"],
+                            "all_post_comments" => $post_comments
+                        ]);
+                    endforeach;
+                    ?>
+                </ul>
 
                 <div class="AddComment">
                     <header class="AddComment-header">
