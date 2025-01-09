@@ -64,7 +64,7 @@ class PostService extends DatabaseService
     public function getPostById(string $id, array $columns = ["*"])
     {
         $posts = $this->getPosts($columns, [
-            "post_id" => $id
+            "p.id" => $id
         ]);
 
         return count($posts) === 0 ? null : $posts[0];
@@ -73,7 +73,7 @@ class PostService extends DatabaseService
     public function getPostBySlug(string $slug, array $columns = ["*"])
     {
         $posts = $this->getPosts($columns, [
-            "post_slug" => $slug
+            "p.slug" => $slug
         ]);
 
         return count($posts) === 0 ? null : $posts[0];
@@ -82,12 +82,12 @@ class PostService extends DatabaseService
     public function getRecentPosts(array $columns = ["*"], int $limit = 5)
     {
         $posts = $this->getPosts($columns, [
-            "post_deleted" => "0",
-            "order"        => [
+            "p.deleted" => "0",
+            "order"     => [
                 "column"    => "p.created_at",
                 "direction" => "DESC",
             ],
-            "limit"        => $limit
+            "limit"     => $limit
         ]);
 
         return $posts;

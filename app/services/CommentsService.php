@@ -23,9 +23,9 @@ class CommentsService extends DatabaseService
         }
 
         foreach ($data as $key => $value) {
-            if (str_contains($key, "reader")) {
+            if (str_contains($key, "r.")) {
                 $fetch_reader = true;
-            } else if (str_contains($key, "post")) {
+            } else if (str_contains($key, "p.")) {
                 $fetch_post = true;
             }
         }
@@ -39,7 +39,7 @@ class CommentsService extends DatabaseService
                 "type"       => "LEFT",
                 "table"      => "Reader",
                 "conditions" => [
-                    "comment_reader_id" => "reader_id"
+                    "comm.reader_id" => "r.id"
                 ]
             ];
         }
@@ -53,7 +53,7 @@ class CommentsService extends DatabaseService
                 "type"       => "LEFT",
                 "table"      => "Post",
                 "conditions" => [
-                    "post_id" => "comment_post_id"
+                    "p.id" => "comm.post_id"
                 ]
             ];
         }
@@ -73,7 +73,7 @@ class CommentsService extends DatabaseService
 
     public function getPostComments(string $post_id, array $columns = ["*"]): array
     {
-        $comments = $this->getComments($columns, ["post_id" => $post_id]);
+        $comments = $this->getComments($columns, ["comm.post_id" => $post_id]);
         return $comments;
     }
 

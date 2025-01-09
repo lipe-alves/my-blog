@@ -23,13 +23,13 @@ class CategoryService extends DatabaseService
 
     public function getCategoryById(string $id, array $columns = ["*"])
     {
-        $categories = $this->getCategories($columns, ["category_id" => $id]);
+        $categories = $this->getCategories($columns, ["c.id" => $id]);
         return count($categories) === 0 ? null : $categories[0];
     }
 
     public function getCategoryByName(string $name, array $columns = ["*"])
     {
-        $categories = $this->getCategories($columns, ["category_name" => $name]);
+        $categories = $this->getCategories($columns, ["c.name" => $name]);
         return count($categories) === 0 ? null : $categories[0];
     }
 

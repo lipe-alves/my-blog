@@ -8,12 +8,6 @@ class DatabaseService
         "&&" => "AND",
         "||" => "OR",
     ];
-    protected const ALIAS_X_TABLE_ALIAS = [
-        "post"     => "p",
-        "category" => "c",
-        "comment"  => "comm",
-        "reader"   => "r",
-    ];
     protected const TABLE_X_ALIAS = [
         "Post"            => "p",
         "Comment"         => "comm",
@@ -42,6 +36,40 @@ class DatabaseService
         return self::TABLE_X_ALIAS[$table_name];
     }
 
+    private function isColumn(mixed $value): bool
+    {
+        if (!is_string($value)) {
+            return false;
+        }
+
+        foreach (self::TABLE_X_ALIAS as $table => $alias) {
+            if (starts_with($value, "$alias.")) {
+                return true;
+            }
+
+            if (starts_with($value, "$table.")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function generateBindKey(string $value): string
+    {
+        foreach (self::TABLE_X_ALIAS as $table => $alias) {
+            if (starts_with($value, "$alias.")) {
+                return str_replace("$alias.", "{$alias}_", $value);
+            }
+
+            if (starts_with($value, "$table.")) {
+                return str_replace("$table.", "{$table}_", $value);
+            }
+        }
+
+        return $value;
+    }
+
     private function convertArrayToWhereCondition(array &$data): string
     {
         $wheres = [];
@@ -49,10 +77,12 @@ class DatabaseService
         $i = 0;
         foreach ($data as $key => $value) {
             $logical_connector = "AND";
+            $old_key = $key;
+            $new_key = $old_key;
 
             foreach (self::ALIAS_X_CONNECTOR as $alias => $connector) {
                 if (!starts_with($key, "{$alias}_")) continue;
-                $key = str_replace($alias, "", $key);
+                $new_key = str_replace($alias, "", $old_key);
                 $logical_connector = $connector;
             }
 
@@ -60,49 +90,48 @@ class DatabaseService
                 $logical_connector = "";
             }
 
-            $value_is_column = false;
-            $bind = true;
+            $value_is_column = $this->isColumn($value);
+            $key_is_column = $this->isColumn($new_key);
+            if (!$key_is_column) continue;
 
-            foreach (self::ALIAS_X_TABLE_ALIAS as $alias => $table_alias) {
-                if (
-                    !is_string($value) || !starts_with($value, "{$alias}_")
-                ) continue;
+            $key = $new_key;
+            $data[$key] = $value;
 
-                $value_is_column = true;
-                $bind = false;
-                $value = str_replace("{$alias}_", "$table_alias.", $value);
-            }
+            $bind = !$value_is_column;
 
-            foreach (self::ALIAS_X_TABLE_ALIAS as $alias => $table_alias) {
-                if (!starts_with($key, "{$alias}_")) continue;
+            $logical_operator = "=";
 
-                $column = str_replace("{$alias}_", "$table_alias.", $key);
-                $logical_operator = "=";
-
-                if (!$value_is_column) {
-                    if (str_contains($value, ",")) {
-                        $logical_operator = "IN";
-                        $value = "($value)";
-                        $bind = false;
-                    }
-                    if (str_contains($value, "*")) {
-                        $logical_operator = "LIKE";
-                        $value = str_replace("*", "%", $value);
-                    }
-                    if (starts_with($value, "!")) {
-                        $logical_operator = "<>";
-                        $value = str_replace("!", "", $value);
-                    }
-
-                    $data[$key] = $value;
+            if (!$value_is_column && is_string($value)) {
+                if (str_contains($value, ",")) {
+                    $logical_operator = "IN";
+                    $value = "($value)";
+                    $bind = false;
+                }
+                if (str_contains($value, "*")) {
+                    $logical_operator = "LIKE";
+                    $value = str_replace("*", "%", $value);
+                }
+                if (starts_with($value, "!")) {
+                    $logical_operator = "<>";
+                    $value = str_replace("!", "", $value);
                 }
 
-                $condition = "$logical_connector $column $logical_operator ";
-                $condition .= $bind ? ":$key" : $value;
-                $wheres[] = $condition;
-
-                $i++;
+                $data[$key] = $value;
             }
+
+            $column = $key;
+
+            $condition = "$logical_connector $column $logical_operator ";
+            if ($bind) {
+                $bind_key = $this->generateBindKey($key);
+                $condition .= ":$bind_key";
+                $data[$bind_key] = $value;
+            } else {
+                $condition .= $value;
+            }
+            $wheres[] = $condition;
+
+            $i++;
         }
 
         $wheres = implode(" ", $wheres);

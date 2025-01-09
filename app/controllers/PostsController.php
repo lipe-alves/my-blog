@@ -50,10 +50,10 @@ class PostsController extends Controller
         $offset = min($offset, $limit);
 
         $filter_params = [
-            "post_deleted" => "0",
-            "offset"       => $offset,
-            "limit"        => $limit + 1,
-            "order"        => [
+            "p.deleted" => "0",
+            "offset"    => $offset,
+            "limit"     => $limit + 1,
+            "order"     => [
                 "column"    => "p.created_at",
                 "direction" => "DESC",
             ],
@@ -61,16 +61,16 @@ class PostsController extends Controller
 
         if (isset($category)) {
             if (is_numeric($category)) {
-                $filter_params["category_id"] = $category;
+                $filter_params["c.id"] = $category;
             } else {
-                $filter_params["category_name"] = $category;
+                $filter_params["c.name"] = $category;
             }
         }
 
         if (isset($search)) {
             $search_text_expression = "*$search*";
-            $filter_params["&&post_title"] = $search_text_expression;
-            $filter_params["||post_text"] = $search_text_expression;
+            $filter_params["&&p.title"] = $search_text_expression;
+            $filter_params["||p.text"] = $search_text_expression;
         }
 
         $post_service = new PostService();
