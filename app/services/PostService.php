@@ -28,7 +28,7 @@ class PostService extends DatabaseService
         }
 
         foreach ($data as $key => $value) {
-            if (str_contains($key, "category")) {
+            if (str_contains($key, "c.")) {
                 $fetch_categories = true;
             }
         }
