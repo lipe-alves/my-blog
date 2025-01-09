@@ -8,6 +8,57 @@ use App\Core\Request;
 
 class HomeController extends Controller
 {
+    public function postList() {
+        $get = $this->request->getGet();
+        $fetch_recent_posts = count(array_keys($get)) === 0;
+
+        $post_service = new PostService();
+        $post_list = [];
+        $columns = [
+            "p.id",
+            "p.slug",
+            "p.title",
+            "p.text",
+            "p.created_at",
+            "p.updated_at",
+            "category_names"
+        ];
+
+        if ($fetch_recent_posts) {
+            $post_list = $post_service->getRecentPosts($columns);
+        } else {
+            extract($get);
+
+            $filter_params = [
+                "p.deleted" => "0",
+                "offset"    => 0,
+                "limit"     => 5,
+                "order"     => [
+                    "column"    => "p.created_at",
+                    "direction" => "DESC",
+                ],
+            ];
+    
+            if (isset($category)) {
+                if (is_numeric($category)) {
+                    $filter_params["c.id"] = $category;
+                } else {
+                    $filter_params["c.name"] = $category;
+                }
+            }
+    
+            if (isset($search)) {
+                $search_text_expression = "*$search*";
+                $filter_params["&&p.title"] = $search_text_expression;
+                $filter_params["||p.text"] = $search_text_expression;
+            }
+    
+            $post_list = $post_service->getPosts($columns, $filter_params);
+        }
+
+        $this->view("post/post-list", ["post_list" => $post_list]);
+    }
+
     public function index(Request $request)
     {
         $get = $request->getGet();

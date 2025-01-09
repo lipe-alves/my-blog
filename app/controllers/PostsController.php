@@ -14,6 +14,8 @@ use App\Core\Response;
 
 class PostsController extends Controller
 {
+    // Api
+
     public function listPosts(Request $request, Response $response)
     {
         extract($request->getGet());
@@ -90,6 +92,8 @@ class PostsController extends Controller
 
         $response->setStatus(200)->setJson($result)->send();
     }
+
+    // Views 
 
     public function index(Request $request)
     {
