@@ -34,7 +34,11 @@ img {
     pointer-events: none;
 }
 
-*[data-visible="false"] {
+[data-visible="false"] {
+    display: none;
+}
+
+[data-template="true"] {
     display: none;
 }
 

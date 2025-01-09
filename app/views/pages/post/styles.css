@@ -74,7 +74,7 @@
     width: 100%;
 }
 
-.Comment {
+.Comment:not([data-template="true"]) {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
