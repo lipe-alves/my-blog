@@ -17,42 +17,7 @@
     <?php $this->component("navbar") ?>
     <?php $this->component("header") ?>
     <main class="Main">
-        <ul class="RecentPosts">
-            <li 
-                id="filter-title"
-                class="subtitle is-5 is-italic" 
-                data-visible="<?= $show_filter_title ?>">
-                <span></span>
-                <a href="javascript:void(0)" onclick="handleClearFilters()">Limpar</a>
-            </li>
-            <?php $this->component("loader", ["id" => "postsLoader"]) ?>
-            <li id="no-posts-message" class="NoPostFound" data-visible="<?= $show_no_posts_msg ?>">
-                <img
-                    class="image is-128x128" 
-                    src="public/images/planet.png" 
-                    alt="Planeta" />
-                <h2 class="title is-4">
-                    Nenhum post encontrado
-                </h2>
-                <p class="subtitle is-6">
-                    Parece que ainda não há posts recentes. Volte mais tarde para ver as novidades!
-                </p>
-            </li>
-            <?php
-            $this->view("home/post-card", [
-                "id"             => ":id",
-                "slug"           => ":slug",
-                "title"          => ":title",
-                "text"           => ":text",
-                "created_at"     => ":created_at",
-                "updated_at"     => ":updated_at",
-                "category_names" => ":category_name",
-            ]);
-            foreach ($recent_posts as $post):
-                $this->view("home/post-card", $post);
-            endforeach;
-            ?>
-        </ul>
+        <?php $this->postList() ?>
         <?php $this->component("filters") ?>
     </main>
     <?php $this->component("back-to-top") ?>

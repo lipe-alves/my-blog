@@ -3,9 +3,21 @@ $post_count = count($post_list);
 $no_posts = $post_count === 0;
 $show_no_posts_msg = $no_posts;
 $show_filter_title = (
-    (array_key_exists("search", $get) && (bool)$get["search"]) ||
-    (array_key_exists("category", $get) && (bool)$get["category"])
+    (array_key_exists("search", $query) && (bool)$query["search"]) ||
+    (array_key_exists("category", $query) && (bool)$query["category"])
 );
+
+$filter_msg = "Posts encontrados";
+
+if (array_key_exists("category", $query)) {
+    $filter_msg .= " em \"$query[category]\"";
+}
+
+if (array_key_exists("search", $query)) {
+    $filter_msg .= " com o texto \"$query[search]\"";
+}
+
+$filter_msg .= "...";
 ?>
 
 <ul class="RecentPosts">
@@ -13,10 +25,10 @@ $show_filter_title = (
         <li
             id="filter-title"
             class="subtitle is-5 is-italic">
-            <span></span>
-            <a href="javascript:void(0)" onclick="handleClearFilters()">Limpar</a>
+            <span><?= $filter_msg ?></span>
+            <a href="javascript:handleClearFilters()">Limpar</a>
         </li>
-    <?php endif; 
+    <?php endif;
     $this->component("loader", ["id" => "postsLoader"]);
     if ($show_no_posts_msg): ?>
         <li id="no-posts-message" class="NoPostFound">
@@ -31,17 +43,8 @@ $show_filter_title = (
                 Parece que ainda não há posts recentes. Volte mais tarde para ver as novidades!
             </p>
         </li>
-    <?php endif; 
-    $this->view("home/post-card", [
-        "id"             => ":id",
-        "slug"           => ":slug",
-        "title"          => ":title",
-        "text"           => ":text",
-        "created_at"     => ":created_at",
-        "updated_at"     => ":updated_at",
-        "category_names" => ":category_name",
-    ]);
-    foreach ($recent_posts as $post):
+    <?php endif;
+    foreach ($post_list as $post):
         $this->view("home/post-card", $post);
     endforeach;
     ?>

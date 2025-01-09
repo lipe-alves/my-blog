@@ -8,7 +8,8 @@ use App\Core\Request;
 
 class HomeController extends Controller
 {
-    public function postList() {
+    public function postList()
+    {
         $get = $this->request->getGet();
         $fetch_recent_posts = count(array_keys($get)) === 0;
 
@@ -38,7 +39,7 @@ class HomeController extends Controller
                     "direction" => "DESC",
                 ],
             ];
-    
+
             if (isset($category)) {
                 if (is_numeric($category)) {
                     $filter_params["c.id"] = $category;
@@ -46,17 +47,20 @@ class HomeController extends Controller
                     $filter_params["c.name"] = $category;
                 }
             }
-    
+
             if (isset($search)) {
                 $search_text_expression = "*$search*";
                 $filter_params["&&p.title"] = $search_text_expression;
                 $filter_params["||p.text"] = $search_text_expression;
             }
-    
+
             $post_list = $post_service->getPosts($columns, $filter_params);
         }
 
-        $this->view("post/post-list", ["post_list" => $post_list]);
+        $this->view("home/post-list", [
+            "post_list" => $post_list,
+            "query"     => $get
+        ]);
     }
 
     public function index(Request $request)
@@ -78,8 +82,8 @@ class HomeController extends Controller
         $no_posts = $post_count === 0;
         $show_no_posts_msg = json_encode($no_posts);
         $show_filter_title = json_encode(
-            (array_key_exists("search", $get) && (bool)$get["search"]) || 
-            (array_key_exists("category", $get) && (bool)$get["category"])
+            (array_key_exists("search", $get) && (bool)$get["search"]) ||
+                (array_key_exists("category", $get) && (bool)$get["category"])
         );
 
         $session = $request->getSession();
