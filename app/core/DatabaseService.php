@@ -81,7 +81,7 @@ class DatabaseService
             $new_key = $old_key;
 
             foreach (self::ALIAS_X_CONNECTOR as $alias => $connector) {
-                if (!starts_with($key, "{$alias}_")) continue;
+                if (!starts_with($key, $alias)) continue;
                 $new_key = str_replace($alias, "", $old_key);
                 $logical_connector = $connector;
             }
