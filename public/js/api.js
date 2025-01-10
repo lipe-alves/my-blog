@@ -1,18 +1,28 @@
 (() => {
-    const { apiUrl } = window.myBlog;
+    const { apiUrl, baseUri } = window.myBlog;
     const { createEndpoint, createQueryString } = window.myBlog.functions;
     const apiEndpoint = createEndpoint(apiUrl);
+    const viewEndpoint = createEndpoint(baseUri);
 
     const api = {
-        endpoint: apiEndpoint,
+        apiEndpoint,
+        viewEndpoint,
 
         /** @param {RequestInit=} config */
         async ping(config = {}) {
-            const resp = await this.endpoint.request("/ping", {
+            const resp = await this.apiEndpoint.request("/ping", {
                 ...config,
                 method: "GET"
             });
             return resp.json();
+        },
+
+        views: {
+            async postList(params) {
+                const queryString = createQueryString(params);
+                const resp = await viewEndpoint.get(`/post-list/${queryString}`);
+                return resp.text();
+            }
         },
 
         posts: {

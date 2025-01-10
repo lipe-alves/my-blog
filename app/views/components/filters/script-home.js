@@ -1,4 +1,5 @@
 const searchInput = $("#search-bar");
+const idPostList = "post-list";
 
 async function handleApplyFilter(element) {
     const { getQueryParams } = window.myBlog.functions;
@@ -77,17 +78,14 @@ async function filterPosts() {
     if (!query.page) query.page = 0;
     if (!query.size) query.size = 10;
 
-    query.columns = "p.*,category_names";
-
     try {
         postsLoader.show();
 
-        const resp = await api.posts.search(query);
-        const posts = resp.list;
+        const html = await api.views.postList(query);
+        console.log(html);
+        $(`#${idPostList}`).prop("outerHTML", html);
 
         await postsLoader.hide();
-
-        renderPosts(posts);
     } catch (err) {
         await postsLoader.hide();
         toast.error(err.message);

@@ -8,6 +8,7 @@ $router = new Router();
 
 // Rotas de Home
 $router->get("/", "\\App\\Controllers\\HomeController::index");
+$router->get("/post-list", "\\App\\Controllers\\HomeController::postList");
 
 // Rotas de Posts
 $router->get("/posts/:slug_or_id", "\\App\\Controllers\\PostsController::index");
