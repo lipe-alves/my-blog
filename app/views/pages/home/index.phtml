@@ -18,12 +18,12 @@
     <?php $this->component("header") ?>
     <main class="Main">
         <?php $this->postList() ?>
-        <?php $this->component("filters") ?>
+        <?php $this->postFilters() ?>
     </main>
     <?php $this->component("back-to-top") ?>
-    <link 
-        rel="stylesheet" 
-        href="<?= BASE_URI ?>/app/views/pages/home/styles.css?v=<?= time() ?>" />
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URI ?>/app/views/pages/home/styles.css?v=<?= time() ?>">
 </body>
 
 </html>

@@ -32,6 +32,7 @@ class Controller
 
         ob_start();
         require $phtml_path;
+
         $html = ob_get_clean();
 
         $this->response->setStatus(200)->setHtml($html)->send();

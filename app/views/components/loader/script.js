@@ -3,11 +3,11 @@
     const loaderId = currentScript.data("loader-id");
     const loader = $(`#${loaderId}`);
 
-    if (!window.myBlog.loaders) {
-        window.myBlog.loaders = {};
+    if (!window.loaders) {
+        window.loaders = {};
     }
 
-    window.myBlog.loaders[loaderId] = {
+    window.loaders[loaderId] = {
         show() {
             loader.attr("data-visible", "true");
         },

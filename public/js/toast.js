@@ -19,7 +19,7 @@
      * }}
      */
 
-    window.myBlog.toast = {
+    window.toast = {
         /** @param {ToastConfig} config */
         show(config) {
             const {

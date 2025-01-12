@@ -1,7 +1,3 @@
-[data-filter-key="category"].active {
-    text-decoration: underline;
-}
-
 .Filters {
     display: flex;
     flex-direction: column;

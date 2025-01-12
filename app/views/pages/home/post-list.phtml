@@ -20,7 +20,10 @@ if (array_key_exists("search", $query)) {
 $filter_msg .= "...";
 ?>
 
-<ul id="post-list" class="PostList">
+<ul
+    id="post-list"
+    class="PostList"
+    data-view="post-list">
     <?php if ($show_filter_title): ?>
         <li
             id="filter-title"
@@ -29,13 +32,12 @@ $filter_msg .= "...";
             <a href="javascript:handleClearFilters()">Limpar</a>
         </li>
     <?php endif;
-    $this->component("loader", ["id" => "postsLoader"]);
     if ($show_no_posts_msg): ?>
         <li id="no-posts-message" class="NoPostFound">
             <img
                 class="image is-128x128"
                 src="public/images/planet.png"
-                alt="Planeta" />
+                alt="Planeta">
             <h2 class="title is-4">
                 Nenhum post encontrado
             </h2>

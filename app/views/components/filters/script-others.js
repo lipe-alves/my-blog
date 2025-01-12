@@ -1,7 +1,7 @@
 const searchInput = $("#search-bar");
 
 function handleRedirectToHome() {
-    const { baseUri } = window.myBlog;
+    const { baseUri } = window;
     window.location.href = `${baseUri}/?search=${searchInput.val()}`;
 }
 
@@ -10,6 +10,6 @@ async function handleSearch() {
 }
 
 function handleSearchOnEnter(evt) {
-    const { onEnterPress } = window.myBlog.functions;
+    const { onEnterPress } = window.functions;
     onEnterPress(evt, handleRedirectToHome);
 }

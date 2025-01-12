@@ -81,3 +81,7 @@ img {
 .button.is-success {
     color: #fff;
 }
+
+a.active {
+    text-decoration: underline;
+}

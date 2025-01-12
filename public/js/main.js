@@ -4,8 +4,6 @@
     const baseUri = currentScript.data("base-url");
 
     // Initialize 
-    window.myBlog = {
-        apiUrl,
-        baseUri
-    };
+    window.apiUrl = apiUrl;
+    window.baseUri = baseUri;
 })();

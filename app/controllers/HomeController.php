@@ -63,9 +63,15 @@ class HomeController extends Controller
         ]);
     }
 
-    public function index(Request $request)
+    public function postFilters()
     {
-        $get = $request->getGet();
+        $get = $this->request->getGet();
+        $this->component("filters", ["query" => $get]);
+    }
+
+    public function index()
+    {
+        $get = $this->request->getGet();
 
         $post_service = new PostService();
 
@@ -86,7 +92,7 @@ class HomeController extends Controller
                 (array_key_exists("category", $get) && (bool)$get["category"])
         );
 
-        $session = $request->getSession();
+        $session = $this->request->getSession();
         $settings = $session["settings"];
         extract($settings);
 
@@ -100,5 +106,24 @@ class HomeController extends Controller
             "show_no_posts_msg" => $show_no_posts_msg,
             "show_filter_title" => $show_filter_title
         ]);
+    }
+
+    public function home(Request $request)
+    {
+        $get = $request->getGet();
+        $view = "index";
+
+        if (array_key_exists("view", $get)) {
+            $view = $get["view"];
+        }
+
+        switch ($view) {
+            case "post-list":
+                return $this->postList();
+            case "post-filters":
+                return $this->postFilters();
+            default:
+                return $this->index();
+        }
     }
 }

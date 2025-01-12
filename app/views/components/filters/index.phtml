@@ -1,10 +1,25 @@
-<?php 
+<?php
+extract($query);
+
 $session = $this->request->getSession();
 $categories = $session["categories"];
 $current_path = $this->request->getPath();
-$is_home = $current_path === "/"; 
+$is_home = $current_path === "/";
+
+if (!isset($search)) {
+    $search = "";
+}
+
+if (!isset($category)) {
+    $category = null;
+}
 ?>
-<aside class="Filters">
+<aside
+    <?php if ($is_home): ?>
+    id="post-filters"
+    data-view="post-filters"
+    <?php endif; ?>
+    class="Filters">
     <div class="Searchbar-container">
         <label class="Searchbar-label">
             <span class="Searchbar-text">
@@ -13,7 +28,8 @@ $is_home = $current_path === "/";
                     class="Searchbar-input"
                     type="text"
                     placeholder="Pesquise aqui e aperte Enter..."
-                    onkeypress="handleSearchOnEnter(event)" />
+                    onkeypress="handleSearchOnEnter(event)"
+                    value="<?= $search ?>" />
             </span>
             <span class="Searchbar-icon" onclick="handleSearch(event)">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -25,16 +41,20 @@ $is_home = $current_path === "/";
             Categorias
         </h3>
         <ul class="Categories-list">
-            <?php foreach ($categories as $category): ?>
+            <?php foreach ($categories as $ctg): ?>
                 <li>
                     <a
-                        href="<?= !$is_home ? BASE_URI."/?category=$category[name]" : "javascript:void(0)" ?>"
-                        data-filter-key="category"
-                        data-filter-value="<?= $category["name"] ?>"
-                        <?= $is_home ? 'onclick="handleApplyFilter(this)"' : "" ?>>
-                        <?= $category["name"] ?>
+                        <?php if ($is_home): ?>
+                        href="<?= "javascript:handleApplyFilter('category', '$ctg[name]')" ?>"
+                        <?php else: ?>
+                        href="<?= BASE_URI . "/?category=$ctg[name]" ?>"
+                        <?php endif; ?>
+                        <?php if ($category === $ctg["name"]): ?>
+                        class="active"
+                        <?php endif; ?>>
+                        <?= $ctg["name"] ?>
                     </a>
-                    (<?= $category["post_count"] ?>)
+                    (<?= $ctg["post_count"] ?>)
                 </li>
             <?php endforeach; ?>
         </ul>

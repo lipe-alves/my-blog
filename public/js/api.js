@@ -1,6 +1,6 @@
 (() => {
-    const { apiUrl, baseUri } = window.myBlog;
-    const { createEndpoint, createQueryString } = window.myBlog.functions;
+    const { apiUrl, baseUri } = window;
+    const { createEndpoint, createQueryString } = window.functions;
     const apiEndpoint = createEndpoint(apiUrl);
     const viewEndpoint = createEndpoint(baseUri);
 
@@ -17,12 +17,26 @@
             return resp.json();
         },
 
-        views: {
-            async postList(params) {
-                const queryString = createQueryString(params);
-                const resp = await viewEndpoint.get(`/post-list/${queryString}`);
-                return resp.text();
-            }
+        /** 
+         * @param {HTMLElment} viewElement 
+         * @param {{ [key: string]: any }} params
+         * @returns {string}
+         */
+        async reload(viewElement, params = {}) {
+            console.log({ viewElement, params });
+
+            viewElement = $(viewElement);
+
+            const view = viewElement.attr("data-view");
+            params.view = view;
+            
+            const queryString = createQueryString(params);
+            const currentRoute = window.location.pathname.replace(window.baseUri, "");
+            const resp = await viewEndpoint.get(`/${currentRoute}/${queryString}`);
+            const html = await resp.text();
+            viewElement.prop("outerHTML", html);
+
+            return html;
         },
 
         posts: {
@@ -57,5 +71,5 @@
         }
     };
 
-    window.myBlog.api = api;
+    window.api = api;
 })();

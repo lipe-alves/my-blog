@@ -24,6 +24,7 @@
                 path = path.replace(/^\//, "");
                 path = "/" + path;
                 url += path;
+                url = url.replace(/\/+/g, "/");
 
                 const resp = await fetch(url, config);
                 if (!resp.ok) throw await resp.json();
@@ -112,7 +113,17 @@
             url.searchParams.set(key, value);
         }
 
-        window.history.pushState(null, '', url.toString());
+        window.history.pushState(null, "", url.toString());
+    }
+
+    function clearQueryParams() {
+        const query = getQueryParams();
+
+        for (const key in query) {
+            query[key] = "";
+        }
+
+        setFilterParams(query);
     }
 
     /** @returns {{ [key: string]: any }} */
@@ -147,31 +158,48 @@
         for (let i = 0; i < str.length; i++) {
             hash = str.charCodeAt(i) + ((hash << 5) - hash);
         }
-        let color = '#';
+        let color = "#";
         for (let i = 0; i < 3; i++) {
             const value = (hash >> (i * 8)) & 0xFF;
-            color += ('00' + value.toString(16)).substr(-2);
+            color += ("00" + value.toString(16)).substr(-2);
         }
         return color;
     }
 
     /** @param {string} str */
     function removeWhitespaces(str) {
-        return str.replace(/\s+/g, ' ').trim();
+        return str.replace(/\s+/g, " ").trim();
     }
 
     function removeNewlines(str) {
-        return str.replace(/\n/g, ' ').trim();
+        return str.replace(/\n/g, " ").trim();
     }
 
-    window.myBlog.functions = {
+    function generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    /** @param {string} str */
+    function convertToCamelCase(str) {
+        return str
+            .replace(/_/g, "-")
+            .replace(/\b(\w)/g, (char) => char.toUpperCase())
+            .replace(/\s+/g, "")
+            .replace(/^(\w)/, (char) => char.toLowerCase())
+            .replace(/[^\w]/g, "");
+    }
+
+    window.functions = {
         onEnterPress,
         createEndpoint,
         setQueryParams,
         getQueryParams,
+        clearQueryParams,
         createQueryString,
         stringToColor,
         removeWhitespaces,
-        removeNewlines
+        removeNewlines,
+        generateId,
+        convertToCamelCase
     };
 })();

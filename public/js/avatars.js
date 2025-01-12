@@ -5,7 +5,7 @@
                 stringToColor,
                 removeWhitespaces,
                 removeNewlines
-            } = window.myBlog.functions;
+            } = window.functions;
 
             let text = $(this).text();
             text = removeNewlines(text);
@@ -16,7 +16,7 @@
         });
     }
 
-    window.myBlog.avatars = {
+    window.avatars = {
         generateAvatarColors
     };
 })();

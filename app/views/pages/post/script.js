@@ -1,7 +1,7 @@
 async function handleSendComment(form, evt) {
     evt.preventDefault();
 
-    const { api, toast, loaders } = window.myBlog;
+    const { api, toast, loaders } = window;
     const { commentsLoader } = loaders;
     form = $(form);
 
@@ -31,6 +31,6 @@ async function handleSendComment(form, evt) {
 }
 
 $(document).ready(function () {
-    const { avatars } = window.myBlog;
+    const { avatars } = window;
     avatars.generateAvatarColors();
 });
