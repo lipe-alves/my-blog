@@ -1,0 +1,28 @@
+<?php
+$total_comments = count($post_comments);
+?>
+<div
+    id="comment-list"
+    data-view="comment-list"
+    class="Post-comments-container">
+    <h3 class="title is-5">
+        <?=
+        $total_comments === 0
+            ? "Nenhum comentário ainda"
+            : ($total_comments === 1
+                ? "1 Comentário"
+                : "$total_comments Comentários")
+        ?>
+    </h3>
+
+    <ul class="Post-comments-list">
+        <?php
+        foreach ($post_comments as $comment):
+            $this->view("post/comment", [
+                "comment"           => $comment,
+                "all_post_comments" => $post_comments
+            ]);
+        endforeach;
+        ?>
+    </ul>
+</div>

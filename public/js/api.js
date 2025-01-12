@@ -23,13 +23,11 @@
          * @returns {string}
          */
         async reload(viewElement, params = {}) {
-            console.log({ viewElement, params });
-
             viewElement = $(viewElement);
 
             const view = viewElement.attr("data-view");
             params.view = view;
-            
+
             const queryString = createQueryString(params);
             const currentRoute = window.location.pathname.replace(window.baseUri, "");
             const resp = await viewEndpoint.get(`/${currentRoute}/${queryString}`);

@@ -12,7 +12,6 @@ if (date_is_valid($post["updated_at"])) {
 $post["category_names"] = explode(",", $post["category_names"]);
 $total_categories = count($post["category_names"]);
 $last_category_index = $total_categories - 1;
-$total_comments = count($post_comments);
 ?>
 <!DOCTYPE html>
 <html lang="pt">
@@ -54,40 +53,7 @@ $total_comments = count($post_comments);
             </div>
             <hr class="Post-separator">
             <div class="Post-comments">
-                <h3 class="title is-5">
-                    <?=
-                    $total_comments === 0
-                        ? "Nenhum comentário ainda"
-                        : ($total_comments === 1
-                            ? "1 Comentário"
-                            : "$total_comments Comentários")
-                    ?>
-                </h3>
-
-                <?php $this->component("loader", ["id" => "commentsLoader"]) ?>
-
-                <ul class="Post-comments-list">
-                    <?php
-                    $this->view("post/comment", [
-                        "comment"           => [
-                            "id"         => ":id",
-                            "first_name" => ":first_name",
-                            "last_name"  => ":last_name",
-                            "photo"      => ":photo",
-                            "text"       => ":text",
-                            "created_at" => ":created_at",
-                        ],
-                        "all_post_comments" => $post_comments
-                    ]);
-                    foreach ($post_comments as $comment):
-                        $this->view("post/comment", [
-                            "comment"           => $comment,
-                            "all_post_comments" => $post_comments
-                        ]);
-                    endforeach;
-                    ?>
-                </ul>
-
+                <?php $this->commentList() ?>
                 <div class="AddComment">
                     <header class="AddComment-header">
                         <h3 class="title is-5">
@@ -98,31 +64,34 @@ $total_comments = count($post_comments);
                         </p>
                     </header>
                     <form class="AddComment-form" onsubmit="handleSendComment(this, event)">
-                        <input
-                            type="hidden"
-                            name="post_id"
-                            value="<?= $post["id"] ?>" />
-                        <input
-                            required
-                            class="input is-normal"
-                            type="text"
-                            name="fullname"
-                            placeholder="Seu nome" />
-                        <input
-                            required
-                            class="input is-normal"
-                            type="email"
-                            name="email"
-                            placeholder="Seu email" />
-                        <textarea
-                            required
-                            class="textarea"
-                            name="comment"
-                            placeholder="Seu comentário..."
-                            rows="10"></textarea>
-                        <button class="button is-success is-fullwidth" type="submit">
-                            Enviar comentário
-                        </button>
+                        <fieldset>
+
+                            <input
+                                type="hidden"
+                                name="post_id"
+                                value="<?= $post["id"] ?>" />
+                            <input
+                                required
+                                class="input is-normal"
+                                type="text"
+                                name="fullname"
+                                placeholder="Seu nome" />
+                            <input
+                                required
+                                class="input is-normal"
+                                type="email"
+                                name="email"
+                                placeholder="Seu email" />
+                            <textarea
+                                required
+                                class="textarea"
+                                name="comment"
+                                placeholder="Seu comentário..."
+                                rows="10"></textarea>
+                            <button class="button is-success is-fullwidth" type="submit">
+                                Enviar comentário
+                            </button>
+                        </fieldset>
                     </form>
                 </div>
             </div>

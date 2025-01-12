@@ -10,7 +10,15 @@ $(document).ready(function () {
         let view = {
             async reload(params = {}) {
                 const { api } = window;
+                const loader = $(`#${loaderId}`).clone(true);
+
+                this.loader.show();
+
                 await api.reload(this.element, params);
+
+                $(this.element).append(loader.prop("outerHTML"));
+
+                this.loader.hide();
             },
             loader: {
                 show(params = {}) {

@@ -1,4 +1,8 @@
 <?php
+if (!isset($query)) {
+    $query = [];
+}
+
 extract($query);
 
 $session = $this->request->getSession();
@@ -59,10 +63,10 @@ if (!isset($category)) {
             <?php endforeach; ?>
         </ul>
     </div>
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URI ?>/app/views/components/filters/styles.css?v=<?= time() ?>" />
+    <script
+        type="text/javascript"
+        src="<?= BASE_URI ?>/app/views/components/filters/script<?= $is_home ? "-home" : "-others" ?>.js?v=<?= time() ?>"></script>
 </aside>
-<link
-    rel="stylesheet"
-    href="<?= BASE_URI ?>/app/views/components/filters/styles.css?v=<?= time() ?>" />
-<script
-    type="text/javascript"
-    src="<?= BASE_URI ?>/app/views/components/filters/script<?= $is_home ? "-home" : "-others" ?>.js?v=<?= time() ?>"></script>

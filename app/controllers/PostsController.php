@@ -95,10 +95,8 @@ class PostsController extends Controller
 
     // Views 
 
-    public function index(Request $request)
+    private function getPostFromSlugOrId(string $slug_or_id): array|null
     {
-        $params = $request->getParams();
-        $slug_or_id = $params["slug_or_id"];
         $is_id = is_numeric($slug_or_id);
         $is_slug = is_string($slug_or_id);
         $post = null;
@@ -114,7 +112,6 @@ class PostsController extends Controller
         ];
 
         $post_service = new PostService();
-        $comments_service = new CommentsService();
 
         if ($is_id) {
             $id = (int)$slug_or_id;
@@ -124,13 +121,16 @@ class PostsController extends Controller
             $post = $post_service->getPostBySlug($slug, $columns);
         }
 
-        if (!$post || !$post["id"]) {
-            return $this->view("post-not-found", [
-                "title"       => "Teste",
-                "description" => "Teste",
-                "keywords"    => [],
-            ]);
-        }
+        return $post;
+    }
+
+    public function commentList()
+    {
+        $params = $this->request->getParams();
+        $slug_or_id = $params["slug_or_id"];
+        $post = $this->getPostFromSlugOrId($slug_or_id);
+
+        $comments_service = new CommentsService();
 
         $post_comments = $comments_service->getPostComments($post["id"], [
             "comm.*",
@@ -139,14 +139,40 @@ class PostsController extends Controller
             "r.photo"
         ]);
 
+        $this->view("post/comment-list", ["post_comments" => $post_comments]);
+    }
+
+    public function index()
+    {
+        $params = $this->request->getParams();
+        $slug_or_id = $params["slug_or_id"];
+        $post = $this->getPostFromSlugOrId($slug_or_id);
+
         $keywords = explode(",", $post["category_names"]);
 
         $this->view("post", [
-            "title"         => $post["title"],
-            "description"   => "Teste",
-            "keywords"      => $keywords,
-            "post"          => $post,
-            "post_comments" => $post_comments
+            "title"       => $post["title"],
+            "description" => "Teste",
+            "keywords"    => $keywords,
+            "post"        => $post,
         ]);
+    }
+
+    public function posts(Request $request)
+    {
+        $get = $request->getGet();
+        $view = "index";
+
+        if (array_key_exists("view", $get)) {
+            $view = $get["view"];
+        }
+
+        switch ($view) {
+            case "comment-list":
+                return $this->commentList();
+            case "index":
+            default:
+                return $this->index();
+        }
     }
 }

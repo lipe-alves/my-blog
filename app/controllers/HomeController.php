@@ -122,6 +122,7 @@ class HomeController extends Controller
                 return $this->postList();
             case "post-filters":
                 return $this->postFilters();
+            case "index":
             default:
                 return $this->index();
         }

@@ -48,10 +48,10 @@
         const { generateId } = window.functions;
         const {
             id = generateId(),
-            wrapperHeight = "inherit",
-            wrapperWidth = "inherit",
-            loaderHeight = "inherit",
-            loaderWidth = "inherit"
+            wrapperHeight = "100%",
+            wrapperWidth = "100%",
+            loaderHeight = "80px",
+            loaderWidth = "80px"
         } = params;
 
         $(parent).append(`

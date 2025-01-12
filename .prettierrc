@@ -6,5 +6,6 @@
     "arrowParens": "always",
     "embeddedLanguageFormatting": "auto",
     "singleAttributePerLine": true,
-    "useTabs": false
+    "useTabs": false,
+    "bracketSameLine": false
 }
