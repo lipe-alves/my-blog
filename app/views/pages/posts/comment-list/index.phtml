@@ -17,15 +17,20 @@ $root_comments = array_filter($post_comments, function ($comment) {
                 : "$total_comments Comentários")
         ?>
     </h3>
-
-    <ul class="Post-comments-list">
-        <?php
-        foreach ($root_comments as $comment):
-            $this->view("posts/comment-card", [
-                "comment"           => $comment,
-                "all_post_comments" => $post_comments
-            ]);
-        endforeach;
-        ?>
-    </ul>
+    <?php if ($total_comments === 0): ?>
+        <p class="subtitle is-6">
+            Seja o primeiro a comentar
+        </p>
+    <?php else: ?>
+        <ul class="Post-comments-list">
+            <?php
+            foreach ($root_comments as $comment):
+                $this->view("posts/comment-card", [
+                    "comment"           => $comment,
+                    "all_post_comments" => $post_comments
+                ]);
+            endforeach;
+            ?>
+        </ul>
+    <?php endif; ?>
 </div>
