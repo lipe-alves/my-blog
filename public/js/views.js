@@ -33,13 +33,13 @@ $(document).ready(function () {
         };
 
         view = new Proxy(view, {
-            get: function (target, prop) {
+            get(target, prop) {
                 if (prop === "element") {
                     return $(`#${id}`)[0];
                 }
                 return target[prop];
             },
-            set: function (target, prop, value) {
+            set(target, prop, value) {
                 if (prop === "element") {
                     throw new Error("element is readonly");
                 }

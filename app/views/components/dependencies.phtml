@@ -1,3 +1,7 @@
+<?php 
+$session = $this->request->getSession();
+extract($session);
+?>
 <!-- jQuery -->
 <script
     type="text/javascript"
@@ -39,6 +43,11 @@
 <script
     type="text/javascript"
     src="<?= BASE_URI ?>/public/js/views.js?v=<?= time() ?>"></script>
+<?php if ($admin): ?>
+    <script
+        type="text/javascript"
+        src="<?= BASE_URI ?>/public/js/adm.js?v=<?= time() ?>"></script>
+<?php endif; ?>
 <!-- Local styles -->
 <link
     rel="stylesheet"

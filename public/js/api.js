@@ -40,6 +40,13 @@
             return html;
         },
 
+        settings: {
+            async update(updates) {
+                const resp = await apiEndpoint.patch("/api/settings", updates);
+                return resp.json();
+            }
+        },
+
         posts: {
             async search(params) {
                 const queryString = createQueryString(params);
