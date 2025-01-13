@@ -1,25 +1,23 @@
 <?php
 extract($comment);
 
-$is_template = json_encode(!(bool)$id || str_contains($id, ":"));
 $fullname = "$first_name $last_name";
 
 $initials = get_initials($fullname);
 $initials = array_map("strtoupper", $initials);
 $initials = implode("", $initials);
+$avatar_color = text_to_color($initials);
 
 if (date_is_valid($created_at)) {
     $created_at = strtotime($created_at);
     $created_at = date(DEFAULT_DISPLAY_DATETIME_FORMAT, $created_at);
 }
+
 ?>
 
-<li
-    class="Comment"
-    data-comment-id="<?= $id ?>"
-    data-template="<?= $is_template ?>">
+<li class="Comment" data-comment-id="<?= $id ?>">
     <?php if (!isset($photo) || !file_exists($photo)): ?>
-        <div class="Comment-avatar" data-avatar="true">
+        <div class="Comment-avatar" style="background-color: <?= $avatar_color ?>;">
             <?= $initials ?>
         </div>
     <?php else: ?>

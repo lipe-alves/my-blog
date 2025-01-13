@@ -24,7 +24,7 @@
                 path = path.replace(/^\//, "");
                 path = "/" + path;
                 url += path;
-                url = url.replace(/\/+/g, "/");
+                url = url.replace(/(?<!:)\/+/g, "/");
 
                 const resp = await fetch(url, config);
                 if (!resp.ok) throw await resp.json();
@@ -189,6 +189,24 @@
             .replace(/[^\w]/g, "");
     }
 
+    /**
+     * @param {Promise<any>} promise 
+     * @param {number} delay 
+     * @returns {Promise<any>} 
+     */
+    function delayAsync(promise, delay) {
+        return new Promise((resolve, reject) => {
+            setTimeout(async () => {
+                try {
+                    const result = await promise;
+                    resolve(result);
+                } catch (err) {
+                    reject(err);
+                }
+            }, delay);
+        });
+    }
+
     window.functions = {
         onEnterPress,
         createEndpoint,
@@ -200,6 +218,7 @@
         removeWhitespaces,
         removeNewlines,
         generateId,
-        convertToCamelCase
+        convertToCamelCase,
+        delayAsync
     };
 })();

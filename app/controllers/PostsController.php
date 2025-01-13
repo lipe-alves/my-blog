@@ -139,7 +139,7 @@ class PostsController extends Controller
             "r.photo"
         ]);
 
-        $this->view("post/comment-list", ["post_comments" => $post_comments]);
+        $this->view("posts/comment-list", ["post_comments" => $post_comments]);
     }
 
     public function index()
@@ -150,15 +150,19 @@ class PostsController extends Controller
 
         $keywords = explode(",", $post["category_names"]);
 
-        $this->view("post", [
-            "title"       => $post["title"],
+        $session = $this->request->getSession();
+        $settings = $session["settings"];
+        extract($settings);
+
+        $this->view("posts", [
+            "title"       => "$post[title] - $blog_name",
             "description" => "Teste",
             "keywords"    => $keywords,
             "post"        => $post,
         ]);
     }
 
-    public function posts(Request $request)
+    public function page(Request $request)
     {
         $get = $request->getGet();
         $view = "index";

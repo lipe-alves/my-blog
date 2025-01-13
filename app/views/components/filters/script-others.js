@@ -1,8 +1,8 @@
 const searchInput = $("#search-bar");
 
 function handleRedirectToHome() {
-    const { baseUri } = window;
-    window.location.href = `${baseUri}/?search=${searchInput.val()}`;
+    const { baseUrl } = window;
+    window.location.href = `${baseUrl}/?search=${searchInput.val()}`;
 }
 
 async function handleSearch() {

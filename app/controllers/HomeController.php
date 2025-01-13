@@ -108,7 +108,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function home(Request $request)
+    public function page(Request $request)
     {
         $get = $request->getGet();
         $view = "index";

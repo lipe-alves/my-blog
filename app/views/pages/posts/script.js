@@ -2,15 +2,16 @@ async function handleSendComment(form, evt) {
     evt.preventDefault();
 
     const { api, toast, views } = window;
+    const { delayAsync } = window.functions;
 
-    const button = $(evt.target);
     form = $(form);
+    const button = form.find('[type="submit"]');
     const fieldset = form.find("fieldset");
 
-    const postId = form.find('input[name="post_id"]').val();
-    const fullname = form.find('input[name="fullname"]').val();
-    const email = form.find('input[name="email"]').val();
-    const comment = form.find('textarea[name="comment"]').val();
+    const postId = form.find('[name="post_id"]').val();
+    const fullname = form.find('[name="fullname"]').val();
+    const email = form.find('[name="email"]').val();
+    const comment = form.find('[name="comment"]').val();
 
     /** @param {boolean} disabled */
     const setFormDisabled = (disabled) => {
@@ -22,14 +23,16 @@ async function handleSendComment(form, evt) {
     try {
         setFormDisabled(true);
 
-        await api.comments.send({
-            post_id: postId,
-            comment,
-            fullname,
-            email
-        });
+        await delayAsync(async () => {
+            await api.comments.send({
+                post_id: postId,
+                comment,
+                fullname,
+                email
+            });
 
-        await views.commentList.reload();
+            await views.commentList.reload();
+        }, 3000);
 
         form[0].reset();
 
@@ -40,8 +43,3 @@ async function handleSendComment(form, evt) {
         setFormDisabled(false);
     }
 }
-
-$(document).ready(function () {
-    const { avatars } = window;
-    avatars.generateAvatarColors();
-});

@@ -57,6 +57,9 @@ img {
 
 .input, .textarea {
     --bulma-input-placeholder-color: #95a0b8;
+    --bulma-input-disabled-background-color: var(--input-background-color);
+    --bulma-input-disabled-border-color: none;
+    --bulma-input-disabled-color: var(--input-text-color);
     color: var(--input-text-color);
     font-family: var(--bulma-body-family);
     align-items: center;
@@ -78,10 +81,28 @@ img {
     border-radius: 6px;
 }
 
+fieldset[disabled] .input, 
+.input[disabled], 
+fieldset[disabled] .textarea, 
+.textarea[disabled] {
+    opacity: 0.5;
+}
+
 .button.is-success {
     color: #fff;
 }
 
 a.active {
     text-decoration: underline;
+}
+
+.is-success {
+    --bulma-loading-color: #fff;
+    background-color: #84be5b;
+}
+
+.is-success[disabled] {
+    background-color: #84be5b;
+    border-color: none;
+    opacity: 0.5;
 }

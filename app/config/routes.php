@@ -7,10 +7,10 @@ use App\Core\Router;
 $router = new Router();
 
 // Rotas de Home
-$router->get("/", "\\App\\Controllers\\HomeController::home");
+$router->get("/", "\\App\\Controllers\\HomeController::page");
 
 // Rotas de Posts
-$router->get("/posts/:slug_or_id", "\\App\\Controllers\\PostsController::index");
+$router->get("/posts/:slug_or_id", "\\App\\Controllers\\PostsController::page");
 $router->get("/api/posts", "\\App\\Controllers\\PostsController::listPosts");
 
 // Rotas de Comentários

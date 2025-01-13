@@ -1,12 +1,10 @@
 (() => {
-    const { apiUrl, baseUri } = window;
+    const { apiUrl } = window;
     const { createEndpoint, createQueryString } = window.functions;
     const apiEndpoint = createEndpoint(apiUrl);
-    const viewEndpoint = createEndpoint(baseUri);
 
     const api = {
         apiEndpoint,
-        viewEndpoint,
 
         /** @param {RequestInit=} config */
         async ping(config = {}) {
@@ -28,10 +26,13 @@
             const view = viewElement.attr("data-view");
             params.view = view;
 
+            const baseUrl = window.location.href.replace(window.location.search, "");
+            const viewEndpoint = createEndpoint(baseUrl);
             const queryString = createQueryString(params);
-            const currentRoute = window.location.pathname.replace(window.baseUri, "");
-            const resp = await viewEndpoint.get(`/${currentRoute}/${queryString}`);
+
+            const resp = await viewEndpoint.get(`/${queryString}`);
             const html = await resp.text();
+
             viewElement.prop("outerHTML", html);
 
             return html;

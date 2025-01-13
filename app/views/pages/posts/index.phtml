@@ -54,46 +54,7 @@ $last_category_index = $total_categories - 1;
             <hr class="Post-separator">
             <div class="Post-comments">
                 <?php $this->commentList() ?>
-                <div class="AddComment">
-                    <header class="AddComment-header">
-                        <h3 class="title is-5">
-                            Adicionar Comentário
-                        </h3>
-                        <p class="subtitle is-6">
-                            Seu endereço de email não será publicado
-                        </p>
-                    </header>
-                    <form class="AddComment-form" onsubmit="handleSendComment(this, event)">
-                        <fieldset>
-
-                            <input
-                                type="hidden"
-                                name="post_id"
-                                value="<?= $post["id"] ?>" />
-                            <input
-                                required
-                                class="input is-normal"
-                                type="text"
-                                name="fullname"
-                                placeholder="Seu nome" />
-                            <input
-                                required
-                                class="input is-normal"
-                                type="email"
-                                name="email"
-                                placeholder="Seu email" />
-                            <textarea
-                                required
-                                class="textarea"
-                                name="comment"
-                                placeholder="Seu comentário..."
-                                rows="10"></textarea>
-                            <button class="button is-success is-fullwidth" type="submit">
-                                Enviar comentário
-                            </button>
-                        </fieldset>
-                    </form>
-                </div>
+                <?php $this->view("posts/add-comment", ["post" => $post]) ?>
             </div>
         </article>
         <?php $this->component("filters") ?>
@@ -101,10 +62,10 @@ $last_category_index = $total_categories - 1;
     <?php $this->component("back-to-top") ?>
     <link
         rel="stylesheet"
-        href="<?= BASE_URI ?>/app/views/pages/post/styles.css?v=<?= time() ?>" />
+        href="<?= BASE_URI ?>/app/views/pages/posts/styles.css?v=<?= time() ?>" />
     <script
         type="text/javascript"
-        src="<?= BASE_URI ?>/app/views/pages/post/script.js?v=<?= time() ?>"></script>
+        src="<?= BASE_URI ?>/app/views/pages/posts/script.js?v=<?= time() ?>"></script>
 </body>
 
 </html>
