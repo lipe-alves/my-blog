@@ -1,5 +1,8 @@
 <?php
 $total_comments = count($post_comments);
+$root_comments = array_filter($post_comments, function ($comment) {
+    return $comment["comment_id"] === null;
+});
 ?>
 <div
     id="comment-list"
@@ -17,7 +20,7 @@ $total_comments = count($post_comments);
 
     <ul class="Post-comments-list">
         <?php
-        foreach ($post_comments as $comment):
+        foreach ($root_comments as $comment):
             $this->view("posts/comment-card", [
                 "comment"           => $comment,
                 "all_post_comments" => $post_comments

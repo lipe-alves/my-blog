@@ -14,6 +14,9 @@ if (date_is_valid($created_at)) {
     $created_at = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $created_at);
 }
 
+$reply_comments = array_filter($all_post_comments, function ($comm) use ($id) {
+    return $comm["comment_id"] === $id;
+});
 ?>
 
 <li class="CommentCard" data-comment-id="<?= $id ?>">
@@ -42,5 +45,17 @@ if (date_is_valid($created_at)) {
             </div>
         </div>
         <div class="CommentCard-text"><?= $text ?></div>
+        <?php if (count($reply_comments) > 0): ?>
+            <ul class="CommentCard-replies">
+                <?php
+                foreach ($reply_comments as $comm):
+                    $this->view("posts/comment-card", [
+                        "comment"           => $comm,
+                        "all_post_comments" => $all_post_comments
+                    ]);
+                endforeach;
+                ?>
+            </ul>
+        <?php endif; ?>
     </div>
 </li>
