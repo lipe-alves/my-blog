@@ -5,6 +5,7 @@ $fullname = "$first_name $last_name";
 
 $initials = get_initials($fullname);
 $initials = array_map("strtoupper", $initials);
+$initials = [$initials[0], $initials[count($initials) - 1]];
 $initials = implode("", $initials);
 $avatar_color = text_to_color($initials);
 
