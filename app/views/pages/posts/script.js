@@ -15,7 +15,7 @@ async function handleSendComment(form, evt) {
 
     /** @param {boolean} disabled */
     const setFormDisabled = (disabled) => {
-        button.prop("disabled", true);
+        button.prop("disabled", disabled);
         button[disabled ? "addClass" : "removeClass"]("is-loading");
         fieldset.prop("disabled", disabled);
     };

@@ -25,7 +25,7 @@
             const {
                 message,
                 type = "default",
-                duration = 2000,
+                duration = 3000,
                 position = "top-center",
                 ...rest
             } = config;

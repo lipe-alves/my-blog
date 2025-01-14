@@ -190,15 +190,15 @@
     }
 
     /**
-     * @param {Promise<any>} promise 
+     * @param {() => Promise<any>} callback 
      * @param {number} delay 
      * @returns {Promise<any>} 
      */
-    function delayAsync(promise, delay) {
+    function delayAsync(callback, delay) {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 try {
-                    const result = await promise;
+                    const result = await callback();
                     resolve(result);
                 } catch (err) {
                     reject(err);
