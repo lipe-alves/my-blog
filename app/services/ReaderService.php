@@ -19,7 +19,7 @@ class ReaderService extends DatabaseService
         return count($readers) === 0 ? null : $readers[0];
     }
 
-    public function createReader(array $data): string|false
+    public function createReader(array $data): array|false
     {
         extract($data);
 
@@ -64,7 +64,9 @@ class ReaderService extends DatabaseService
         $success = $last_id !== false;
         if (!$success) return false;
 
-        return $last_id;
+        $last_inserted_reader = $this->getReader(["r.*"], ["r.id" => $last_id]);
+
+        return $last_inserted_reader;
     }
 
     public function updateReader(string $id, array $updates): array|false

@@ -77,7 +77,7 @@ class CommentsService extends DatabaseService
         return $comments;
     }
 
-    public function createComment(array $data): string|false
+    public function createComment(array $data): array|false
     {
         extract($data);
 
@@ -136,13 +136,15 @@ class CommentsService extends DatabaseService
                 "photo"      => $reader_photo,
             ]);
         } else {
-            $reader_id = $reader_service->createReader([
+            $reader = $reader_service->createReader([
                 "fullname"   => $reader_fullname,
                 "first_name" => $reader_first_name,
                 "last_name"  => $reader_last_name,
                 "email"      => $reader_email,
                 "photo"      => $reader_photo,
             ]);
+
+            $reader_id = $reader["id"];
         }
 
         if (!$reader_id) {
@@ -161,6 +163,8 @@ class CommentsService extends DatabaseService
         $success = $new_comment_id !== false;
         if (!$success) return false;
 
-        return $new_comment_id;
+        $new_comment = $this->getComment(["comm.*"], ["comm.id" => $new_comment_id]);
+
+        return $new_comment;
     }
 }
