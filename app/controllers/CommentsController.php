@@ -47,7 +47,7 @@ class CommentsController extends Controller
             $comments_service->startTransaction();
 
             $last_inserted_id = $comments_service->createComment($comment_data);
-            $success = $last_inserted_id !== false;
+            $success = $last_inserted_id !== false; 
             if (!$success) throw new InternalServerException();
 
             $last_inserted_comment = $comments_service->getComment(["*"], ["comment_id" => $last_inserted_id]);

@@ -77,17 +77,17 @@ class DatabaseConnection
         return $this->conn->lastInsertId();
     }
 
-    public function startTransaction(): bool 
+    public function startTransaction(): bool
     {
         return $this->conn->beginTransaction();
     }
 
-    public function commit(): bool 
+    public function commit(): bool
     {
         return $this->conn->commit();
     }
 
-    public function rollback(): bool 
+    public function rollback(): bool
     {
         return $this->conn->rollback();
     }

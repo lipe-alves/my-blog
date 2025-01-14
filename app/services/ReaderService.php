@@ -44,7 +44,7 @@ class ReaderService extends DatabaseService
             throw new \Exception('Campo "primeiro nome" é obrigatório.');
         }
 
-        if (!isset($first_name) || !$first_name) {
+        if (!isset($last_name) || !$last_name) {
             throw new \Exception('Campo "último nome" é obrigatório.');
         }
 
@@ -65,5 +65,41 @@ class ReaderService extends DatabaseService
         if (!$success) return false;
 
         return $last_id;
+    }
+
+    public function updateReader(string $id, array $updates): array|false
+    {
+        extract($updates);
+
+        if (isset($email) && !validate_email($email)) {
+            throw new \Exception('Campo "email" inválido.');
+        }
+
+        if (isset($fullname)) {
+            $name_parts = explode(" ", $fullname);
+            $first_name = $name_parts[0];
+            $last_name = str_replace($first_name, "", $fullname);
+
+            $first_name = remove_multiple_whitespaces($first_name);
+            $last_name = remove_multiple_whitespaces($last_name);
+
+            $updates["first_name"] = $first_name;
+            $updates["last_name"] = $last_name;
+            unset($updates["fullname"]);
+        }
+
+        if (isset($first_name) && !$first_name) {
+            throw new \Exception('Campo "primeiro nome" é obrigatório.');
+        }
+
+        if (isset($last_name) && !$last_name) {
+            throw new \Exception('Campo "último nome" é obrigatório.');
+        }
+
+        $success = $this->update("Reader", $updates, ["r.id" => $id]);
+        if (!$success) return false;
+
+        $updated_data = $this->getReader(["r.*"], ["r.id" => $id]);
+        return $updated_data;
     }
 }

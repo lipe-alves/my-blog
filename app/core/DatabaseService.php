@@ -227,6 +227,28 @@ class DatabaseService
         return $last_id;
     }
 
+    public function update(string $table, array $updates, array $conditions): bool
+    {
+        $data = [];
+
+        $updates = array_map(function (mixed $value, string $column) use (&$data) {
+            $bind_key = "update_$column";
+            $data[$bind_key] = $value;
+            return "$column = :$bind_key";
+        }, array_values($updates), array_keys($updates));
+        $updates = implode(", ", $updates);
+
+        $wheres = $this->convertArrayToWhereCondition($conditions);
+        $data = array_merge($data, $conditions);
+
+        $table_alias = $this->getTableAlias($table);
+
+        $sql = "UPDATE $table $table_alias SET $updates WHERE $wheres";
+        $success = $this->conn->update($sql, $data);
+
+        return $success;
+    }
+
     public function startTransaction()
     {
         return $this->conn->startTransaction();

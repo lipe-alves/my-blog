@@ -127,6 +127,14 @@ class CommentsService extends DatabaseService
 
         if ($reader_found) {
             $reader_id = $reader["id"];
+
+            $reader_service->updateReader($reader_id, [
+                "fullname"   => $reader_fullname,
+                "first_name" => $reader_first_name,
+                "last_name"  => $reader_last_name,
+                "email"      => $reader_email,
+                "photo"      => $reader_photo,
+            ]);
         } else {
             $reader_id = $reader_service->createReader([
                 "fullname"   => $reader_fullname,
