@@ -13,6 +13,12 @@
                 type="hidden"
                 name="post_id"
                 value="<?= $post["id"] ?>" />
+            <?php if (isset($reply_to_comment)): ?>
+                <input
+                    type="hidden"
+                    name="reply_to"
+                    value="<?= $reply_to_comment["id"] ?>" />
+            <?php endif; ?>
             <input
                 required
                 class="input is-normal"

@@ -9,6 +9,7 @@ async function handleSendComment(form, evt) {
     const fieldset = form.find("fieldset");
 
     const postId = form.find('[name="post_id"]').val();
+    const replyTo = form.find('[name="reply_to"]')?.val() || null;
     const fullname = form.find('[name="fullname"]').val();
     const email = form.find('[name="email"]').val();
     const comment = form.find('[name="comment"]').val();
@@ -26,6 +27,7 @@ async function handleSendComment(form, evt) {
         await delayAsync(async () => {
             await api.comments.send({
                 post_id: postId,
+                reply_to: replyTo,
                 comment,
                 fullname,
                 email
