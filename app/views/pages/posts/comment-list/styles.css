@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 1em;
+    gap: 3em;
     width: 100%;
 }
 
@@ -12,8 +12,16 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 1em;
+    gap: 3em;
     width: 100%;
+}
+
+.Post-comments-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 3em;
 }
 
 .Comment {
@@ -40,7 +48,7 @@
 
 .Comment-author {
     color: #272727;
-    font-size: 1.25em;
+    font-size: 1.3em;
 }
 
 .Comment-meta {
@@ -53,11 +61,15 @@
 
 .Comment-reply {
     text-transform: uppercase;
-    color: #272727;
+    color: var(--bulma-link-text);;
     font-size: 0.9em;
+}
+
+.Comment-reply:hover {
+    text-decoration: underline;
 }
 
 .Comment-text {
     color: #272727;
-    font-size: 1em;
+    font-size: 1.1em;
 }
