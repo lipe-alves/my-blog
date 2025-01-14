@@ -71,16 +71,10 @@ class ReaderService extends DatabaseService
 
     public function updateReader(string $id, array $updates): array|false
     {
-        extract($updates);
-
-        if (isset($email) && !validate_email($email)) {
-            throw new \Exception('Campo "email" inválido.');
-        }
-
-        if (isset($fullname)) {
-            $name_parts = explode(" ", $fullname);
+        if (array_key_exists("fullname", $updates)) {
+            $name_parts = explode(" ", $updates["fullname"]);
             $first_name = $name_parts[0];
-            $last_name = str_replace($first_name, "", $fullname);
+            $last_name = count($name_parts) > 1 ? $name_parts[1] : ""; 
 
             $first_name = remove_multiple_whitespaces($first_name);
             $last_name = remove_multiple_whitespaces($last_name);
@@ -90,6 +84,12 @@ class ReaderService extends DatabaseService
             unset($updates["fullname"]);
         }
 
+        extract($updates);
+
+        if (isset($email) && !validate_email($email)) {
+            throw new \Exception('Campo "email" inválido.');
+        }
+        
         if (isset($first_name) && !$first_name) {
             throw new \Exception('Campo "primeiro nome" é obrigatório.');
         }
