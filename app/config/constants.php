@@ -16,6 +16,6 @@ define("BASE_URI", $base_uri);
 define("DEFAULT_PROFILE_PICTURE", "/public/images/profile/perfil-padrao.jpeg");
 define("WEBSITE_URL", $website_url);
 define("API_URL", $api_url);
-define("DEFAULT_DISPLAY_DATETIME_FORMAT", "d/m/Y, H:i:s");
+define("DEFAULT_DISPLAY_DATETIME_FORMAT", "%e de %B de %Y às %H:%M");
 define("DEFAULT_DATABASE_DATETIME_FORMAT", "Y-m-d H:i:s");
 define("SESSION_TIMEOUT", 1800);

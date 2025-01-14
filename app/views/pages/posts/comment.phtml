@@ -10,7 +10,7 @@ $avatar_color = text_to_color($initials);
 
 if (date_is_valid($created_at)) {
     $created_at = strtotime($created_at);
-    $created_at = date(DEFAULT_DISPLAY_DATETIME_FORMAT, $created_at);
+    $created_at = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $created_at);
 }
 
 ?>

@@ -12,8 +12,10 @@ $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 try {
-    start_database();
+    setlocale(LC_ALL, "pt_BR", "pt_BR.utf-8", "pt_BR.utf-8", "portuguese");
+    date_default_timezone_set("America/Sao_Paulo");
 
+    start_database();
     require_once "./app/config/constants.php";
     require_once "./app/helpers/index.php";
     require_once "./app/config/routes.php";
@@ -34,7 +36,8 @@ try {
 
 function create_default_env_file()
 {
-    file_put_contents(".env", "DB_PORT=3306
+    file_put_contents(".env", "LC_ALL=pt_BR.UTF-8
+DB_PORT=3306
 DB_HOST=127.0.0.1
 DB_NAME=my_blog
 DB_USER=root
