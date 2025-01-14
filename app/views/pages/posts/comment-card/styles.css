@@ -1,0 +1,59 @@
+.CommentCard {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1em;
+}
+
+.CommentCard-photo, .CommentCard-avatar {
+    border-radius: 50%;
+    padding: 0.5em 0.8em;
+    color: #fff;
+}
+
+.CommentCard-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0;
+}
+
+.CommentCard-author {
+    color: #272727;
+    font-size: 1.3em;
+    line-height: normal;
+}
+
+.CommentCard-meta {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1em;
+}
+
+.CommentCard-reply {
+    text-transform: uppercase;
+    color: var(--bulma-link-text);;
+    font-size: 0.9em;
+}
+
+.CommentCard-reply:hover {
+    text-decoration: underline;
+}
+
+.CommentCard-text {
+    color: #272727;
+    font-size: 1.1em;
+    white-space: pre;
+}
+
+.CommentCard-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1em;
+}

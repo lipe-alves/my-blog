@@ -18,7 +18,7 @@ $total_comments = count($post_comments);
     <ul class="Post-comments-list">
         <?php
         foreach ($post_comments as $comment):
-            $this->view("posts/comment-list/comment", [
+            $this->view("posts/comment-card", [
                 "comment"           => $comment,
                 "all_post_comments" => $post_comments
             ]);
