@@ -142,6 +142,26 @@ class PostsController extends Controller
         $this->view("posts/comment-list", ["post_comments" => $post_comments]);
     }
 
+    public function commentForm()
+    {
+        $get = $this->request->getGet();
+        extract($get);
+
+        $data = [
+            "post" => [
+                "id" => $post_id
+            ]
+        ];
+
+        if (isset($reply_to)) {
+            $data["reply_to_comment"] = [
+                "id" => $reply_to
+            ];
+        }
+
+        $this->view("posts/add-comment", $data);
+    }
+
     public function index()
     {
         $params = $this->request->getParams();
@@ -174,6 +194,8 @@ class PostsController extends Controller
         switch ($view) {
             case "comment-list":
                 return $this->commentList();
+            case "comment-form":
+                return $this->commentForm();
             case "index":
             default:
                 return $this->index();
