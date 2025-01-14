@@ -121,7 +121,7 @@ class CommentsService extends DatabaseService
         }
 
         $reader_service = new ReaderService($this->conn);
-        $reader = $reader_service->getReader(["id"], ["reader_email" => $reader_email]);
+        $reader = $reader_service->getReader(["r.id"], ["r.email" => $reader_email]);
         $reader_found = (bool)$reader;
         $reader_id = null;
 
