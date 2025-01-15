@@ -39,23 +39,31 @@ $reply_comments = array_filter($all_post_comments, function ($comm) use ($id) {
                 <p class="CommentCard-time">
                     <?= $created_at ?>
                 </p>
-                <button class="CommentCard-reply">
+                <button
+                    class="CommentCard-reply"
+                    onclick="handleOpenReplyForm('<?= $id ?>')">
                     Responder
                 </button>
             </div>
         </div>
-        <div class="CommentCard-text"><?= $text ?></div>
-        <?php if (count($reply_comments) > 0): ?>
-            <ul class="CommentCard-replies">
-                <?php
-                foreach ($reply_comments as $comm):
-                    $this->view("posts/comment-card", [
-                        "comment"           => $comm,
-                        "all_post_comments" => $all_post_comments
-                    ]);
-                endforeach;
-                ?>
-            </ul>
-        <?php endif; ?>
+        <p class="CommentCard-text"><?= $text ?></p>
+        <ul
+            class="CommentCard-replies"
+            data-visible="<?= count($reply_comments) > 0 ? "true" : "false" ?>">
+            <?php
+            foreach ($reply_comments as $comm):
+                $this->view("posts/comment-card", [
+                    "comment"           => $comm,
+                    "all_post_comments" => $all_post_comments
+                ]);
+            endforeach;
+            $this->view("posts/add-comment", [
+                "post"             => [
+                    "id" => $comment["post_id"],
+                ],
+                "reply_to_comment" => $comment
+            ]);
+            ?>
+        </ul>
     </div>
 </li>

@@ -1,5 +1,5 @@
 <div
-    id="comment-form"
+    id="comment-form-<?= isset($reply_to_comment) ? $reply_to_comment["id"] : "" ?>"
     data-view="comment-form"
     class="AddComment">
     <header class="AddComment-header">

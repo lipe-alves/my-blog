@@ -8,13 +8,13 @@ $(document).ready(function () {
         const loaderId = `loader-${id}`;
 
         let view = {
-            async reload(params = {}) {
+            async reload(params = {}, parent = null) {
                 const { api } = window;
                 const loader = $(`#${loaderId}`).clone(true);
 
                 this.loader.show();
 
-                await api.reload(this.element, params);
+                await api.reload(this.element, params, parent);
 
                 $(this.element).append(loader.prop("outerHTML"));
 

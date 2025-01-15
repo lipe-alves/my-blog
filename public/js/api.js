@@ -18,9 +18,10 @@
         /** 
          * @param {HTMLElment} viewElement 
          * @param {{ [key: string]: any }} params
+         * @param {HTMLElement=} parent
          * @returns {string}
          */
-        async reload(viewElement, params = {}) {
+        async reload(viewElement, params = {}, parent = null) {
             viewElement = $(viewElement);
 
             const view = viewElement.attr("data-view");
@@ -33,7 +34,8 @@
             const resp = await viewEndpoint.get(`/${queryString}`);
             const html = await resp.text();
 
-            viewElement.prop("outerHTML", html);
+            parent = parent ? $(parent) : viewElement;
+            parent.prop("outerHTML", html);
 
             return html;
         },

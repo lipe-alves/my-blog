@@ -21,27 +21,35 @@ async function handleSendComment(form, evt) {
         fieldset.prop("disabled", disabled);
     };
 
-    try {
-        setFormDisabled(true);
+    const sendComment = async () => {
+        await api.comments.send({
+            post_id: postId,
+            reply_to: replyTo,
+            comment,
+            fullname,
+            email
+        });
 
-        await delayAsync(async () => {
-            await api.comments.send({
-                post_id: postId,
-                reply_to: replyTo,
-                comment,
-                fullname,
-                email
-            });
-
-            await views.commentList.reload();
-        }, 3000);
+        await views.commentList.reload();
 
         form[0].reset();
+    };
 
+    try {
+        setFormDisabled(true);
+        await delayAsync(sendComment, 3000);
         toast.success("Comentário enviado com sucesso");
     } catch (err) {
         toast.error(err.message);
     } finally {
         setFormDisabled(false);
     }
+}
+
+/** @param {string} commentId */
+async function handleOpenReplyForm(commentId) {
+    const commentCard = $(`[data-comment-id="${commentId}"]`);
+    const commentReplies = commentCard.find(".CommentCard-replies");
+
+    
 }
