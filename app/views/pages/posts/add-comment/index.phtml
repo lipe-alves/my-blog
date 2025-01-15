@@ -12,15 +12,22 @@ if (!isset($visible)) {
     data-view="comment-form"
     data-visible="<?= json_encode($visible) ?>"
     class="AddComment">
-    <header class="AddComment-header">
-        <h3 class="title is-5">
-            Adicionar Comentário
-        </h3>
-        <p class="subtitle is-6">
-            Seu endereço de email não será publicado
-        </p>
-    </header>
+    <?php if (!isset($reply_to_comment)): ?>
+        <header class="AddComment-header">
+            <h3 class="title is-5">
+                Adicionar Comentário
+            </h3>
+            <p class="subtitle is-6">
+                Seu endereço de email não será publicado
+            </p>
+        </header>
+    <?php endif; ?>
     <form class="AddComment-form" onsubmit="handleSendComment(this, event)">
+        <?php if (isset($reply_to_comment)): ?>
+            <p class="title is-6 m-0 has-text-weight-normal is-italic">
+                Respondendo a <?= $reply_to_comment["first_name"] ?> <?= $reply_to_comment["last_name"] ?>...
+            </p>
+        <?php endif; ?>
         <fieldset>
             <input
                 type="hidden"

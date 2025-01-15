@@ -4,6 +4,7 @@
     align-items: flex-start;
     justify-content: flex-start;
     gap: 1em;
+    width: 100%;
 }
 
 .CommentCard-photo, .CommentCard-avatar {
@@ -18,6 +19,7 @@
     align-items: flex-start;
     justify-content: flex-start;
     gap: 0;
+    width: 100%;
 }
 
 .CommentCard-author {
@@ -48,6 +50,7 @@
     color: #272727;
     font-size: 1.1em;
     white-space: pre;
+    width: 100%;
 }
 
 .CommentCard-content {
@@ -56,6 +59,7 @@
     align-items: flex-start;
     justify-content: flex-start;
     gap: 1em;
+    width: 100%;
 }
 
 .CommentCard-replies:not([data-visible="false"]) {
@@ -66,4 +70,5 @@
     gap: 3em;
     padding-left: 1em;
     border-left: 1px solid rgba(0, 0, 0, 0.15);
+    width: 100%;
 }
