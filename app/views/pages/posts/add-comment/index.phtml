@@ -1,6 +1,16 @@
+<?php 
+if (!isset($rows)) {
+    $rows = 10;
+}
+
+if (!isset($visible)) {
+    $visible = true;
+}
+?>
 <div
     id="comment-form-<?= isset($reply_to_comment) ? $reply_to_comment["id"] : "" ?>"
     data-view="comment-form"
+    data-visible="<?= json_encode($visible) ?>"
     class="AddComment">
     <header class="AddComment-header">
         <h3 class="title is-5">
@@ -39,7 +49,7 @@
                 class="textarea"
                 name="comment"
                 placeholder="Seu comentário..."
-                rows="10"></textarea>
+                rows="<?= $rows ?>"></textarea>
             <button class="button is-success is-fullwidth" type="submit">
                 Enviar comentário
             </button>
