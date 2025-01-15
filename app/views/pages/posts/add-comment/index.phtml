@@ -6,9 +6,15 @@ if (!isset($rows)) {
 if (!isset($visible)) {
     $visible = true;
 }
+
+$form_id = "comment-form"; 
+if (isset($reply_to_comment)) {
+    $form_id .= "-$reply_to_comment[id]";
+}
+
 ?>
 <div
-    id="comment-form-<?= isset($reply_to_comment) ? $reply_to_comment["id"] : "" ?>"
+    id="<?= $form_id ?>"
     data-view="comment-form"
     data-visible="<?= json_encode($visible) ?>"
     class="AddComment">
@@ -57,9 +63,16 @@ if (!isset($visible)) {
                 name="comment"
                 placeholder="Seu comentário..."
                 rows="<?= $rows ?>"></textarea>
-            <button class="button is-success is-fullwidth" type="submit">
-                Enviar comentário
-            </button>
+            <footer class="AddComment-footer">
+                <?php if (isset($reply_to_comment)): ?>
+                    <button class="button is-fullwidth" onclick="handleCloseReplyForm('<?= $form_id ?>')">
+                        Cancelar
+                    </button>
+                <?php endif; ?>
+                <button class="button is-success is-fullwidth" type="submit">
+                    Enviar comentário
+                </button>
+            </footer>
         </fieldset>
     </form>
 </div>

@@ -47,7 +47,7 @@ async function handleSendComment(form, evt) {
 }
 
 /** @param {string} commentId */
-async function handleOpenReplyForm(commentId) {
+function handleOpenReplyForm(commentId) {
     const commentCards = $("[data-comment-id]");
 
     commentCards.each(function () {
@@ -56,4 +56,10 @@ async function handleOpenReplyForm(commentId) {
         const replyForm = $(this).find(`#comment-form-${id}`);
         replyForm.attr("data-visible", String(visible));
     });
+}
+
+/** @param {string} formId */
+function handleCloseReplyForm(formId) {
+    const form = $(`#${formId}`);
+    form.attr("data-visible", "false");
 }
