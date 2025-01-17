@@ -1,4 +1,5 @@
 :root {
+    --bulma-navbar-height: 60px;
     --bulma-body-background-color: #f5f5f5;
     --bulma-family-primary: "Merriweather", "Josefin Slab", serif;
     --input-background-color: #f5f4f4;

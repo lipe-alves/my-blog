@@ -1,4 +1,6 @@
 .Filters {
+    position: sticky;
+    top: calc(var(--bulma-navbar-height) + 2em);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -48,7 +50,7 @@
     justify-content: flex-start;
     line-height: var(--bulma-control-line-height);
     transition-duration: var(--bulma-duration);
-    transition-property: background-color, border-color, box-shadow, color;
+    transition-property: background-color, border-color, box-shadow color;
     vertical-align: top;
     position: relative;
     width: 100%;
