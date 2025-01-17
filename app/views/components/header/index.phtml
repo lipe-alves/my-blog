@@ -6,11 +6,11 @@ extract($settings);
 <header class="Header">
     <div class="Header-inner">
         <h1 class="Header-title title is-3">
-            <a href="<?= BASE_URI ?>">
+            <a href="<?= BASE_URI ?>" data-settings="blog_name">
                 <?= $blog_name ?>
             </a>
         </h1>
-        <p class="Header-subtitle subtitle">
+        <p class="Header-subtitle subtitle" data-settings="blog_name">
             <?= $blog_catchline ?>
         </p>
     </div>
