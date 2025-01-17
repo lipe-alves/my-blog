@@ -52,7 +52,7 @@ img {
     min-width: var(--content-min-width);
     margin: 0 auto;
     background-color: #fff;
-    padding: 1em;
+    padding: 2em;
 }
 
 @media screen and (max-width: 900px) {
