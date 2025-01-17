@@ -7,6 +7,13 @@
     width: 100%;
 }
 
+@media screen and (max-width: 900px) {
+    .AddComment:not([data-visible="false"]) {
+        border-bottom: 1px solid #efefef;
+        padding-bottom: 3em;
+    }
+}
+
 .AddComment-header {
     display: flex;
     flex-direction: column;
