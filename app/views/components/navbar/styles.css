@@ -35,6 +35,8 @@
         max-width: none;
         background-color: #fff;
         padding-top: 0;
+        padding-left: 0;
+        padding-right: 0;
     }
 }
 
