@@ -17,7 +17,6 @@
     min-height: 30em;
     margin: 0 auto;
     background-image: var(--header-background-image);
-    background-size: 361px 256px;
     background-repeat: no-repeat;
     background-position: right top;
     background-color: transparent;
