@@ -7,6 +7,12 @@
     flex: 1;
 }
 
+@media screen and (max-width: 900px) {
+    .Filters {
+        width: 100%;
+    }
+}
+
 .Searchbar-container {
     width: 100%;
 }
@@ -22,12 +28,14 @@
     background-color: var(--input-background-color);
     padding: 0.8em 1.1em;
     border-radius: 6px;
+    width: 100%;
 }
 
 .Searchbar-text {
     text-align: center;
     align-content: center;
     cursor: pointer;
+    width: 100%;
 }
 
 .Searchbar-input {
@@ -43,7 +51,7 @@
     transition-property: background-color, border-color, box-shadow, color;
     vertical-align: top;
     position: relative;
-    width: 250px;
+    width: 100%;
     opacity: 1;
     background-color: transparent;
     padding: 0;

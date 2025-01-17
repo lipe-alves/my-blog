@@ -10,6 +10,12 @@
     flex: 2;
 }
 
+@media screen and (max-width: 900px) {
+    .PostList {
+        width: 100%;
+    }
+}
+
 .PostCard-listItem {
     width: 100%;
 }
@@ -49,3 +55,5 @@
     height: fit-content;
     text-align: center;
 }
+
+
