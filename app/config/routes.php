@@ -6,6 +6,9 @@ use App\Core\Router;
 
 $router = new Router();
 
+$router->addMiddleware("/", "\\App\\Middlewares\\SessionMiddleware::execute");
+$router->addMiddleware("/", "\\App\\Middlewares\\AdmMiddleware::execute");
+
 // Rotas de Home
 $router->get("/", "\\App\\Controllers\\HomeController::page");
 
@@ -22,7 +25,6 @@ $router->get("/api/ping", "\\App\\Controllers\\TestsController::ping");
 
 $router->setHandlers([
     "not_found_page" => "\\App\\Controllers\\NotFoundController::index",
-    "global"         => "\\App\\Middlewares\\SessionMiddleware::execute",
     "error"          => "\\App\\Middlewares\\ErrorMiddleware::execute"
 ]);
 

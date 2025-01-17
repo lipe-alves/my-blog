@@ -6,8 +6,7 @@ use App\Core\Middleware;
 use App\Core\Request;
 use App\Core\Response;
 
-use App\Services\CategoryService;
-use App\Services\SettingsService;
+use App\Services\AuthService;
 
 class AdmMiddleware extends Middleware
 {
@@ -21,11 +20,17 @@ class AdmMiddleware extends Middleware
         if (!isset($adm) || !isset($password)) {
             return;
         }
-        
+
+        $adm = (bool)$adm;
         if (!$adm) {
             return;
         }
-
         
+        $passwords_match = AuthService::verifyPassword($pasword, $adm_password);
+        if (!$passwords_match) {
+            return;
+        }
+
+        $request->setSession("admin", true);
     }
 }

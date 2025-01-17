@@ -13,6 +13,16 @@ class Router
 
     private array $routes = [];
     private array $handlers;
+    private array $middlewares;
+
+    public function addMiddleware(string $path_template, string $middleware)
+    {
+        $this->middlewares[] = [
+            "path_template" => $path_template,
+            "path_pattern"  => $this->convertPathTemplateToRegex($path_template),
+            "middleware"    => $middleware
+        ];
+    }
 
     public function addRoute(string $method, string $path_template, string $controller, array $middlewares = [])
     {
@@ -24,12 +34,15 @@ class Router
             $path_template = $path_template . "/";
         }
 
+        foreach ($middlewares as $middleware) {
+            $this->addMiddleware($path_template, $middleware);
+        }
+
         $this->routes[] = [
             "method"        => strtoupper($method),
             "path_template" => $path_template,
             "path_pattern"  => $this->convertPathTemplateToRegex($path_template),
-            "controller"    => $controller,
-            "middlewares"   => isset($middlewares) ? $middlewares : []
+            "controller"    => $controller
         ];
     }
 
@@ -61,19 +74,27 @@ class Router
 
             foreach ($this->routes as $route) {
                 $route_method = $route["method"];
-                $middlewares = $route["middlewares"];
                 $path_pattern = $route["path_pattern"];
                 $path_template = $route["path_template"];
                 $controller = $route["controller"];
 
-                $matched = $route_method === strtoupper($method) && (bool)preg_match($path_pattern, $actual_path);
+                $route_matched = $route_method === strtoupper($method) && (bool)preg_match($path_pattern, $actual_path);
                 $params = $this->extractParams($path_template, $actual_path);
 
                 foreach ($params as $key => $value) {
                     $request->setParams($key, $value);
                 }
 
-                if ($matched) {
+                $middlewares = [];
+
+                foreach ($this->middlewares as $middleware) {
+                    $middleware_matched = (bool)preg_match($middleware["path_pattern"], $actual_path);
+                    if ($middleware_matched) {
+                        $middlewares[] = $middleware["middleware"];
+                    }
+                }
+
+                if ($route_matched) {
                     if (isset($global)) {
                         $this->executeRouteHandler($global, $request, $response);
                     }
