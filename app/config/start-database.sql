@@ -85,7 +85,8 @@ INSERT IGNORE INTO Settings
 VALUES
     ("blog_name", "Nome do blog", NULL, NULL, "Pensamentos de Escrivaninha"),
     ("blog_catchline", "Subtítulo do blog", NULL, NULL, "Minha caixinha de pensamentos"),
-    ("about_me", "Texto Sobre Mim", NULL, NULL, "Teste");
+    ("about_me", "Texto Sobre Mim", NULL, NULL, "Teste")
+    ("adm_password", "Texto Sobre Mim", NULL, NULL, "Teste");
 
 INSERT IGNORE INTO Category 
     (id, name)
