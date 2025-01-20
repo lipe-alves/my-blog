@@ -20,6 +20,9 @@ $router->get("/api/posts", "\\App\\Controllers\\PostsController::listPosts");
 $router->get("/api/comments", "\\App\\Controllers\\CommentsController::listComments");
 $router->post("/api/comments", "\\App\\Controllers\\CommentsController::insertComment");
 
+// Rotas de Configurações
+$router->patch("/api/settings", "\\App\\Controllers\\SettingsController::updateSettings");
+
 // Rotas de Testes
 $router->get("/api/ping", "\\App\\Controllers\\TestsController::ping");
 
