@@ -90,48 +90,48 @@ CREATE TABLE
 INSERT IGNORE INTO Settings (id, title, description, hint, value)
 VALUES
     (
-        "blog_name",
-        "Nome do blog",
+        'blog_name',
+        'Nome do blog',
         NULL,
         NULL,
-        "Pensamentos de Escrivaninha"
+        'Pensamentos de Escrivaninha'
     ),
     (
-        "blog_catchline",
-        "Subtítulo do blog",
+        'blog_catchline',
+        'Subtítulo do blog',
         NULL,
         NULL,
-        "Minha caixinha de pensamentos"
+        'Minha caixinha de pensamentos'
     ),
     (
-        "about_me",
-        "Texto Sobre Mim",
+        'about_me',
+        'Texto Sobre Mim',
         NULL,
         NULL,
-        "Teste"
+        'Teste'
     ),
     (
-        "adm_password",
-        "Senha mestre",
+        'adm_password',
+        'Senha mestre',
         NULL,
         NULL,
-        "$2y$10$1804zIK0g3S2VsDazWuBle1DYYX9nAOdPZlUcL5UKgPiUOUlW2sfm"
+        '$2y$10$1804zIK0g3S2VsDazWuBle1DYYX9nAOdPZlUcL5UKgPiUOUlW2sfm'
     );
 
 INSERT IGNORE INTO Category (id, name)
 VALUES
-    (1, "Geral"),
-    (2, "Poemas"),
-    (3, "Reflexões"),
-    (4, "Retalhos");
+    (1, 'Geral'),
+    (2, 'Poemas'),
+    (3, 'Reflexões'),
+    (4, 'Retalhos');
 
 INSERT IGNORE INTO Post (id, slug, title, text)
 VALUES
     (
         1,
-        "bem-vinda",
-        "Boas vindas!",
-        "<h1>Bem-vinda ao seu espaço!</h1>"
+        'bem-vinda',
+        'Boas vindas!',
+        '<h1>Bem-vinda ao seu espaço!</h1>'
     );
 
 INSERT IGNORE INTO Post_x_Category (post_id, category_id)
@@ -139,15 +139,13 @@ VALUES
     (1, 1);
 
 CREATE TRIGGER IF NOT EXISTS settings_after_update BEFORE
-UPDATE ON Settings FOR EACH ROW BEGIN
-SET
-    new.updated_at = CURRENT_TIMESTAMP;
-
+UPDATE ON Settings FOR EACH ROW 
+BEGIN
+    SET new.updated_at = NOW();
 END;
 
 CREATE TRIGGER IF NOT EXISTS post_after_update BEFORE
-UPDATE ON Post FOR EACH ROW BEGIN
-SET
-    new.updated_at = CURRENT_TIMESTAMP;
-
+UPDATE ON Post FOR EACH ROW 
+BEGIN
+    SET new.updated_at = NOW();
 END;
