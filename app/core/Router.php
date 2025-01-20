@@ -228,6 +228,7 @@ class Router
     protected function convertPathTemplateToRegex(string $path_template)
     {
         $pattern = "#^" . preg_replace("/:\w+/", "(".self::PATH_PARAM_PATTERN.")", $path_template) . "$#";
+        $pattern = preg_replace("/\*/", ".*", $pattern);
         $pattern = preg_replace("/\/$/", "/*", $pattern);
         return $pattern;
     }

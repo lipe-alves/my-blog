@@ -1,16 +1,26 @@
 <?php 
 $session = $this->request->getSession();
-$settings = $session["settings"];
+extract($session);
 extract($settings);
 ?>
 <header class="Header">
     <div class="Header-inner">
         <h1 class="Header-title title is-3">
-            <a href="<?= BASE_URI ?>" data-settings="blog_name">
+            <a 
+                href="<?= BASE_URI ?>" 
+                <?php if ($admin): ?> 
+                    data-settings="blog_name"
+                <?php endif; ?>
+            >
                 <?= $blog_name ?>
             </a>
         </h1>
-        <p class="Header-subtitle subtitle" data-settings="blog_catchline">
+        <p 
+            class="Header-subtitle subtitle" 
+            <?php if ($admin): ?> 
+                data-settings="blog_catchline"
+            <?php endif; ?>
+        >
             <?= $blog_catchline ?>
         </p>
     </div>

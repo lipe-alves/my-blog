@@ -26,7 +26,7 @@ class AdmMiddleware extends Middleware
             return;
         }
         
-        $passwords_match = AuthService::verifyPassword($pasword, $adm_password);
+        $passwords_match = AuthService::verifyPassword($password, $settings["adm_password"]);
         if (!$passwords_match) {
             return;
         }
