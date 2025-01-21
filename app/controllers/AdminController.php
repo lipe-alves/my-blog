@@ -37,4 +37,34 @@ class AdminController extends Controller
         ])->send();
     }
 
+    // Views
+
+    public function index() 
+    {
+        $session = $this->request->getSession();
+        $settings = $session["settings"];
+        extract($settings);
+        
+        $this->view("admin", [
+            "title"       => $blog_name,
+            "description" => $blog_catchline,
+            "keywords"    => []
+        ]);
+    }
+
+    public function page(Request $request)
+    {
+        $get = $request->getGet();
+        $view = "index";
+
+        if (array_key_exists("view", $get)) {
+            $view = $get["view"];
+        }
+
+        switch ($view) {
+            case "index":
+            default:
+                return $this->index();
+        }
+    }
 }
