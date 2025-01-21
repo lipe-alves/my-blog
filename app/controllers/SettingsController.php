@@ -41,13 +41,12 @@ class SettingsController extends Controller
         extract($path_params);
         extract($put);
 
-        if (!$admin) {
+        if (!isset($admin) || !(bool)$admin) {
             throw new UnauthorizedException();
         }
 
-        if (!$value) {
-            throw new MissingParamException();
-            
+        if (!isset($value)) {
+            throw new MissingParamException("value");
         }
 
         SettingsService::set($key, $value);
