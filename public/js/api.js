@@ -4,11 +4,11 @@
     const apiEndpoint = createEndpoint(apiUrl);
 
     const api = {
-        apiEndpoint,
+        endpoint: apiEndpoint,
 
         /** @param {RequestInit=} config */
         async ping(config = {}) {
-            const resp = await this.apiEndpoint.request("/ping", {
+            const resp = await this.endpoint.request("/ping", {
                 ...config,
                 method: "GET"
             });

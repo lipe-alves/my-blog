@@ -23,6 +23,9 @@ $router->post("/api/comments", "\\App\\Controllers\\CommentsController::insertCo
 // Rotas de Configurações
 $router->patch("/api/settings", "\\App\\Controllers\\SettingsController::updateSettings");
 
+// Rotas de Admin
+$router->post("/api/admin/authenticate", "\\App\\Controllers\\AdminController::authenticate");
+
 // Rotas de Testes
 $router->get("/api/ping", "\\App\\Controllers\\TestsController::ping");
 

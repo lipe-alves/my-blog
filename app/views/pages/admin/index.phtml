@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <?php
+    $this->component("meta-tags", [
+        "description" => $description,
+        "keywords"    => $keywords
+    ])
+    ?>
+    <title><?= $title ?></title>
+    <?php $this->component("dependencies") ?>
+    <?php $this->component("fonts") ?>
+</head>
+
+<body>
+    <iframe 
+        id="admin-panel"
+        src="<?= BASE_URI ?>"
+    ></iframe>
+    <?php $this->component("modal") ?>
+    <script
+        type="text/javascript"
+        src="<?= BASE_URI ?>/app/views/pages/admin/script.js?v=<?= time() ?>"></script>
+</body>
+
+</html>

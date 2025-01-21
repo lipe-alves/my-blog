@@ -18,17 +18,17 @@ class AdmMiddleware extends Middleware
         extract($get);
 
         if (!isset($adm) || !isset($password)) {
-            return;
+            return $request->setSession("admin", false);
         }
 
         $adm = (bool)$adm;
         if (!$adm) {
-            return;
+            return $request->setSession("admin", false);
         }
         
         $passwords_match = AuthService::verifyPassword($password, $settings["adm_password"]);
         if (!$passwords_match) {
-            return;
+            return $request->setSession("admin", false);
         }
 
         $request->setSession("admin", true);
