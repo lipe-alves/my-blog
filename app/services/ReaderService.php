@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Core\DatabaseService;
+use App\Exceptions\InvalidFormatException;
+use App\Exceptions\MissingParamException;
+use App\Exceptions\InvalidInputException;
 
 class ReaderService extends DatabaseService
 {
@@ -24,11 +27,11 @@ class ReaderService extends DatabaseService
         extract($data);
 
         if (!isset($email)) {
-            throw new \Exception('Campo "email" é obrigatório.');
+            throw new MissingParamException('"email"');
         }
 
         if (!validate_email($email)) {
-            throw new \Exception('Campo "email" inválido.');
+            throw new InvalidFormatException('"email"', ["exemplo@exemplo.com"]);
         }
 
         if (isset($fullname)) {
@@ -41,11 +44,11 @@ class ReaderService extends DatabaseService
         $last_name = remove_multiple_whitespaces($last_name);
 
         if (!isset($first_name) || !$first_name) {
-            throw new \Exception('Campo "primeiro nome" é obrigatório.');
+            throw new MissingParamException('"primeiro nome"');
         }
 
         if (!isset($last_name) || !$last_name) {
-            throw new \Exception('Campo "último nome" é obrigatório.');
+            throw new MissingParamException('"último nome"');
         }
 
         if (!isset($photo)) {
@@ -87,15 +90,15 @@ class ReaderService extends DatabaseService
         extract($updates);
 
         if (isset($email) && !validate_email($email)) {
-            throw new \Exception('Campo "email" inválido.');
+            throw new InvalidFormatException('"email"', ["exemplo@exemplo.com"]);
         }
         
         if (isset($first_name) && !$first_name) {
-            throw new \Exception('Campo "primeiro nome" é obrigatório.');
+            throw new MissingParamException('"primeiro nome"');
         }
 
         if (isset($last_name) && !$last_name) {
-            throw new \Exception('Campo "último nome" é obrigatório.');
+            throw new MissingParamException('"último nome"');
         }
 
         $success = $this->update("Reader", $updates, ["r.id" => $id]);
