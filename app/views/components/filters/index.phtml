@@ -35,7 +35,7 @@ if (!isset($category)) {
                     onkeypress="handleSearchOnEnter(event)"
                     value="<?= $search ?>" />
             </span>
-            <span class="Searchbar-icon" onclick="handleSearch(event)">
+            <span class="Searchbar-icon" onclick="handleSearch($('#search-bar')[0])">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </span>
         </label>

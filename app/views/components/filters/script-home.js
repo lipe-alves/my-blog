@@ -43,13 +43,13 @@ async function handleApplyFilter(key, value) {
     await reloadPosts();
 }
 
-async function handleSearch(evt) {
-    await handleApplyFilter("search", evt.target.value);
+async function handleSearch(input) {
+    await handleApplyFilter("search", input.value);
 }
 
 function handleSearchOnEnter(evt) {
     const { onEnterPress } = window.functions;
-    onEnterPress(evt, handleSearch);
+    onEnterPress(evt, (evt) => handleSearch(evt.target));
 }
 
 async function handleClearFilters() {
