@@ -110,6 +110,7 @@
         }
 
         for (const [key, value] of Object.entries(params)) {
+            if (!value) continue;
             url.searchParams.set(key, value);
         }
 
@@ -123,7 +124,7 @@
             query[key] = "";
         }
 
-        setFilterParams(query);
+        setQueryParams(query);
     }
 
     /** @returns {{ [key: string]: any }} */
