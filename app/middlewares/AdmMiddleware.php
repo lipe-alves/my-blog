@@ -15,6 +15,11 @@ class AdmMiddleware extends Middleware
         $session = $request->getSession();
         $settings = $session["settings"];
         $get = $request->getGet();
+
+        if (!array_key_exists("admin", $get)) {
+            $get["admin"] = false;
+        }
+        
         extract($get);
 
         if (!isset($adm) || !isset($password)) {
