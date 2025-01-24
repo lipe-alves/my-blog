@@ -37,7 +37,8 @@ class ReaderService extends DatabaseService
         if (isset($fullname)) {
             $name_parts = explode(" ", $fullname);
             $first_name = $name_parts[0];
-            $last_name = str_replace($first_name, "", $fullname);
+            array_shift($name_parts);
+            $last_name = implode(" ", $name_parts);
         }
 
         $first_name = remove_multiple_whitespaces($first_name);
