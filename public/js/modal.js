@@ -5,6 +5,7 @@
             onHide: null,
         },
         reset() {
+            const modal = $(this.element);
             modal.removeClass("is-active");
             modal.find("[data-field]").each(function () {
                 $(this).html("");
