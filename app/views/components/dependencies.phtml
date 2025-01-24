@@ -1,6 +1,10 @@
 <?php 
 $session = $this->request->getSession();
 $get = $this->request->getGet();
+
+if (!array_key_exists("admin", $get)) {
+    $get["admin"] = false;
+}
 ?>
 <!-- jQuery -->
 <script
