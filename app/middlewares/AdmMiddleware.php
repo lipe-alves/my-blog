@@ -23,12 +23,12 @@ class AdmMiddleware extends Middleware
 
         extract($get);
 
-        if (!isset($adm) || !isset($password)) {
+        if (!isset($admin) || !isset($password)) {
             return $request->setSession("is_authenticated", false);
         }
 
-        $adm = (bool)$adm;
-        if (!$adm) {
+        $admin = (bool)$admin;
+        if (!$admin) {
             return $request->setSession("is_authenticated", false);
         }
         
