@@ -5,10 +5,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
-use App\Services\SettingsService;
-use App\Services\AuthService;
 use App\Services\AdminService;
-use App\Exceptions\UnauthorizedException;
 use App\Exceptions\MissingParamException;
 
 class AdminController extends Controller
