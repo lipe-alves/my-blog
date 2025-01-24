@@ -1,6 +1,6 @@
 <?php 
 $session = $this->request->getSession();
-extract($session);
+$get = $this->request->getGet();
 ?>
 <!-- jQuery -->
 <script
@@ -22,6 +22,10 @@ extract($session);
 <script
     crossorigin="anonymous"
     src="https://kit.fontawesome.com/d5cb389dd1.js"></script>
+<!-- Animate.css -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <!-- Local scripts -->
 <script
     type="text/javascript"
@@ -42,11 +46,18 @@ extract($session);
     src="<?= BASE_URI ?>/public/js/loader.js?v=<?= time() ?>"></script>
 <script
     type="text/javascript"
+    src="<?= BASE_URI ?>/public/js/modal.js?v=<?= time() ?>"></script>
+<script
+    type="text/javascript"
     src="<?= BASE_URI ?>/public/js/views.js?v=<?= time() ?>"></script>
-<?php if ($admin): ?>
+<?php if ($get["admin"] && !$session["is_authenticated"]): ?>
     <script
         type="text/javascript"
-        src="<?= BASE_URI ?>/public/js/adm.js?v=<?= time() ?>"></script>
+        src="<?= BASE_URI ?>/public/js/admin-modal.js?v=<?= time() ?>"></script>
+<?php elseif ($get["admin"] && $session["is_authenticated"]): ?>
+    <script
+        type="text/javascript"
+        src="<?= BASE_URI ?>/public/js/admin.js?v=<?= time() ?>"></script>
 <?php endif; ?>
 <!-- Local styles -->
 <link

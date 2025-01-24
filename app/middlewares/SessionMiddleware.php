@@ -27,6 +27,7 @@ class SessionMiddleware extends Middleware
 
         $categories_loaded = array_key_exists("categories", $session) && count($session["categories"]) > 0;
         $settings_loaded = array_key_exists("settings", $session);
+        $admin_auth_loaded = array_key_exists("is_authenticated", $session);
 
         if (!$categories_loaded) {
             $category_service = new CategoryService();
@@ -41,6 +42,10 @@ class SessionMiddleware extends Middleware
 
         if (!$settings_loaded) {
             $request->setSession("settings", SettingsService::getAll());
+        }
+
+        if (!$admin_auth_loaded) {
+            $request->setSession("is_authenticated", false);
         }
     }
 }
