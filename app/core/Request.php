@@ -61,6 +61,11 @@ class Request
         return $this->get;
     }
 
+    public function setGet(string $key, mixed $value)
+    {
+        $this->get[$key] = $value;
+    }
+
     public function getPost()
     {
         return $this->post;

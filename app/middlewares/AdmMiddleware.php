@@ -18,8 +18,9 @@ class AdmMiddleware extends Middleware
 
         if (!array_key_exists("admin", $get)) {
             $get["admin"] = false;
+            $request->setGet("admin", false);
         }
-        
+
         extract($get);
 
         if (!isset($adm) || !isset($password)) {
