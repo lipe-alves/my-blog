@@ -9,7 +9,7 @@
             modal.find("[data-field]").each(function () {
                 $(this).html("");
             });
-            this.onHide = null;
+            this.events.onHide = null;
         },
 
         /**
@@ -21,6 +21,8 @@
          * }} params 
          */
         show(params) {
+            this.reset();
+
             const modal = $(this.element);
 
             for (const [field, value] of Object.entries(params)) {
@@ -30,7 +32,7 @@
             }
 
             if (params.onHide) {
-                this.onHide = onHide;
+                this.events.onHide = onHide;
             }
 
             modal.addClass("is-active");
@@ -43,10 +45,10 @@
             modal.find(".modal-card").addClass("animate__animated animate__zoomOut");
 
             setTimeout(() => {
-                modal.removeClass("is-active");
-                modal.find("[data-field]").each(function () {
-                    $(this).html("");
-                });
+                if (this.events.onHide) {
+                    this.events.onHide();
+                }
+                this.reset();
             }, 800);
         }
     };
