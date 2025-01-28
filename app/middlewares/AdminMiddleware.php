@@ -8,7 +8,7 @@ use App\Core\Response;
 
 use App\Services\AuthService;
 
-class AdmMiddleware extends Middleware
+class AdminMiddleware extends Middleware
 {
     public function execute(Request $request, Response $response, \Exception $exception = null)
     {
@@ -19,6 +19,15 @@ class AdmMiddleware extends Middleware
         if (!array_key_exists("admin", $get)) {
             $get["admin"] = false;
             $request->setGet("admin", false);
+        }
+
+        if (!array_key_exists("is_authenticated", $session)) {
+            $session["is_authenticated"] = false;
+            $request->setSession("is_authenticated", false);
+        }
+
+        if ($session["is_authenticated"]) {
+            return;
         }
 
         extract($get);

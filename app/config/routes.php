@@ -7,7 +7,7 @@ use App\Core\Router;
 $router = new Router();
 
 $router->addMiddleware("*", "\\App\\Middlewares\\SessionMiddleware::execute");
-$router->addMiddleware("*", "\\App\\Middlewares\\AdmMiddleware::execute");
+$router->addMiddleware("*", "\\App\\Middlewares\\AdminMiddleware::execute");
 
 // Rotas de Home
 $router->get("/", "\\App\\Controllers\\HomeController::page");
