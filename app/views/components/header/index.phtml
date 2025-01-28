@@ -8,7 +8,7 @@ extract($settings);
         <h1 class="Header-title title is-3">
             <a 
                 href="<?= BASE_URI ?>" 
-                <?php if ($admin): ?> 
+                <?php if ($is_authenticated): ?> 
                     data-settings="blog_name"
                 <?php endif; ?>
             >
@@ -17,7 +17,7 @@ extract($settings);
         </h1>
         <p 
             class="Header-subtitle subtitle" 
-            <?php if ($admin): ?> 
+            <?php if ($is_authenticated): ?> 
                 data-settings="blog_catchline"
             <?php endif; ?>
         >

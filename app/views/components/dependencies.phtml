@@ -54,7 +54,7 @@ $get = $this->request->getGet();
     <script
         type="text/javascript"
         src="<?= BASE_URI ?>/public/js/admin-modal.js?v=<?= time() ?>"></script>
-<?php elseif ($get["admin"] && $session["is_authenticated"]): ?>
+<?php elseif ($session["is_authenticated"]): ?>
     <script
         type="text/javascript"
         src="<?= BASE_URI ?>/public/js/admin.js?v=<?= time() ?>"></script>
@@ -69,3 +69,8 @@ $get = $this->request->getGet();
 <link
     rel="stylesheet"
     href="<?= BASE_URI ?>/public/css/loader.css?v=<?= time() ?>" />
+<?php if ($session["is_authenticated"]): ?>
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URI ?>/public/css/admin.css?v=<?= time() ?>" />
+<?php endif; ?>
