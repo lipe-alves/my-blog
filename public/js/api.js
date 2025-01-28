@@ -82,6 +82,11 @@
             /** @param {string} password */
             async authenticate(password) {
                 const resp = await apiEndpoint.post("/admin/authenticate", { password });
+
+                if (resp.success) {
+                    apiEndpoint.defaults.headers.authorization = `Basic ${btoa(`admin:${password}`)}`;
+                }
+
                 return resp.json();
             }
         }

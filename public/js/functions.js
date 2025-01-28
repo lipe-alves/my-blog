@@ -14,6 +14,9 @@
     /** @param {string} baseUrl */
     function createEndpoint(baseUrl) {
         return {
+            /** @type {RequestInit} */
+            defaults: {},
+
             /**
              * @param {string} path
              * @param {RequestInit} config
@@ -25,6 +28,7 @@
                 path = "/" + path;
                 url += path;
                 url = url.replace(/(?<!:)\/+/g, "/");
+                config = { ...this.defaults, ...config }
 
                 const resp = await fetch(url, config);
                 if (!resp.ok) throw await resp.json();
