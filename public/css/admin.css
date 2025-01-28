@@ -1,9 +1,17 @@
-[data-settings][contenteditable="true"] {
-    border: 3px dotted var(--bulma-link-text);
-    border-radius: 4px;
+[contenteditable="true"] {
     cursor: text;
 }
 
-[data-settings][contenteditable="true"]:focus-visible {
+[data-settings][contenteditable="true"] {
+    border: 3px dotted var(--bulma-link-text);
+    border-radius: 4px;
+}
+
+[data-category-id][contenteditable="true"] {
+    border-bottom: 3px dotted var(--bulma-link-text);
+    border-radius: 4px;
+}
+
+[contenteditable="true"]:focus-visible {
     outline: none;
 }

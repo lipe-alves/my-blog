@@ -7,6 +7,7 @@ extract($query);
 
 $session = $this->request->getSession();
 $categories = $session["categories"];
+$is_authenticated = $session["is_authenticated"];
 $current_path = $this->request->getPath();
 $is_home = $current_path === "/";
 
@@ -49,13 +50,18 @@ if (!isset($category)) {
                 <li>
                     <a
                         <?php if ($is_home): ?>
-                        href="<?= "javascript:handleApplyFilter('category', '$ctg[name]')" ?>"
+                            href="javascript:handleApplyFilter('category', '<?=$ctg["name"]?>')"
                         <?php else: ?>
-                        href="<?= BASE_URI . "/?category=$ctg[name]" ?>"
+                            href="<?= BASE_URI . "/?category=$ctg[name]" ?>"
                         <?php endif; ?>
                         <?php if ($category === $ctg["name"]): ?>
-                        class="active"
-                        <?php endif; ?>>
+                            class="active"
+                        <?php endif; ?>
+                        <?php if ($is_authenticated): ?>
+                            data-category-id="<?=$ctg["id"]?>"
+                            data-category-name="<?=$ctg["name"]?>"
+                        <?php endif; ?>
+                    >
                         <?= $ctg["name"] ?>
                     </a>
                     (<?= $ctg["post_count"] ?>)

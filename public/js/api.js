@@ -42,7 +42,7 @@
 
         settings: {
             async update(updates) {
-                const resp = await apiEndpoint.patch("/api/settings", updates);
+                const resp = await apiEndpoint.patch("/settings", updates);
                 return resp.json();
             }
         },
