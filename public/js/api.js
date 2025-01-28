@@ -76,6 +76,14 @@
                 const resp = await apiEndpoint.post("/comments/", params);
                 return resp.json();
             }
+        },
+
+        admin: {
+            /** @param {string} password */
+            async authenticate(password) {
+                const resp = await apiEndpoint.post("/admin/authenticate", { password });
+                return resp.json();
+            }
         }
     };
 
