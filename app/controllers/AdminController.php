@@ -16,13 +16,13 @@ class AdminController extends Controller
         extract($post);
 
         if (!isset($password) || !$password) {
-            throw new MissingParamException("password");
+            throw new MissingParamException('"senha"');
         }
 
         $passwords_match = AdminService::authenticate($password);
 
         if (!$passwords_match) {
-            return $response->setStatus(200)->setJson([
+            return $response->setStatus(400)->setJson([
                 "success" => false,
                 "message" => "Senha inválida!"
             ])->send();
