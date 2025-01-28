@@ -1,0 +1,5 @@
+[data-settings][contenteditable="true"] {
+    border: 3px dotted var(--bulma-link-text);
+    border-radius: 4px;
+    cursor: text;
+}
