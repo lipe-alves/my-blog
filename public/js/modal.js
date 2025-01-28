@@ -33,7 +33,7 @@
             }
 
             if (params.onHide) {
-                this.events.onHide = onHide;
+                this.events.onHide = params.onHide;
             }
 
             modal.addClass("is-active");
