@@ -3,3 +3,7 @@
     border-radius: 4px;
     cursor: text;
 }
+
+[data-settings][contenteditable="true"]:focus-visible {
+    outline: none;
+}
