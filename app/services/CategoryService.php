@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Core\DatabaseConnection;
 use App\Core\DatabaseService;
+use App\Exceptions\ResourceNotFoundException;
 
 class CategoryService extends DatabaseService
 {
@@ -21,16 +21,22 @@ class CategoryService extends DatabaseService
         return $categories;
     }
 
+    public function getCategory(array $columns, array $data)
+    {
+        $categories = $this->getCategories($columns, $data);
+        return count($categories) === 0 ? null : $categories[0];
+    }
+
     public function getCategoryById(string $id, array $columns = ["*"])
     {
-        $categories = $this->getCategories($columns, ["c.id" => $id]);
-        return count($categories) === 0 ? null : $categories[0];
+        $category = $this->getCategory($columns, ["c.id" => $id]);
+        return $category;
     }
 
     public function getCategoryByName(string $name, array $columns = ["*"])
     {
-        $categories = $this->getCategories($columns, ["c.name" => $name]);
-        return count($categories) === 0 ? null : $categories[0];
+        $category = $this->getCategory($columns, ["c.name" => $name]);
+        return $category;
     }
 
     public function getAllCategories(array $columns = ["*"], $limit = null)
@@ -42,5 +48,16 @@ class CategoryService extends DatabaseService
 
         $categories = $this->getCategories($columns, $data);
         return $categories;
+    }
+
+    public function deleteCategory(string $id): bool
+    {
+        $category = $this->getCategoryById($id, ["c.id"]);
+        if (!$category) {
+            throw new ResourceNotFoundException('Categoria com id igual a "'.$id.'" não encontrada');
+        }
+
+        $success = $this->delete("Category", ["c.id" => $id]);
+        return $success;
     }
 }

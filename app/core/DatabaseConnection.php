@@ -72,6 +72,12 @@ class DatabaseConnection
         return $this->execute($sql, $data);
     }
 
+    public function delete(string $sql, array|null $data = null): bool
+    {
+        if (!preg_match("/^DELETE/i", $sql)) return false;
+        return $this->execute($sql, $data);
+    }
+
     public function getLastInsertedId(): string|false
     {
         return $this->conn->lastInsertId();

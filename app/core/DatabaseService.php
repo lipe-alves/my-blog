@@ -249,6 +249,21 @@ class DatabaseService
         return $success;
     }
 
+    public function delete(string $table, array $conditions): bool
+    {
+        $data = [];
+
+        $wheres = $this->convertArrayToWhereCondition($conditions);
+        $data = array_merge($data, $conditions);
+
+        $table_alias = $this->getTableAlias($table);
+
+        $sql = "DELETE FROM $table $table_alias WHERE $wheres";
+        $success = $this->conn->delete($sql, $data);
+
+        return $success;
+    }
+
     public function startTransaction()
     {
         return $this->conn->startTransaction();

@@ -20,6 +20,9 @@ $router->get("/api/posts", "\\App\\Controllers\\PostsController::listPosts");
 $router->get("/api/comments", "\\App\\Controllers\\CommentsController::listComments");
 $router->post("/api/comments", "\\App\\Controllers\\CommentsController::insertComment");
 
+// Rotas de categorias
+$router->delete("/api/categories/:name_or_id", "\\App\\Controllers\\CategoriesController::deleteCategory");
+
 // Rotas de Configurações
 $router->patch("/api/settings", "\\App\\Controllers\\SettingsController::updateSettings");
 
