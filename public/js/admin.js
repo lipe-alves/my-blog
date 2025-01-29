@@ -14,9 +14,11 @@ $(document).ready(function () {
 
         settingsElement.attr("contenteditable", "true");
 
-        window.admin.settings[settings] = createTextController(settingsElement[0], async function () {
-            const newSettings = await api.settings.update({ [settings]: this.value });
-            return newSettings;
+        window.admin.settings[settings] = createController(settingsElement[0], {
+            async save() {
+                const newSettings = await api.settings.update({ [settings]: this.value });
+                return newSettings;
+            }
         });
     });
 
@@ -27,21 +29,25 @@ $(document).ready(function () {
 
         categoryElement.attr("contenteditable", "true");
 
-        window.admin.categories[categoryId] = createTextController(categoryElement[0], async function () {
-            alert("save");
+        window.admin.categories[categoryId] = createController(categoryElement[0], {
+            async save() {
+                alert("save");
+            },
+
+            async delete() {
+                const { api } = window;
+            }
         });
     });
 
     /** 
      * @param {HTMLElement} controllerElement
-     * @param {() => Promise<any>} saveFunc 
+     * @param {any} props 
      */
-    function createTextController(controllerElement, saveFunc) {
+    function createController(controllerElement, props) {
         controllerElement = $(controllerElement);
 
-        let controller = {
-            save: saveFunc
-        };
+        let controller = {...props};
 
         controller = new Proxy(controller, {
             get(target, prop) {
@@ -70,3 +76,7 @@ $(document).ready(function () {
         return controller;
     }
 });
+
+async function handleDeleteCategory(button, categoryId) {
+
+}

@@ -48,23 +48,34 @@ if (!isset($category)) {
         <ul class="Categories-list">
             <?php foreach ($categories as $ctg): ?>
                 <li>
-                    <a
-                        <?php if ($is_home): ?>
-                            href="javascript:handleApplyFilter('category', '<?=$ctg["name"]?>')"
-                        <?php else: ?>
-                            href="<?= BASE_URI . "/?category=$ctg[name]" ?>"
-                        <?php endif; ?>
-                        <?php if ($category === $ctg["name"]): ?>
-                            class="active"
-                        <?php endif; ?>
-                        <?php if ($is_authenticated): ?>
-                            data-category-id="<?=$ctg["id"]?>"
-                            data-category-name="<?=$ctg["name"]?>"
-                        <?php endif; ?>
-                    >
-                        <?= $ctg["name"] ?>
-                    </a>
-                    (<?= $ctg["post_count"] ?>)
+                    <span>
+                        <a
+                            <?php if ($is_home): ?>
+                                href="javascript:handleApplyFilter('category', '<?=$ctg["name"]?>')"
+                            <?php else: ?>
+                                href="<?= BASE_URI . "/?category=$ctg[name]" ?>"
+                            <?php endif; ?>
+                            <?php if ($category === $ctg["name"]): ?>
+                                class="active"
+                            <?php endif; ?>
+                            <?php if ($is_authenticated): ?>
+                                data-category-id="<?=$ctg["id"]?>"
+                                data-category-name="<?=$ctg["name"]?>"
+                                contenteditable="true"
+                            <?php endif; ?>
+                        >
+                            <?= $ctg["name"] ?>
+                        </a>
+                        (<?= $ctg["post_count"] ?>)
+                    </span>
+                    <?php if ($is_authenticated): ?>
+                        <button 
+                            class="DeleteButton button is-danger is-rounded" 
+                            onclick="handleDeleteCategory(this, <?=$ctg['id']?>)"
+                        >
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    <?php endif; ?>
                 </li>
             <?php endforeach; ?>
         </ul>

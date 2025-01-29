@@ -10,6 +10,7 @@ extract($settings);
                 href="<?= BASE_URI ?>" 
                 <?php if ($is_authenticated): ?> 
                     data-settings="blog_name"
+                    contenteditable="true"
                 <?php endif; ?>
             >
                 <?= $blog_name ?>
@@ -19,6 +20,7 @@ extract($settings);
             class="Header-subtitle subtitle" 
             <?php if ($is_authenticated): ?> 
                 data-settings="blog_catchline"
+                contenteditable="true"
             <?php endif; ?>
         >
             <?= $blog_catchline ?>
