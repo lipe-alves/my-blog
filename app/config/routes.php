@@ -2,41 +2,40 @@
 
 namespace App\Config\Routes;
 
+require_once "./app/routers/admin_router.php";
+require_once "./app/routers/category_router.php";
+require_once "./app/routers/comment_router.php";
+require_once "./app/routers/home_router.php";
+require_once "./app/routers/post_router.php";
+require_once "./app/routers/settings_router.php";
+require_once "./app/routers/tests_router.php";
+
 use App\Core\Router;
+
+use function App\Core\Routers\home_router;
+use function App\Core\Routers\post_router;
+use function App\Core\Routers\comment_router;
+use function App\Core\Routers\category_router;
+use function App\Core\Routers\settings_router;
+use function App\Core\Routers\admin_router;
+use function App\Core\Routers\tests_router;
 
 $router = new Router();
 
 $router->addMiddleware("*", "\\App\\Middlewares\\SessionMiddleware::execute");
 $router->addMiddleware("*", "\\App\\Middlewares\\AdminMiddleware::execute");
 
-// Rotas de Home
-$router->get("/", "\\App\\Controllers\\HomeController::page");
-
-// Rotas de Posts
-$router->get("/posts/:slug_or_id", "\\App\\Controllers\\PostsController::page");
-$router->get("/api/posts", "\\App\\Controllers\\PostsController::listPosts");
-
-// Rotas de Comentários
-$router->get("/api/comments", "\\App\\Controllers\\CommentsController::listComments");
-$router->post("/api/comments", "\\App\\Controllers\\CommentsController::insertComment");
-
-// Rotas de categorias
-$router->delete("/api/categories/:name_or_id", "\\App\\Controllers\\CategoriesController::deleteCategory");
-
-// Rotas de Configurações
-$router->patch("/api/settings", "\\App\\Controllers\\SettingsController::updateSettings");
-
-// Rotas de Admin
-$router->get("/admin", "\\App\\Controllers\\AdminController::page");
-$router->post("/api/admin/authenticate", "\\App\\Controllers\\AdminController::authenticate");
-
-// Rotas de Testes
-$router->get("/api/ping", "\\App\\Controllers\\TestsController::ping");
+home_router($router);
+post_router($router);
+comment_router($router);
+category_router($router);
+settings_router($router);
+admin_router($router);
+tests_router($router);
 
 $router->setHandlers([
     "not_found_page" => "\\App\\Controllers\\NotFoundController::index",
     "error"          => "\\App\\Middlewares\\ErrorMiddleware::execute"
 ]);
 
-// Roda o roteador
 $router->listen();
