@@ -8,7 +8,7 @@ $(document).ready(function () {
         };
     }
 
-    $("[data-settings]").each(function() {
+    $("[data-settings]").each(function () {
         const settingsElement = $(this);
         const settings = settingsElement.attr("data-settings");
 
@@ -66,8 +66,6 @@ $(document).ready(function () {
                 return true;
             }
         });
-
-        controllerElement.on("focusout", controller.save);
 
         return controller;
     }
