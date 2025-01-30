@@ -78,6 +78,13 @@
             }
         },
 
+        categories: {
+            async delete(idOrName) {
+                const resp = await apiEndpoint.delete(`/api/categories/${idOrName}`);
+                return resp.json();
+            }
+        },
+
         admin: {
             /** @param {string} password */
             async authenticate(password) {
