@@ -25,7 +25,6 @@ $(document).ready(function () {
     $("[data-category-id]").each(function () {
         const categoryElement = $(this);
         const categoryId = categoryElement.attr("data-category-id");
-        const categoryName = categoryElement.attr("data-category-name");
 
         categoryElement.attr("contenteditable", "true");
 
@@ -36,8 +35,14 @@ $(document).ready(function () {
 
             async delete() {
                 const { api, views } = window;
-                await api.categories.delete(categoryName);
-                await views.filters.reload();
+                const { getQueryParams } = window.functions;
+
+                const resp = await api.categories.delete(categoryId);
+
+                const query = getQueryParams();
+                await views.postFilters.reload(query);
+
+                return resp;
             }
         });
     });

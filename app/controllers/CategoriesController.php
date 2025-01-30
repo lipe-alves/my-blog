@@ -40,7 +40,10 @@ class CategoriesController extends Controller {
 
             $categories_service->commit();
 
-            $response->setStatus(200)->setJson($last_inserted_comment)->send();
+            $response->setStatus(200)->setJson([
+                "success" => true,
+                "message" => "Categoria excluída com sucesso!"
+            ])->send();
         } catch (\Exception $e) {
             $categories_service->rollback();
             throw $e;
