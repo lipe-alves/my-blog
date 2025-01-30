@@ -13,7 +13,6 @@ class AdminMiddleware extends Middleware
     public function execute(Request $request, Response $response, \Exception $exception = null)
     {
         $session = $request->getSession();
-        $settings = $session["settings"];
         $get = $request->getGet();
 
         if (!array_key_exists("admin", $get)) {
@@ -25,27 +24,5 @@ class AdminMiddleware extends Middleware
             $session["is_authenticated"] = false;
             $request->setSession("is_authenticated", false);
         }
-
-        if ($session["is_authenticated"]) {
-            return;
-        }
-
-        extract($get);
-
-        if (!isset($admin) || !isset($password)) {
-            return $request->setSession("is_authenticated", false);
-        }
-
-        $admin = (bool)$admin;
-        if (!$admin) {
-            return $request->setSession("is_authenticated", false);
-        }
-        
-        $passwords_match = AuthService::verifyPassword($password, $settings["adm_password"]);
-        if (!$passwords_match) {
-            return $request->setSession("is_authenticated", false);
-        }
-
-        $request->setSession("is_authenticated", true);
     }
 }

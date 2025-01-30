@@ -39,7 +39,7 @@ function handleCancelAuth() {
 
 async function handleSubmitCredentials() {
     const { api } = window;
-    const { clearQueryParams, setQueryParams, delayAsync } = window.functions;
+    const { clearQueryParams, delayAsync } = window.functions;
 
     const submitButton = $("#authentication-btn");
     const cancellationButton = $("#cancellation-btn");
@@ -58,7 +58,6 @@ async function handleSubmitCredentials() {
         await api.admin.authenticate(password);
 
         clearQueryParams();
-        setQueryParams({ admin: true, password });
         window.location.reload();
     };
 

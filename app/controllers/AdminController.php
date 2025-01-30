@@ -27,6 +27,8 @@ class AdminController extends Controller
                 "message" => "Senha inválida!"
             ])->send();
         }
+        
+        $request->setSession("is_authenticated", true);
 
         $response->setStatus(200)->setJson([
             "success" => true,
