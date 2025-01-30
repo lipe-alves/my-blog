@@ -10,6 +10,8 @@
             modal.find("[data-field]").each(function () {
                 $(this).html("");
             });
+            modal.find(".modal-card").removeClass("animate__animated animate__zoomIn");
+            modal.find(".modal-card").removeClass("animate__animated animate__zoomOut");
             this.events.onHide = null;
         },
 
