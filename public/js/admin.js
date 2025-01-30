@@ -80,6 +80,34 @@ $(document).ready(function () {
 });
 
 async function handleDeleteCategory(button, categoryId) {
+    const { modal, toast, admin } = window;
+    const { delayAsync } = window.functions;
+
+    const successButton = $(button);
+    const cancellationButton = $(`#cancel-${categoryId}-deletion`);
+
+    /** @param {boolean} disabled */
+    const setFormDisabled = (disabled) => {
+        successButton.prop("disabled", disabled);
+        cancellationButton.prop("disabled", disabled);
+        successButton.toggleClass("is-loading");
+    };
+
+    const deleteCategory = admin.categories[categoryId].delete;
+    
+    try {
+        setFormDisabled(true);
+        const resp = await delayAsync(deleteCategory, 3000);
+        toast.success(resp.message);
+        modal.hide();
+    } catch (err) {
+        toast.error(err.message);
+    } finally {
+        setFormDisabled(false);
+    }
+}
+
+function handleOpenCategoryDeletionModal(categoryId) {
     const { modal } = window;
 
     const categoryName = $(`[data-category-id="${categoryId}"]`).attr("data-category-name");
@@ -91,23 +119,21 @@ async function handleDeleteCategory(button, categoryId) {
         `,
         footer: `
             <div class="buttons">
-                <button 
-                    id="cancellation-btn"
+                <button
+                    id="cancel-${categoryId}-deletion"
                     class="button" 
                     onclick="window.modal.hide()"
                 >
                     Cancelar
                 </button>
                 <button 
-                    id="authentication-btn"
-                    class="button is-success" 
-                    onclick="handleSubmitCredentials()"
+                    class="button is-danger" 
+                    onclick="handleDeleteCategory(this, ${categoryId})"
                 >
-                    Autenticar-se
+                    Excluir
                 </button>
             </div>
         `,
     });
 
-    //await window.admin.categories[categoryId].delete();
 }

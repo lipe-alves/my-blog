@@ -80,7 +80,7 @@
 
         categories: {
             async delete(idOrName) {
-                const resp = await apiEndpoint.delete(`/api/categories/${idOrName}`);
+                const resp = await apiEndpoint.delete(`/categories/${idOrName}`);
                 return resp.json();
             }
         },

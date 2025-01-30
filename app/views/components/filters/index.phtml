@@ -71,7 +71,7 @@ if (!isset($category)) {
                     <?php if ($is_authenticated): ?>
                         <button 
                             class="DeleteButton button is-danger is-rounded" 
-                            onclick="handleDeleteCategory(this, <?=$ctg['id']?>)"
+                            onclick="handleOpenCategoryDeletionModal(<?=$ctg['id']?>)"
                         >
                             <i class="fa-solid fa-trash"></i>
                         </button>
