@@ -35,7 +35,9 @@ $(document).ready(function () {
             },
 
             async delete() {
-                const { api } = window;
+                const { api, views } = window;
+                await api.categories.delete(categoryName);
+                await views.filters.reload();
             }
         });
     });
@@ -78,5 +80,34 @@ $(document).ready(function () {
 });
 
 async function handleDeleteCategory(button, categoryId) {
+    const { modal } = window;
 
+    const categoryName = $(`[data-category-id="${categoryId}"]`).attr("data-category-name");
+
+    modal.show({
+        title: `Tem certeza que deseja excluir "${categoryName}"?`,
+        content: `
+            <p></p>
+        `,
+        footer: `
+            <div class="buttons">
+                <button 
+                    id="cancellation-btn"
+                    class="button" 
+                    onclick="window.modal.hide()"
+                >
+                    Cancelar
+                </button>
+                <button 
+                    id="authentication-btn"
+                    class="button is-success" 
+                    onclick="handleSubmitCredentials()"
+                >
+                    Autenticar-se
+                </button>
+            </div>
+        `,
+    });
+
+    //await window.admin.categories[categoryId].delete();
 }
