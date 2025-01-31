@@ -139,6 +139,11 @@ class Request
         $this->session = $_SESSION;
     }
 
+    public function reloadSession() {
+        $_SESSION["reload"] = true;
+        $this->session = $_SESSION;
+    }
+
     public function getLoad()
     {
         return $this->load;

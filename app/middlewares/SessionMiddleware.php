@@ -25,11 +25,12 @@ class SessionMiddleware extends Middleware
 
         $session = $request->getSession();
 
+        $reload_session = array_key_exists("reload", $session) && $session["reload"];
         $categories_loaded = array_key_exists("categories", $session) && count($session["categories"]) > 0;
         $settings_loaded = array_key_exists("settings", $session);
         $admin_auth_loaded = array_key_exists("is_authenticated", $session);
 
-        if (!$categories_loaded) {
+        if (!$categories_loaded || $reload_session) {
             $category_service = new CategoryService();
 
             $categories = $category_service->getAllCategories([
@@ -40,7 +41,7 @@ class SessionMiddleware extends Middleware
             $request->setSession("categories", $categories);
         }
 
-        if (!$settings_loaded) {
+        if (!$settings_loaded || $reload_session) {
             $request->setSession("settings", SettingsService::getAll());
         }
 

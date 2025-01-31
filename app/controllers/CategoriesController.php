@@ -32,13 +32,15 @@ class CategoriesController extends Controller {
 
             $category = $categories_service->getCategory(["c.id"], $data);
             if (!$category) {
-                throw new ResourceNotFoundException("Categoria com $fetch_field igual a \"$id\" não encontrada");
+                throw new ResourceNotFoundException("Categoria com $fetch_field igual a \"$id_or_name\" não encontrada");
             }
 
             $success = $categories_service->deleteCategory($category["id"]);
             if (!$success) throw new InternalServerException();
 
             $categories_service->commit();
+
+            $request->reloadSession();
 
             $response->setStatus(200)->setJson([
                 "success" => true,

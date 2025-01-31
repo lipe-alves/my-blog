@@ -6,6 +6,11 @@
             "App\\": "app/"
         }
     },
+    "scripts": {
+        "start-database": [
+            "php scripts/start-database.php"
+        ]
+    },
     "authors": [
         {
             "name": "Felipe Alves"
