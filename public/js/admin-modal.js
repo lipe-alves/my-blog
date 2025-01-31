@@ -9,7 +9,7 @@ $(document).ready(async function () {
                 placeholder="Digite a senha..."
             >
         `,
-        footer: [
+        buttons: [
             `<button
                 id="cancellation-btn"
                 class="button" 
