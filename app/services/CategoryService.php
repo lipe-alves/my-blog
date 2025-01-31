@@ -63,7 +63,7 @@ class CategoryService extends DatabaseService
         return $success;
     }
 
-    public function createCategory(array $data): array 
+    public function createCategory(array $data): array|false 
     {
         extract($data);
 
@@ -86,8 +86,22 @@ class CategoryService extends DatabaseService
             if (!$parent_category) {
                 throw new ResourceNotFoundException("categoria pai de ID $category_id");
             }
+        } else {
+            $category_id = null;
         }
 
-        
+        $last_id = $this->insert("Category", [
+            [
+                "name"        => $name,
+                "category_id" => $category_id
+            ]
+        ]);
+
+        $success = $last_id !== false;
+        if (!$success) return false;
+
+        $last_inserted_category = $this->getCategoryById($last_id);
+
+        return $last_inserted_category;
     }
 }

@@ -142,3 +142,9 @@ function handleOpenCategoryDeletionModal(categoryId) {
     });
 
 }
+
+
+async function handleAddNewCategory(button) {
+    button = $(button);
+    alert("test");
+}

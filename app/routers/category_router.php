@@ -6,4 +6,5 @@ use App\Core\Router;
 
 function category_router(Router $router) {
     $router->delete("/api/categories/:id_or_name", "\\App\\Controllers\\CategoriesController::deleteCategory");
+    $router->post("/api/categories/", "\\App\\Controllers\\CategoriesController::insertCategory");
 }

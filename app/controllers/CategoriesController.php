@@ -15,21 +15,22 @@ use App\Exceptions\InvalidFormatException;
 class CategoriesController extends Controller {
     public function insertCategory(Request $request, Response $response)
     {
-        $post = $request->getPost();
-        extract($post);
+        $category_data = $request->getPost();
+        $categories_service = new CategoryService();
 
-        if (isset($name)) {
-            $name = remove_multiple_whitespaces($name);
-        }
+        try {
+            $categories_service->startTransaction();
 
-        if (!isset($name) || !$name) {
-            throw new MissingParamException('"nome"');
-        }
+            $last_inserted_comment = $categories_service->createCategory($category_data);
+            $success = $last_inserted_comment !== false;
+            if (!$success) throw new InternalServerException();
 
-        if (isset($category_id)) {
-            if (!is_numeric($category_id)) {
-                throw new InvalidFormatException("ID da categoria pai", ["number"])
-            }
+            $categories_service->commit();
+
+            $response->setStatus(200)->setJson($last_inserted_comment)->send();
+        } catch (\Exception $e) {
+            $categories_service->rollback();
+            throw $e;
         }
     }
 

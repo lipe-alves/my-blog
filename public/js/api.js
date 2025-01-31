@@ -79,8 +79,20 @@
         },
 
         categories: {
+            /** @param {string} idOrName */
             async delete(idOrName) {
                 const resp = await apiEndpoint.delete(`/categories/${idOrName}`);
+                return resp.json();
+            },
+
+            /**
+             * @param {{
+             *     name: string;
+             *     category_id? string;
+             * }} data 
+             */
+            async create(data) {
+                const resp = await apiEndpoint.post("/categories/", data);
                 return resp.json();
             }
         },

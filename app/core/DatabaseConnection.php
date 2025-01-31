@@ -42,19 +42,19 @@ class DatabaseConnection
         return $this->stmt->execute();
     }
 
-    public function select(string $sql, array|null $data = null, int $mode = \PDO::FETCH_DEFAULT): array
+    public function select(string $sql, array|null $data = null, int $mode = \PDO::FETCH_ASSOC): array
     {
         $this->execute($sql, $data);
         return $this->stmt->fetchAll($mode);
     }
 
-    public function selectAll(string $sql, array|null $data = null, int $mode = \PDO::FETCH_DEFAULT): array
+    public function selectAll(string $sql, array|null $data = null, int $mode = \PDO::FETCH_ASSOC): array
     {
         $this->execute($sql, $data);
         return $this->stmt->fetchAll($mode);
     }
 
-    public function selectOne(string $sql, array|null $data = null, int $mode = \PDO::FETCH_DEFAULT): array
+    public function selectOne(string $sql, array|null $data = null, int $mode = \PDO::FETCH_ASSOC): array
     {
         $this->execute($sql, $data);
         return $this->stmt->fetch($mode);
