@@ -35,6 +35,10 @@ img {
     pointer-events: none;
 }
 
+hr {
+    --bulma-hr-background-color: rgba(0, 0, 0, 0.1);
+}
+
 [data-visible="false"] {
     display: none;
 }

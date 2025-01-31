@@ -7,7 +7,7 @@
     border-radius: 4px;
 }
 
-[data-category-id][contenteditable="true"] {
+[data-category-id][contenteditable="true"], [data-new-category][contenteditable="true"] {
     border-bottom: 3px dotted var(--bulma-link-text);
     border-radius: 4px;
 }
@@ -16,13 +16,13 @@
     outline: none;
 }
 
-.DeleteButton {
+.DeleteButton, .AddButton {
     color: #fff;
     padding-left: 0.5em !important;
     padding-right: 0.5em !important;
     padding: 0.5em;
 }
 
-.DeleteButton i {
+.DeleteButton i, .AddButton i {
     font-size: 0.5em;
 }

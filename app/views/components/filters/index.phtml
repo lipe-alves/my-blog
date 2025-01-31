@@ -76,6 +76,24 @@ if (!isset($category)) {
                     <?php endif; ?>
                 </li>
             <?php endforeach; ?>
+            <?php if ($is_authenticated): ?>
+                <hr>
+                <li>
+                    <a
+                        href="<?= BASE_URI . "/?category=$ctg[name]" ?>"
+                        data-new-category="true"
+                        contenteditable="true"
+                    >
+                            Título nova categoria
+                    </a>
+                    <button 
+                        class="AddButton button is-success is-rounded" 
+                        onclick="handleAddNewCategory(this)"
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </li>
+            <?php endif; ?>
         </ul>
     </div>
     <link

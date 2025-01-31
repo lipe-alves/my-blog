@@ -7,9 +7,32 @@ use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
 use App\Exceptions\InternalServerException;
+use App\Exceptions\InvalidInputException;
+use App\Exceptions\MissingParamException;
 use App\Exceptions\ResourceNotFoundException;
+use App\Exceptions\InvalidFormatException;
 
 class CategoriesController extends Controller {
+    public function insertCategory(Request $request, Response $response)
+    {
+        $post = $request->getPost();
+        extract($post);
+
+        if (isset($name)) {
+            $name = remove_multiple_whitespaces($name);
+        }
+
+        if (!isset($name) || !$name) {
+            throw new MissingParamException('"nome"');
+        }
+
+        if (isset($category_id)) {
+            if (!is_numeric($category_id)) {
+                throw new InvalidFormatException("ID da categoria pai", ["number"])
+            }
+        }
+    }
+
     public function deleteCategory(Request $request, Response $response)
     {
         $params = $request->getParams();

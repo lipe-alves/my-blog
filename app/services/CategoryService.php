@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Core\DatabaseService;
 use App\Exceptions\ResourceNotFoundException;
+use App\Exceptions\MissingParamException;
+use App\Exceptions\InvalidFormatException;
 
 class CategoryService extends DatabaseService
 {
@@ -59,5 +61,33 @@ class CategoryService extends DatabaseService
 
         $success = $this->delete("Category", ["c.id" => $id]);
         return $success;
+    }
+
+    public function createCategory(array $data): array 
+    {
+        extract($data);
+
+        $categories_service = new CategoryService();
+
+        if (isset($name)) {
+            $name = remove_multiple_whitespaces($name);
+        }
+
+        if (!isset($name) || !$name) {
+            throw new MissingParamException('"nome"');
+        }
+
+        if (isset($category_id)) {
+            if (!is_numeric($category_id)) {
+                throw new InvalidFormatException("ID da categoria pai", ["numérico"]);
+            }
+
+            $parent_category = $categories_service->getCategoryById($category_id, ["c.id"]);
+            if (!$parent_category) {
+                throw new ResourceNotFoundException("categoria pai de ID $category_id");
+            }
+        }
+
+        
     }
 }
