@@ -20,6 +20,7 @@
          *     title: string;
          *     content: string;
          *     footer: string;
+         *     buttons?: string[];
          *     onHide?: () => void;
          * }} params 
          */
@@ -27,6 +28,14 @@
             this.reset();
 
             const modal = $(this.element);
+
+            if (params.buttons) {
+                params.footer = `
+                    <div class="buttons">
+                        ${params.buttons.join("\n")}
+                    </div>
+                `;
+            }
 
             for (const [field, value] of Object.entries(params)) {
                 const fieldElement = modal.find(`[data-field="${field}"]`);

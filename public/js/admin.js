@@ -122,27 +122,24 @@ function handleOpenCategoryDeletionModal(categoryId) {
         content: `
             <p></p>
         `,
-        footer: `
-            <div class="buttons">
-                <button
-                    id="cancel-${categoryId}-deletion"
-                    class="button" 
-                    onclick="window.modal.hide()"
-                >
-                    Cancelar
-                </button>
-                <button 
-                    class="button is-danger" 
-                    onclick="handleDeleteCategory(this, ${categoryId})"
-                >
-                    Excluir
-                </button>
-            </div>
-        `,
+        buttons: [
+            `<button
+                id="cancel-${categoryId}-deletion"
+                class="button" 
+                onclick="window.modal.hide()"
+            >
+                Cancelar
+            </button>`,
+            `<button 
+                class="button is-danger" 
+                onclick="handleDeleteCategory(this, ${categoryId})"
+            >
+                Excluir
+            </button>`
+        ],
     });
 
 }
-
 
 async function handleAddNewCategory(button) {
     button = $(button);

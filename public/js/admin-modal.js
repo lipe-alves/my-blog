@@ -9,24 +9,22 @@ $(document).ready(async function () {
                 placeholder="Digite a senha..."
             >
         `,
-        footer: `
-            <div class="buttons">
-                <button 
-                    id="cancellation-btn"
-                    class="button" 
-                    onclick="handleCancelAuth()"
-                >
-                    Cancelar
-                </button>
-                <button 
-                    id="authentication-btn"
-                    class="button is-success" 
-                    onclick="handleSubmitCredentials()"
-                >
-                    Autenticar-se
-                </button>
-            </div>
-        `,
+        footer: [
+            `<button
+                id="cancellation-btn"
+                class="button" 
+                onclick="handleCancelAuth()"
+            >
+                Cancelar
+            </button>`,
+            `<button 
+                id="authentication-btn"
+                class="button is-success" 
+                onclick="handleSubmitCredentials()"
+            >
+                Autenticar-se
+            </button>`
+        ],
         onHide: handleCancelAuth
     });
 });
