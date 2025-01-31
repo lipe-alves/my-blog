@@ -8,11 +8,10 @@ use App\Services\CommentsService;
 use App\Exceptions\MissingParamException;
 use App\Exceptions\InvalidFormatException;
 
-use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
 
-class PostsController extends Controller
+class PostsController extends ComponentsController
 {
     // Api
 
@@ -196,6 +195,8 @@ class PostsController extends Controller
                 return $this->commentList();
             case "comment-form":
                 return $this->commentForm();
+            case "post-filters":
+                return $this->postFilters();
             case "index":
             default:
                 return $this->index();

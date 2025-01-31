@@ -27,6 +27,8 @@ class CategoriesController extends Controller {
 
             $categories_service->commit();
 
+            $request->reloadSession();
+
             $response->setStatus(200)->setJson($last_inserted_comment)->send();
         } catch (\Exception $e) {
             $categories_service->rollback();

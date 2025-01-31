@@ -58,7 +58,7 @@ $last_category_index = $total_categories - 1;
                 <?php $this->view("posts/add-comment", ["post" => $post]) ?>
             </div>
         </article>
-        <?php $this->component("filters") ?>
+        <?php $this->postFilters() ?>
     </main>
     <?php $this->component("back-to-top") ?>
     <?php $this->component("modal") ?>

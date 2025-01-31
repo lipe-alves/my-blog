@@ -142,6 +142,36 @@ function handleOpenCategoryDeletionModal(categoryId) {
 }
 
 async function handleAddNewCategory(button) {
+    const { api, views, toast } = window;
+    const { delayAsync, removeWhitespaces, removeNewlines, getQueryParams } = window.functions;
+    
     button = $(button);
-    alert("test");
+    const nameFieldElement = $('[data-new-category="true"]');
+    let newCategoryName = nameFieldElement.text();
+    newCategoryName = removeWhitespaces(newCategoryName);
+    newCategoryName = removeNewlines(newCategoryName);
+
+    /** @param {boolean} disabled */
+    const setButtonDisabled = (disabled) => {
+        button.prop("disabled", disabled);
+        button.toggleClass("is-loading");
+    };
+
+    const createCategory = async () => {
+        const query = getQueryParams();
+        const resp = await api.categories.create({ name: newCategoryName });
+        await views.postFilters.reload(query);
+        return resp;
+    };
+
+    try {
+        setButtonDisabled(true);
+        await delayAsync(createCategory, 3000);
+        toast.success("Categoria adicionada com sucesso!");
+    } catch (err) {
+        toast.error(err.message);
+    } finally {
+        setButtonDisabled(false);
+    }
+
 }

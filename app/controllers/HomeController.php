@@ -2,11 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Core\Controller;
 use App\Services\PostService;
 use App\Core\Request;
 
-class HomeController extends Controller
+class HomeController extends ComponentsController
 {
     public function postList()
     {
@@ -61,12 +60,6 @@ class HomeController extends Controller
             "post_list" => $post_list,
             "query"     => $get
         ]);
-    }
-
-    public function postFilters()
-    {
-        $get = $this->request->getGet();
-        $this->component("filters", ["query" => $get]);
     }
 
     public function index()
