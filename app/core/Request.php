@@ -23,7 +23,9 @@ class Request
         $get = isset($params["get"]) ? $params["get"] : $_GET;
         $post = isset($params["post"]) ? $params["post"] : $_POST;
         $patch = isset($params["patch"]) ? $params["patch"] : $GLOBALS["_PATCH"];
-        $put = isset($params["put"]) ? $params["patch"] : $GLOBALS["_PUT"];
+        $put = isset($params["put"]) ? $params["put"] : $GLOBALS["_PUT"];
+        $delete = isset($params["delete"]) ? $params["delete"] : $GLOBALS["_DELETE"];
+
         $files = isset($params["files"]) ? $params["files"] : $_FILES;
         $method = isset($params["method"]) ? $params["method"] : $_SERVER["REQUEST_METHOD"];
         $request_uri = isset($params["request_uri"]) ? $params["request_uri"] : $_SERVER["REQUEST_URI"];
@@ -37,6 +39,7 @@ class Request
         $this->post = $post;
         $this->patch = $patch;
         $this->put = $put;
+        $this->delete = $delete;
         $this->files = $files;
         $this->method = $method;
         $this->requestUri = $request_uri;
@@ -81,6 +84,10 @@ class Request
         return $this->put;
     }
 
+    public function getDelete()
+    {
+        return $this->delete;
+    }
 
     public function getFiles()
     {

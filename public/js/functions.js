@@ -97,8 +97,10 @@
             * @param {RequestInit=} config
             */
             delete(path, config = {}) {
+                const { data = {} } = config;
                 return this.request(path, {
                     ...config,
+                    body: JSON.stringify(data),
                     method: "DELETE",
                 });
             },

@@ -60,7 +60,7 @@ class CategoryService extends DatabaseService
             throw new ResourceNotFoundException('Categoria com id igual a "'.$id.'" não encontrada');
         }
 
-        if (isset($posts_new_category_id)) {
+        if (isset($posts_new_category_id) && $posts_new_category_id) {
             $category = $this->getCategoryById($posts_new_category_id, ["c.id"]);
             if (!$category) {
                 throw new ResourceNotFoundException('Categoria com id igual a "'.$posts_new_category_id.'" não encontrada');

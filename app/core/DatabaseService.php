@@ -187,8 +187,6 @@ class DatabaseService
             $sql .= " LIMIT :limit";
         }
 
-        file_put_contents("sql.sql", $sql);
-
         $results = $this->conn->select($sql, $data);
         return $results;
     }
@@ -250,6 +248,7 @@ class DatabaseService
         $table_alias = $this->getTableAlias($table);
 
         $sql = "UPDATE $table $table_alias SET $updates WHERE $wheres";
+        file_put_contents("update.sql", $sql);
         $success = $this->conn->update($sql, $data);
 
         return $success;

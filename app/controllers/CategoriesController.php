@@ -70,6 +70,12 @@ class CategoriesController extends Controller {
     public function deleteCategory(Request $request, Response $response)
     {
         $params = $request->getParams();
+        $delete = $request->getDelete();
+
+        if (!array_key_exists("posts_new_category_id", $delete)) {
+            $delete["posts_new_category_id"] = null;
+        }
+
         extract($params);
 
         $categories_service = new CategoryService();
@@ -92,7 +98,10 @@ class CategoriesController extends Controller {
                 throw new ResourceNotFoundException("Categoria com $fetch_field igual a \"$id_or_name\" não encontrada");
             }
 
-            $success = $categories_service->deleteCategory($category["id"]);
+            $success = $categories_service->deleteCategory(
+                $category["id"], 
+                $delete["posts_new_category_id"]
+            );
             if (!$success) throw new InternalServerException();
 
             $categories_service->commit();

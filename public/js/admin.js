@@ -56,7 +56,7 @@ $(document).ready(function () {
 });
 
 async function handleDeleteCategory(button, categoryId) {
-    const { modal, toast, admin } = window;
+    const { modal, toast } = window;
     const { delayAsync } = window.functions;
 
     const successButton = $(button);

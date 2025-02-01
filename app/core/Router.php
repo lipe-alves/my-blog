@@ -194,8 +194,9 @@ class Router
 
         $_PATCH = [];
         $_PUT = [];
+        $_DELETE = [];
 
-        if ($method === "PATCH" || $method === "PUT" || $method === "POST") {
+        if ($method === "PATCH" || $method === "PUT" || $method === "POST" || $method === "DELETE") {
             try {
                 $parsed_data = json_decode($raw_data, true);
 
@@ -206,6 +207,8 @@ class Router
                         $_PUT = $parsed_data;
                     } else if ($method === "POST") {
                         $_POST = $parsed_data;
+                    } else if ($method === "DELETE") {
+                        $_DELETE = $parsed_data;
                     }
                 }
             } catch (\Exception $err) {
@@ -214,10 +217,12 @@ class Router
 
         $GLOBALS["_PATCH"] = $_PATCH;
         $GLOBALS["_PUT"] = $_PUT;
+        $GLOBALS["_DELETE"] = $_DELETE;
 
         $params["patch"] = $_PATCH;
         $params["put"] = $_PUT;
         $params["post"] = $_POST;
+        $params["delete"] = $_DELETE;
 
         $response = new Response();
         $request = new Request($params);

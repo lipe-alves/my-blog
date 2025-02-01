@@ -91,7 +91,9 @@
              */
             async delete(idOrName, postsNewCategoryId) {
                 const resp = await apiEndpoint.delete(`/categories/${idOrName}`, {
-                    posts_new_category_id: postsNewCategoryId
+                    data: {
+                        posts_new_category_id: postsNewCategoryId
+                    }
                 });
                 return resp.json();
             },
