@@ -7,6 +7,7 @@ $(document).ready(async function () {
                 class="input is-fullwidth" 
                 name="password" 
                 placeholder="Digite a senha..."
+                onkeypress="handleAuthOnEnter(event)"
             >
         `,
         buttons: [
@@ -20,7 +21,7 @@ $(document).ready(async function () {
             `<button 
                 id="authentication-btn"
                 class="button is-success" 
-                onclick="handleSubmitCredentials()"
+                onclick="handleAuth()"
             >
                 Autenticar-se
             </button>`
@@ -35,7 +36,7 @@ function handleCancelAuth() {
     window.location.reload();
 }
 
-async function handleSubmitCredentials() {
+async function handleAuth() {
     const { api } = window;
     const { clearQueryParams, delayAsync } = window.functions;
 
@@ -67,4 +68,9 @@ async function handleSubmitCredentials() {
     } finally {
         setFormDisabled(false);
     }
+}
+
+function handleAuthOnEnter(evt) {
+    const { onEnterPress } = window.functions;
+    onEnterPress(evt, handleAuth);
 }

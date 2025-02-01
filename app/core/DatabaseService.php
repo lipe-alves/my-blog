@@ -43,11 +43,11 @@ class DatabaseService
         }
 
         foreach (self::TABLE_X_ALIAS as $table => $alias) {
-            if (starts_with($value, "$alias.")) {
+            if (str_contains($value, "$alias.")) {
                 return true;
             }
 
-            if (starts_with($value, "$table.")) {
+            if (str_contains($value, "$table.")) {
                 return true;
             }
         }
@@ -110,6 +110,10 @@ class DatabaseService
                 if (str_contains($value, "*")) {
                     $logical_operator = "LIKE";
                     $value = str_replace("*", "%", $value);
+                }
+                if (starts_with($value, "!=")) {
+                    $logical_operator = "<>";
+                    $value = str_replace("!=", "", $value);
                 }
                 if (starts_with($value, "!")) {
                     $logical_operator = "<>";
@@ -182,6 +186,8 @@ class DatabaseService
         } else if (array_key_exists("limit", $data)) {
             $sql .= " LIMIT :limit";
         }
+
+        file_put_contents("sql.sql", $sql);
 
         $results = $this->conn->select($sql, $data);
         return $results;

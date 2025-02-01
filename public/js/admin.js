@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    const { api } = window;
-
     if (!window.admin) {
         window.admin = {
             settings: {},
@@ -11,50 +9,23 @@ $(document).ready(function () {
     $("[data-settings]").each(function () {
         const settingsElement = $(this);
         const settings = settingsElement.attr("data-settings");
-
-        settingsElement.attr("contenteditable", "true");
-
-        window.admin.settings[settings] = createController(settingsElement[0], {
-            async save() {
-                const newSettings = await api.settings.update({ [settings]: this.value });
-                return newSettings;
-            }
-        });
+        window.admin.settings[settings] = createController(settingsElement[0]);
     });
 
     $("[data-category-id]").each(function () {
         const categoryElement = $(this);
         const categoryId = categoryElement.attr("data-category-id");
-
-        categoryElement.attr("contenteditable", "true");
-
-        window.admin.categories[categoryId] = createController(categoryElement[0], {
-            async save() {
-                alert("save");
-            },
-
-            async delete() {
-                const { api, views } = window;
-                const { getQueryParams } = window.functions;
-
-                const resp = await api.categories.delete(categoryId);
-
-                const query = getQueryParams();
-                await views.postFilters.reload(query);
-
-                return resp;
-            }
-        });
+        window.admin.categories[categoryId] = createController(categoryElement[0]);
     });
 
     /** 
      * @param {HTMLElement} controllerElement
      * @param {any} props 
      */
-    function createController(controllerElement, props) {
+    function createController(controllerElement, props = {}) {
         controllerElement = $(controllerElement);
 
-        let controller = {...props};
+        let controller = { ...props };
 
         controller = new Proxy(controller, {
             get(target, prop) {
@@ -90,6 +61,7 @@ async function handleDeleteCategory(button, categoryId) {
 
     const successButton = $(button);
     const cancellationButton = $(`#cancel-${categoryId}-deletion`);
+    const postsNewCategoryId = $(`#posts-new-category`).val();
 
     /** @param {boolean} disabled */
     const setFormDisabled = (disabled) => {
@@ -98,8 +70,18 @@ async function handleDeleteCategory(button, categoryId) {
         successButton.toggleClass("is-loading");
     };
 
-    const deleteCategory = admin.categories[categoryId].delete;
-    
+    const deleteCategory = async () => {
+        const { api, views } = window;
+        const { getQueryParams } = window.functions;
+
+        const resp = await api.categories.delete(categoryId, postsNewCategoryId);
+
+        const query = getQueryParams();
+        await views.postFilters.reload(query);
+
+        return resp;
+    };
+
     try {
         setFormDisabled(true);
         const resp = await delayAsync(deleteCategory, 3000);
@@ -114,13 +96,39 @@ async function handleDeleteCategory(button, categoryId) {
 
 function handleOpenCategoryDeletionModal(categoryId) {
     const { modal } = window;
-
     const categoryName = $(`[data-category-id="${categoryId}"]`).attr("data-category-name");
+
+    const categories = [];
+
+    $("[data-category-id]").each(function () {
+        const id = $(this).attr("data-category-id");
+        const name = $(this).attr("data-category-name");
+        if (id == categoryId) return;
+
+        categories.push({ id, name });
+    });
+
+    const options = categories.map(category => `
+        <option value="${category.id}">
+            ${category.name}
+        </option>
+    `).join("");
 
     modal.show({
         title: `Tem certeza que deseja excluir "${categoryName}"?`,
         content: `
-            <p></p>
+            <div class="field">
+                <label class="label">
+                    Mover os posts desta categoria para:
+                </label>
+                <div class="control">
+                    <div class="select">
+                        <select id="posts-new-category">
+                            ${options}
+                        </select>
+                    </div>
+                </div>
+            </div>
         `,
         buttons: [
             `<button
@@ -144,7 +152,7 @@ function handleOpenCategoryDeletionModal(categoryId) {
 async function handleAddNewCategory(button) {
     const { api, views, toast } = window;
     const { delayAsync, removeWhitespaces, removeNewlines, getQueryParams } = window.functions;
-    
+
     button = $(button);
     const nameFieldElement = $('[data-new-category="true"]');
     let newCategoryName = nameFieldElement.text();

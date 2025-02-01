@@ -6,6 +6,7 @@ use App\Core\DatabaseService;
 use App\Exceptions\ResourceNotFoundException;
 use App\Exceptions\MissingParamException;
 use App\Exceptions\InvalidFormatException;
+use App\Exceptions\InvalidInputException;
 
 class CategoryService extends DatabaseService
 {
@@ -52,11 +53,25 @@ class CategoryService extends DatabaseService
         return $categories;
     }
 
-    public function deleteCategory(string $id): bool
+    public function deleteCategory(string $id, string $posts_new_category_id = null): bool
     {
         $category = $this->getCategoryById($id, ["c.id"]);
         if (!$category) {
             throw new ResourceNotFoundException('Categoria com id igual a "'.$id.'" não encontrada');
+        }
+
+        if (isset($posts_new_category_id)) {
+            $category = $this->getCategoryById($posts_new_category_id, ["c.id"]);
+            if (!$category) {
+                throw new ResourceNotFoundException('Categoria com id igual a "'.$posts_new_category_id.'" não encontrada');
+            }
+
+            $success = $this->update(
+                "Post_x_Category", 
+                ["pc.category_id" => $posts_new_category_id], 
+                ["pc.category_id" => $id]
+            );
+            if (!$success) return false;
         }
 
         $success = $this->delete("Category", ["c.id" => $id]);
@@ -67,8 +82,6 @@ class CategoryService extends DatabaseService
     {
         extract($data);
 
-        $categories_service = new CategoryService();
-
         if (isset($name)) {
             $name = remove_multiple_whitespaces($name);
         }
@@ -77,12 +90,19 @@ class CategoryService extends DatabaseService
             throw new MissingParamException('"nome"');
         }
 
+        $category_with_same_name = $this->getCategory(["c.id"], ["c.name" => $name]);
+        $duplicate_name = (bool)$category_with_same_name;
+
+        if ($duplicate_name) {
+            throw new InvalidInputException("Já existe uma categoria com o nome \"$name\"");
+        }
+
         if (isset($category_id)) {
             if (!is_numeric($category_id)) {
                 throw new InvalidFormatException("ID da categoria pai", ["numérico"]);
             }
 
-            $parent_category = $categories_service->getCategoryById($category_id, ["c.id"]);
+            $parent_category = $this->getCategoryById($category_id, ["c.id"]);
             if (!$parent_category) {
                 throw new ResourceNotFoundException("categoria pai de ID $category_id");
             }

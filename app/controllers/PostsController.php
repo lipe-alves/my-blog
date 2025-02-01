@@ -17,7 +17,8 @@ class PostsController extends ComponentsController
 
     public function listPosts(Request $request, Response $response)
     {
-        extract($request->getGet());
+        $get = $request->getGet();
+        extract($get);
 
         if (!isset($page)) {
             throw new MissingParamException("page");
@@ -28,11 +29,11 @@ class PostsController extends ComponentsController
         }
 
         if (!is_numeric($page)) {
-            throw new InvalidFormatException("page", ["int"]);
+            throw new InvalidFormatException("page", ["numérico"]);
         }
 
         if (!is_numeric($size)) {
-            throw new InvalidFormatException("size", ["int"]);
+            throw new InvalidFormatException("size", ["numérico"]);
         }
 
         if (!isset($columns)) {

@@ -2,10 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Services\CategoryService;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
+
+use App\Services\CategoryService;
+
 use App\Exceptions\InternalServerException;
 use App\Exceptions\InvalidInputException;
 use App\Exceptions\MissingParamException;
@@ -13,6 +15,35 @@ use App\Exceptions\ResourceNotFoundException;
 use App\Exceptions\InvalidFormatException;
 
 class CategoriesController extends Controller {
+    public function listCategories(Request $request, Response $response) 
+    {
+        $get = $request->getGet();
+        file_put_contents("get.txt", print_r($get, true));
+        extract($get);
+
+        if (!isset($columns)) {
+            $columns = "c.*";
+        }
+
+        $columns = explode(",", $columns);
+        $columns = array_map("remove_multiple_whitespaces", $columns);
+
+        $filter_params = [];
+
+        if (isset($category_id)) {
+            $filter_params["c.id"] = $category_id;
+        }
+
+        if (isset($category_name)) {
+            $filter_params["c.name"] = $category_name;
+        }
+
+        $categories_service = new CategoryService();
+        $categories = $categories_service->getCategories($columns, $filter_params);
+
+        $response->setStatus(200)->setJson($categories)->send();   
+    }
+
     public function insertCategory(Request $request, Response $response)
     {
         $category_data = $request->getPost();

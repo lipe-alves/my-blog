@@ -79,9 +79,20 @@
         },
 
         categories: {
-            /** @param {string} idOrName */
-            async delete(idOrName) {
-                const resp = await apiEndpoint.delete(`/categories/${idOrName}`);
+            async search(params) {
+                const queryString = createQueryString(params);
+                const resp = await apiEndpoint.get(`/categories/${queryString}`);
+                return resp.json();
+            },
+
+            /** 
+             * @param {string} idOrName 
+             * @param {string=} postsNewCategoryId
+             */
+            async delete(idOrName, postsNewCategoryId) {
+                const resp = await apiEndpoint.delete(`/categories/${idOrName}`, {
+                    posts_new_category_id: postsNewCategoryId
+                });
                 return resp.json();
             },
 

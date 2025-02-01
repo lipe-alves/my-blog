@@ -39,7 +39,7 @@ class ReaderService extends DatabaseService
             $first_name = $name_parts[0];
             array_shift($name_parts);
             $last_name = implode(" ", $name_parts);
-        }
+        } 
 
         $first_name = remove_multiple_whitespaces($first_name);
         $last_name = remove_multiple_whitespaces($last_name);
