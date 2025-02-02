@@ -26,7 +26,7 @@ $(document).ready(function () {
 function createController(controllerElement, props = {}) {
     controllerElement = $(controllerElement);
 
-    let controller = { ...props };
+    let controller = { ...props, old: "" };
 
     controller = new Proxy(controller, {
         get(target, prop) {
@@ -51,6 +51,8 @@ function createController(controllerElement, props = {}) {
             return true;
         }
     });
+
+    controller.old = controller.value;
 
     return controller;
 }
@@ -230,4 +232,30 @@ async function handleSaveChanges(button) {
     } finally {
         setButtonDisabled(false);
     }
+}
+
+async function handleResetChanges(button) {
+    const { delayAsync } = window.functions;
+
+    button = $(button);
+
+    /** @param {boolean} disabled */
+    const setButtonDisabled = (disabled) => {
+        button.prop("disabled", disabled);
+        button.toggleClass("is-loading");
+    };
+
+    const resetChanges = () => {
+        for (const controller of Object.values(admin.settings)) {
+            controller.value = controller.old;
+        }
+
+        for (const controller of Object.values(admin.categories)) {
+            controller.value = controller.old;
+        }
+    };
+
+    setButtonDisabled(true);
+    await delayAsync(resetChanges, 1500);
+    setButtonDisabled(false);
 }
