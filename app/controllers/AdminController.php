@@ -44,14 +44,14 @@ class AdminController extends Controller
         $settings = $session["settings"];
         extract($settings);
         
-        $this->view("admin", [
+        $this->page("admin", [
             "title"       => $blog_name,
             "description" => $blog_catchline,
             "keywords"    => []
         ]);
     }
 
-    public function page(Request $request)
+    public function html(Request $request)
     {
         $get = $request->getGet();
         $view = "index";

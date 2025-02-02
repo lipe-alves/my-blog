@@ -1,0 +1,21 @@
+<div class="AdminActions">
+    <button
+        class="AdminActions-action AdminActions-save button is-info"
+        type="button"
+        onclick="handleResetChanges()"
+        title="Resetar alterações">
+        <i class="fa-solid fa-eraser"></i>
+        <span>Resetar alterações</span>
+    </button>
+    <button
+        class="AdminActions-action AdminActions-reset button is-success"
+        type="button"
+        onclick="handleSaveChanges()"
+        title="Salvar alterações">
+        <i class="fa-solid fa-floppy-disk"></i>
+        <span>Salvar alterações</span>
+    </button>
+</div>
+<link
+    rel="stylesheet"
+    href="<?= BASE_URI ?>/app/views/components/admin-actions/styles.css?v=<?= time() ?>" />
