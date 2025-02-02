@@ -174,7 +174,7 @@ class PostsController extends ComponentsController
         $settings = $session["settings"];
         extract($settings);
 
-        $this->view("posts", [
+        $this->page("posts", [
             "title"       => "$post[title] - $blog_name",
             "description" => "Teste",
             "keywords"    => $keywords,
@@ -182,7 +182,7 @@ class PostsController extends ComponentsController
         ]);
     }
 
-    public function page(Request $request)
+    public function html(Request $request)
     {
         $get = $request->getGet();
         $view = "index";

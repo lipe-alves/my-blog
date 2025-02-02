@@ -89,7 +89,7 @@ class HomeController extends ComponentsController
         $settings = $session["settings"];
         extract($settings);
 
-        $this->view("home", [
+        $this->page("home", [
             "title"             => $blog_name,
             "description"       => $blog_catchline,
             "keywords"          => [],
@@ -101,7 +101,7 @@ class HomeController extends ComponentsController
         ]);
     }
 
-    public function page(Request $request)
+    public function html(Request $request)
     {
         $get = $request->getGet();
         $view = "index";

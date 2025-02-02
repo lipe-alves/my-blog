@@ -1,0 +1,33 @@
+<?php 
+$session = $this->request->getSession();
+extract($session);
+?>
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <?php
+    $this->component("meta-tags", [
+        "description" => $description,
+        "keywords"    => $keywords
+    ])
+    ?>
+    <title><?= $title ?></title>
+    <?php $this->component("dependencies") ?>
+    <?php $this->component("fonts") ?>
+</head>
+
+<body>
+    <?php $this->component("navbar") ?>
+    <?php $this->component("header") ?>
+    <main class="Main">
+        <?= $page_html ?>
+    </main>
+    <?php $this->component("back-to-top") ?>
+    <?php $this->component("modal") ?>
+    <?php if ($is_authenticated):
+        $this->component("admin-save-button");
+    endif; ?>
+</body>
+
+</html>

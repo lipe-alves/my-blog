@@ -1,30 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt">
-
-<head>
-    <?php
-    $this->component("meta-tags", [
-        "description" => $description,
-        "keywords"    => $keywords
-    ])
-    ?>
-    <title><?= $title ?></title>
-    <?php $this->component("dependencies") ?>
-    <?php $this->component("fonts") ?>
-</head>
-
-<body>
-    <?php $this->component("navbar") ?>
-    <?php $this->component("header") ?>
-    <main class="Main">
-        <?php $this->postList() ?>
-        <?php $this->postFilters() ?>
-    </main>
-    <?php $this->component("back-to-top") ?>
-    <?php $this->component("modal") ?>
-    <link
-        rel="stylesheet"
-        href="<?= BASE_URI ?>/app/views/pages/home/styles.css?v=<?= time() ?>">
-</body>
-
-</html>
+<?php $this->postList() ?>
+<?php $this->postFilters() ?>
+<link
+    rel="stylesheet"
+    href="<?= BASE_URI ?>/app/views/pages/home/styles.css?v=<?= time() ?>">

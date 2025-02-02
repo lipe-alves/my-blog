@@ -47,4 +47,17 @@ class Controller
     {
         $this->showHtml("components/$component", $data);
     }
+
+    protected function page(string $page, array $data = [])
+    {
+        ob_start();
+
+        $this->view($page, $data);
+
+        $page_html = ob_get_clean();
+
+        $data["page_html"] = $page_html;
+
+        $this->component("base-page", $data);
+    }
 }
