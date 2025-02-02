@@ -7,6 +7,8 @@
     --bulma-input-placeholder-color: #abb1c1;
     --content-min-width: 55vw;
     --content-max-width: 900px;
+    --select-background-color: #f5f4f4;
+    --select-text-color: #444444;
 }
 
 body {
@@ -22,6 +24,15 @@ body {
 
 .title {
     --bulma-title-color: #272727;
+}
+
+.label {
+    --bulma-label-color: #444444;
+}
+
+.select select, select.select {
+    background-color: var(--select-background-color);
+    color: var(--select-text-color);
 }
 
 a:hover {
