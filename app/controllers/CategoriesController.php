@@ -18,7 +18,6 @@ class CategoriesController extends Controller {
     public function listCategories(Request $request, Response $response) 
     {
         $get = $request->getGet();
-        file_put_contents("get.txt", print_r($get, true));
         extract($get);
 
         if (!isset($columns)) {

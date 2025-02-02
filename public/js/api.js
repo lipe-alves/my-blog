@@ -107,6 +107,11 @@
             async create(data) {
                 const resp = await apiEndpoint.post("/categories/", data);
                 return resp.json();
+            },
+
+            async update(id, updates) {
+                const resp = await apiEndpoint.patch(`/categories/${id}`, updates);
+                return resp.json();
             }
         },
 

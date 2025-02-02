@@ -14,7 +14,7 @@ class SettingsController extends Controller
     public function updateSettings(Request $request, Response $response)
     {
         $session = $request->getSession();
-        $put = $request->getPut();
+        $patch = $request->getPatch();
 
         extract($session);
         
@@ -22,11 +22,13 @@ class SettingsController extends Controller
             throw new UnauthorizedException();
         }
 
-        foreach ($put as $key => $value) {
+        foreach ($patch as $key => $value) {
             SettingsService::set($key, $value);
         }
 
         $settings = SettingsService::getAll();
+
+        $request->reloadSession();
 
         $response->setStatus(200)->setJson($settings)->send();
     }
@@ -35,11 +37,11 @@ class SettingsController extends Controller
     {
         $session = $request->getSession();
         $path_params = $request->getParams();
-        $put = $request->getPut();
+        $patch = $request->getPut();
 
         extract($session);
         extract($path_params);
-        extract($put);
+        extract($patch);
 
         if (!isset($admin) || !(bool)$admin) {
             throw new UnauthorizedException();
@@ -52,6 +54,8 @@ class SettingsController extends Controller
         SettingsService::set($key, $value);
 
         $settings = SettingsService::getAll();
+
+        $request->reloadSession();
 
         $response->setStatus(200)->setJson($settings)->send();
 

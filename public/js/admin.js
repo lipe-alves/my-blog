@@ -17,43 +17,43 @@ $(document).ready(function () {
         const categoryId = categoryElement.attr("data-category-id");
         window.admin.categories[categoryId] = createController(categoryElement[0]);
     });
-
-    /** 
-     * @param {HTMLElement} controllerElement
-     * @param {any} props 
-     */
-    function createController(controllerElement, props = {}) {
-        controllerElement = $(controllerElement);
-
-        let controller = { ...props };
-
-        controller = new Proxy(controller, {
-            get(target, prop) {
-                if (prop === "value") {
-                    return controllerElement.text().replace("\n", " ").replace(/\s+/g, " ").trim();
-                } else if (prop === "element") {
-                    return controllerElement[0];
-                }
-
-                return target[prop];
-            },
-            set(target, prop, value) {
-                if (prop === "value") {
-                    value = value.replace("\n", " ").replace(/\s+/g, " ").trim();
-                    controllerElement.text(value);
-                } else if (prop === "element") {
-                    return false;
-                } else {
-                    target[prop] = value;
-                }
-
-                return true;
-            }
-        });
-
-        return controller;
-    }
 });
+
+/** 
+ * @param {HTMLElement} controllerElement
+ * @param {any} props 
+ */
+function createController(controllerElement, props = {}) {
+    controllerElement = $(controllerElement);
+
+    let controller = { ...props };
+
+    controller = new Proxy(controller, {
+        get(target, prop) {
+            if (prop === "value") {
+                return controllerElement.text().replace("\n", " ").replace(/\s+/g, " ").trim();
+            } else if (prop === "element") {
+                return controllerElement[0];
+            }
+
+            return target[prop];
+        },
+        set(target, prop, value) {
+            if (prop === "value") {
+                value = value.replace("\n", " ").replace(/\s+/g, " ").trim();
+                controllerElement.text(value);
+            } else if (prop === "element") {
+                return false;
+            } else {
+                target[prop] = value;
+            }
+
+            return true;
+        }
+    });
+
+    return controller;
+}
 
 async function handleDeleteCategory(button, categoryId) {
     const { modal, toast } = window;
@@ -78,6 +78,8 @@ async function handleDeleteCategory(button, categoryId) {
 
         const query = getQueryParams();
         await views.postFilters.reload(query);
+
+        window.admin.categories[categoryId] = null;
 
         return resp;
     };
@@ -167,9 +169,14 @@ async function handleAddNewCategory(button) {
 
     const createCategory = async () => {
         const query = getQueryParams();
-        const resp = await api.categories.create({ name: newCategoryName });
+
+        const category = await api.categories.create({ name: newCategoryName });
         await views.postFilters.reload(query);
-        return resp;
+
+        const categoryElement = $(`[data-category-id="${category.id}"]`)[0];
+        window.admin.categories[category.id] = createController(categoryElement);
+
+        return category;
     };
 
     try {
@@ -181,5 +188,46 @@ async function handleAddNewCategory(button) {
     } finally {
         setButtonDisabled(false);
     }
+}
 
+async function handleSaveChanges(button) {
+    const { api, admin, toast } = window;
+    const { delayAsync } = window.functions;
+
+    button = $(button);
+
+    /** @param {boolean} disabled */
+    const setButtonDisabled = (disabled) => {
+        button.prop("disabled", disabled);
+        button.toggleClass("is-loading");
+    };
+
+    const saveChanges = async () => {
+        const settingsUpdates = {};
+
+        for (const [settings, controller] of Object.entries(admin.settings)) {
+            settingsUpdates[settings] = controller.value;
+        }
+
+        await api.settings.update(settingsUpdates);
+
+        for (const [categoryId, controller] of Object.entries(admin.categories)) {
+            const name = window.admin.categories[categoryId].value;
+            await api.categories.update(categoryId, { name });
+        }
+    };
+
+    try {
+        setButtonDisabled(true);
+
+        await delayAsync(saveChanges, 3000);
+
+        toast.success("Alterações salvas com sucesso!");
+
+        window.location.reload();
+    } catch (err) {
+        toast.error(err.message);
+    } finally {
+        setButtonDisabled(false);
+    }
 }
