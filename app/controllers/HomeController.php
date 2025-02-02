@@ -103,21 +103,9 @@ class HomeController extends ComponentsController
 
     public function html(Request $request)
     {
-        $get = $request->getGet();
-        $view = "index";
-
-        if (array_key_exists("view", $get)) {
-            $view = $get["view"];
-        }
-
-        switch ($view) {
-            case "post-list":
-                return $this->postList();
-            case "post-filters":
-                return $this->postFilters();
-            case "index":
-            default:
-                return $this->index();
-        }
+        $this->views["post-list"] = "postList";
+        $this->views["index"] = "index";
+        $this->views["default"] = "index";
+        parent::html($request);
     }
 }

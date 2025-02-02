@@ -13,6 +13,8 @@ use App\Core\Response;
 
 class PostsController extends ComponentsController
 {
+    private array $post;
+
     // Api
 
     public function listPosts(Request $request, Response $response)
@@ -93,10 +95,17 @@ class PostsController extends ComponentsController
         $response->setStatus(200)->setJson($result)->send();
     }
 
-    // Views 
+    // Helpers
 
-    private function getPostFromSlugOrId(string $slug_or_id): array|null
+    private function getCurrentPost(): array|null
     {
+        if (isset($this->post)) {
+            return $this->post;
+        }
+        
+        $params = $this->request->getParams();
+        $slug_or_id = $params["slug_or_id"];
+
         $is_id = is_numeric($slug_or_id);
         $is_slug = is_string($slug_or_id);
         $post = null;
@@ -121,14 +130,16 @@ class PostsController extends ComponentsController
             $post = $post_service->getPostBySlug($slug, $columns);
         }
 
+        $this->post = $post;
+
         return $post;
     }
 
+    // Views 
+
     public function commentList()
     {
-        $params = $this->request->getParams();
-        $slug_or_id = $params["slug_or_id"];
-        $post = $this->getPostFromSlugOrId($slug_or_id);
+        $post = $this->getCurrentPost();
 
         $comments_service = new CommentsService();
 
@@ -162,14 +173,17 @@ class PostsController extends ComponentsController
         $this->view("posts/add-comment", $data);
     }
 
+    public function postArticle() 
+    {
+        $post = $this->getCurrentPost();
+        $this->view("posts/post-article", ["post" => $post]);
+    }
+
     public function index()
     {
-        $params = $this->request->getParams();
-        $slug_or_id = $params["slug_or_id"];
-        $post = $this->getPostFromSlugOrId($slug_or_id);
+        $post = $this->getCurrentPost();
 
         $keywords = explode(",", $post["category_names"]);
-
         $session = $this->request->getSession();
         $settings = $session["settings"];
         extract($settings);
@@ -178,29 +192,17 @@ class PostsController extends ComponentsController
             "title"       => "$post[title] - $blog_name",
             "description" => "Teste",
             "keywords"    => $keywords,
-            "post"        => $post,
         ]);
     }
 
     public function html(Request $request)
     {
-        $get = $request->getGet();
-        $view = "index";
+        $this->views["post-articles"] = "postArticle";
+        $this->views["comment-list"] = "commentList";
+        $this->views["comment-form"] = "commentForm";
+        $this->views["index"] = "index";
+        $this->views["default"] = "index";
 
-        if (array_key_exists("view", $get)) {
-            $view = $get["view"];
-        }
-
-        switch ($view) {
-            case "comment-list":
-                return $this->commentList();
-            case "comment-form":
-                return $this->commentForm();
-            case "post-filters":
-                return $this->postFilters();
-            case "index":
-            default:
-                return $this->index();
-        }
+        parent::html($request);
     }
 }

@@ -53,17 +53,9 @@ class AdminController extends Controller
 
     public function html(Request $request)
     {
-        $get = $request->getGet();
-        $view = "index";
+        $this->views["index"] = "index";
+        $this->views["default"] = "index";
 
-        if (array_key_exists("view", $get)) {
-            $view = $get["view"];
-        }
-
-        switch ($view) {
-            case "index":
-            default:
-                return $this->index();
-        }
+        parent::html($request);
     }
 }

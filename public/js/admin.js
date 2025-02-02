@@ -19,6 +19,15 @@ $(document).ready(function () {
     });
 });
 
+async function reloadAllViews() {
+    const { getQueryParams } = window.functions;
+    const query = getQueryParams();
+
+    for (const view of Object.values(window.views)) {
+        await view.reload(query);
+    }
+}
+
 /** 
  * @param {HTMLElement} controllerElement
  * @param {any} props 
@@ -73,15 +82,12 @@ async function handleDeleteCategory(button, categoryId) {
     };
 
     const deleteCategory = async () => {
-        const { api, views } = window;
-        const { getQueryParams } = window.functions;
+        const { api } = window;
 
         const resp = await api.categories.delete(categoryId, postsNewCategoryId);
-
-        const query = getQueryParams();
-        await views.postFilters.reload(query);
-
         window.admin.categories[categoryId] = null;
+
+        await reloadAllViews();
 
         return resp;
     };
@@ -154,8 +160,8 @@ function handleOpenCategoryDeletionModal(categoryId) {
 }
 
 async function handleAddNewCategory(button) {
-    const { api, views, toast } = window;
-    const { delayAsync, removeWhitespaces, removeNewlines, getQueryParams } = window.functions;
+    const { api, toast } = window;
+    const { delayAsync, removeWhitespaces, removeNewlines } = window.functions;
 
     button = $(button);
     const nameFieldElement = $('[data-new-category="true"]');
@@ -170,13 +176,11 @@ async function handleAddNewCategory(button) {
     };
 
     const createCategory = async () => {
-        const query = getQueryParams();
-
         const category = await api.categories.create({ name: newCategoryName });
-        await views.postFilters.reload(query);
-
         const categoryElement = $(`[data-category-id="${category.id}"]`)[0];
         window.admin.categories[category.id] = createController(categoryElement);
+
+        await reloadAllViews();
 
         return category;
     };
@@ -225,8 +229,6 @@ async function handleSaveChanges(button) {
         await delayAsync(saveChanges, 3000);
 
         toast.success("Alterações salvas com sucesso!");
-
-        window.location.reload();
     } catch (err) {
         toast.error(err.message);
     } finally {

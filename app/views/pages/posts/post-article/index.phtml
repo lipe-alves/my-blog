@@ -1,0 +1,45 @@
+<?php
+if (date_is_valid($post["created_at"])) {
+    $post["created_at"] = strtotime($post["created_at"]);
+    $post["created_at"] = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $post["created_at"]);
+}
+
+if (date_is_valid($post["updated_at"])) {
+    $post["updated_at"] = strtotime($post["updated_at"]);
+    $post["updated_at"] = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $post["updated_at"]);
+}
+
+$post["category_names"] = explode(",", $post["category_names"]);
+$total_categories = count($post["category_names"]);
+$last_category_index = $total_categories - 1;
+?>
+<article
+    id="post-article"
+    data-view="post-article" 
+    class="Post-container"
+>
+    <h2 class="Post-title title is-2">
+        <?= $post["title"] ?>
+    </h2>
+    <div class="Post-subheader">
+        <span class="Post-createdAt"><?= $post["created_at"] ?></span>
+        <span class="Post-categories">
+            <?php foreach ($post["category_names"] as $i => $category_name): ?>
+                <a
+                    class="Post-category"
+                    href="<?= BASE_URI . "/?category=$category_name" ?>">
+                    <?= $category_name ?>
+                </a><?= $i !== $last_category_index ? ", " : "" ?>
+            <?php endforeach; ?>
+        </span>
+    </div>
+    <div class="Post-text">
+        <?= $post["text"] ?>
+    </div>
+    <hr class="Post-separator">
+    <div class="Post-comments">
+        <?php $this->commentList() ?>
+        <hr class="Post-separator">
+        <?php $this->view("posts/add-comment", ["post" => $post]) ?>
+    </div>
+</article>
