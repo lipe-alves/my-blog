@@ -68,7 +68,7 @@ class CategoryService extends DatabaseService
 
             $success = $this->update(
                 "Post_x_Category", 
-                ["pc.category_id" => $posts_new_category_id], 
+                ["category_id" => $posts_new_category_id], 
                 ["pc.category_id" => $id]
             );
             if (!$success) return false;

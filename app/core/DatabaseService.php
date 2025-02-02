@@ -248,7 +248,6 @@ class DatabaseService
         $table_alias = $this->getTableAlias($table);
 
         $sql = "UPDATE $table $table_alias SET $updates WHERE $wheres";
-        file_put_contents("update.sql", $sql);
         $success = $this->conn->update($sql, $data);
 
         return $success;
@@ -263,7 +262,7 @@ class DatabaseService
 
         $table_alias = $this->getTableAlias($table);
 
-        $sql = "DELETE FROM $table $table_alias WHERE $wheres";
+        $sql = "DELETE $table_alias FROM $table $table_alias WHERE $wheres";
         $success = $this->conn->delete($sql, $data);
 
         return $success;
