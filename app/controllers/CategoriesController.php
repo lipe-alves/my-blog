@@ -117,4 +117,48 @@ class CategoriesController extends Controller {
             throw $e;
         }
     }
+
+    public function updateCategory(Request $request, Response $response)
+    {
+        $params = $request->getParams();
+        $patch = $request->getPatch();
+
+        extract($params);
+
+        $categories_service = new CategoryService();
+
+        try {
+            $categories_service->startTransaction();
+
+            $data = [];
+            $fetch_field = "id";
+
+            if (is_numeric($id_or_name)) {
+                $data["c.id"] = $id_or_name;
+            } else {
+                $data["c.name"] = $id_or_name;
+                $fetch_field = "nome";
+            }
+
+            $category = $categories_service->getCategory(["c.id"], $data);
+            if (!$category) {
+                throw new ResourceNotFoundException("Categoria com $fetch_field igual a \"$id_or_name\" não encontrada");
+            }
+
+            $updated_category = $categories_service->updateCategory(
+                $category["id"], 
+                $patch
+            );
+            if (!$updated_category) throw new InternalServerException();
+
+            $categories_service->commit();
+
+            $request->reloadSession();
+
+            $response->setStatus(200)->setJson($updated_category)->send();
+        } catch (\Exception $e) {
+            $categories_service->rollback();
+            throw $e;
+        }
+    }
 }

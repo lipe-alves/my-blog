@@ -124,4 +124,47 @@ class CategoryService extends DatabaseService
 
         return $last_inserted_category;
     }
+
+    public function updateCategory(string $id, array $updates): array|false 
+    {
+        unset($updates["id"]);
+        unset($updates["created_at"]);
+
+        extract($updates);
+
+        if (isset($name)) {
+            $name = remove_multiple_whitespaces($name);
+            
+            if (!$name) {
+                throw new InvalidInputException('O campo "nome" não pode ser vazio');
+            }
+            
+            $category_with_same_name = $this->getCategory(["c.id"], [
+                "c.name" => $name,
+                "c.id" => "!=$id",
+            ]);
+            $duplicate_name = (bool)$category_with_same_name;
+    
+            if ($duplicate_name) {
+                throw new InvalidInputException("Já existe uma categoria com o nome \"$name\"");
+            }
+        }
+
+        if (isset($category_id)) {
+            if (!is_numeric($category_id)) {
+                throw new InvalidFormatException("ID da categoria pai", ["numérico"]);
+            }
+
+            $parent_category = $this->getCategoryById($category_id, ["c.id"]);
+            if (!$parent_category) {
+                throw new ResourceNotFoundException("categoria pai de ID $category_id");
+            }
+        }
+
+        $success = $this->update("Category", $updates, ["c.id" => $id]);
+        if (!$success) return false;
+
+        $updated_data = $this->getCategoryById($id, ["c.*"]);
+        return $updated_data;
+    }
 }
