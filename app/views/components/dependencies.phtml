@@ -26,6 +26,15 @@ $get = $this->request->getGet();
 <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<?php if ($session["is_admin"]): ?>
+    <!-- Quill.js -->
+    <script 
+        type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <link 
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" />
+<?php endif; ?>
 <!-- Local scripts -->
 <script
     type="text/javascript"
@@ -73,4 +82,7 @@ $get = $this->request->getGet();
     <link
         rel="stylesheet"
         href="<?= BASE_URI ?>/public/css/admin.css?v=<?= time() ?>" />
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URI ?>/public/css/text-editor.css?v=<?= time() ?>" />
 <?php endif; ?>
