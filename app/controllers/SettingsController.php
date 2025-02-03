@@ -18,7 +18,7 @@ class SettingsController extends Controller
 
         extract($session);
         
-        if (!$admin) {
+        if (!$is_admin) {
             throw new UnauthorizedException();
         }
 

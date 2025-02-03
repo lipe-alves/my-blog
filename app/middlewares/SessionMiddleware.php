@@ -28,7 +28,7 @@ class SessionMiddleware extends Middleware
         $reload_session = array_key_exists("reload", $session) && $session["reload"];
         $categories_loaded = array_key_exists("categories", $session) && count($session["categories"]) > 0;
         $settings_loaded = array_key_exists("settings", $session);
-        $admin_auth_loaded = array_key_exists("is_authenticated", $session);
+        $admin_auth_loaded = array_key_exists("is_admin", $session);
 
         if (!$categories_loaded || $reload_session) {
             $category_service = new CategoryService();
@@ -46,7 +46,7 @@ class SessionMiddleware extends Middleware
         }
 
         if (!$admin_auth_loaded) {
-            $request->setSession("is_authenticated", false);
+            $request->setSession("is_admin", false);
         }
     }
 }

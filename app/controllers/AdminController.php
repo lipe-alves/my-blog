@@ -28,7 +28,7 @@ class AdminController extends Controller
             ])->send();
         }
         
-        $request->setSession("is_authenticated", true);
+        $request->setSession("is_admin", true);
 
         $response->setStatus(200)->setJson([
             "success" => true,

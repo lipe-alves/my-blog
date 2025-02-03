@@ -19,8 +19,8 @@ class AdminMiddleware extends Middleware
             $request->setGet("admin", false);
         }
 
-        if (!array_key_exists("is_authenticated", $session)) {
-            $request->setSession("is_authenticated", false);
+        if (!array_key_exists("is_admin", $session)) {
+            $request->setSession("is_admin", false);
         }
     }
 }

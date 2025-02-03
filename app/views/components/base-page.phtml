@@ -25,7 +25,7 @@ extract($session);
     </main>
     <?php $this->component("back-to-top") ?>
     <?php $this->component("modal") ?>
-    <?php if ($is_authenticated):
+    <?php if ($is_admin):
         $this->component("admin-actions");
     endif; ?>
 </body>

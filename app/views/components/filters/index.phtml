@@ -7,7 +7,7 @@ extract($query);
 
 $session = $this->request->getSession();
 $categories = $session["categories"];
-$is_authenticated = $session["is_authenticated"];
+$is_admin = $session["is_admin"];
 $current_path = $this->request->getPath();
 $is_home = $current_path === "/";
 
@@ -56,7 +56,7 @@ if (!isset($category)) {
                             <?php if ($category === $ctg["name"]): ?>
                                 class="active"
                             <?php endif; ?>
-                            <?php if ($is_authenticated): ?>
+                            <?php if ($is_admin): ?>
                                 data-category-id="<?=$ctg["id"]?>"
                                 data-category-name="<?=$ctg["name"]?>"
                                 contenteditable="true"
@@ -66,7 +66,7 @@ if (!isset($category)) {
                         </a>
                         (<?= $ctg["post_count"] ?>)
                     </span>
-                    <?php if ($is_authenticated): ?>
+                    <?php if ($is_admin): ?>
                         <button 
                             class="DeleteButton button is-danger is-rounded" 
                             onclick="handleOpenCategoryDeletionModal(<?=$ctg['id']?>)"
@@ -76,7 +76,7 @@ if (!isset($category)) {
                     <?php endif; ?>
                 </li>
             <?php endforeach; ?>
-            <?php if ($is_authenticated): ?>
+            <?php if ($is_admin): ?>
                 <hr>
                 <li>
                     <a
