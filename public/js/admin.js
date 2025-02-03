@@ -212,13 +212,16 @@ async function handleSaveChanges(button) {
         const settingsUpdates = {};
 
         for (const [settings, controller] of Object.entries(admin.settings)) {
+            if (controller.value === controller.old) continue;
             settingsUpdates[settings] = controller.value;
         }
 
-        await api.settings.update(settingsUpdates);
+        const madeChanges = Object.keys(settingsUpdates).length > 0;
+        if (madeChanges) await api.settings.update(settingsUpdates);
 
         for (const [categoryId, controller] of Object.entries(admin.categories)) {
-            const name = window.admin.categories[categoryId].value;
+            if (controller.value === controller.old) continue;
+            const name = controller.value;
             await api.categories.update(categoryId, { name });
         }
     };
