@@ -216,22 +216,29 @@ async function handleSaveChanges(button) {
             settingsUpdates[settings] = controller.value;
         }
 
-        const madeChanges = Object.keys(settingsUpdates).length > 0;
+        let madeChanges = Object.keys(settingsUpdates).length > 0;
         if (madeChanges) await api.settings.update(settingsUpdates);
 
         for (const [categoryId, controller] of Object.entries(admin.categories)) {
             if (controller.value === controller.old) continue;
             const name = controller.value;
             await api.categories.update(categoryId, { name });
+            madeChanges = true;
         }
+
+        return madeChanges;
     };
 
     try {
         setButtonDisabled(true);
 
-        await delayAsync(saveChanges, 3000);
+        const changesMade = await delayAsync(saveChanges, 3000);
 
-        toast.success("Alterações salvas com sucesso!");
+        if (changesMade) {
+            toast.success("Alterações salvas com sucesso!");
+        } else {
+            toast.warning("Nenhuma alteração foi feita!");
+        }
     } catch (err) {
         toast.error(err.message);
     } finally {
