@@ -30,6 +30,12 @@
     }
 }
 
+@media screen and (max-width: 500px) {
+    .Header-inner {
+        min-width: 0;
+    }
+}
+
 .Header-title a {
     font-family: Georgia, serif;
     text-decoration: none;
