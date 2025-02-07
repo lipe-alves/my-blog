@@ -11,7 +11,7 @@ CREATE TABLE
         value VARCHAR(255) NULL,
         updated_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
         PRIMARY KEY (id)
-    ) DEFAULT CHARSET = utf8 DEFAULT COLLATE utf8_unicode_ci;
+    ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE
     IF NOT EXISTS Post (
@@ -24,7 +24,7 @@ CREATE TABLE
         deleted TINYINT (1) NOT NULL DEFAULT 0,
         deleted_at DATETIME NULL,
         PRIMARY KEY (id)
-    ) DEFAULT CHARSET = utf8 DEFAULT COLLATE utf8_unicode_ci;
+    ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE
     IF NOT EXISTS File (
@@ -37,7 +37,7 @@ CREATE TABLE
         deleted TINYINT (1) NOT NULL DEFAULT 0,
         deleted_at DATETIME NULL,
         PRIMARY KEY (id)
-    ) DEFAULT CHARSET = utf8 DEFAULT COLLATE utf8_unicode_ci;
+    ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE
     IF NOT EXISTS Reader (
@@ -48,7 +48,7 @@ CREATE TABLE
         photo VARCHAR(500) NULL,
         registered_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
         PRIMARY KEY (id)
-    ) DEFAULT CHARSET = utf8 DEFAULT COLLATE utf8_unicode_ci;
+    ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE
     IF NOT EXISTS Comment (
@@ -64,7 +64,7 @@ CREATE TABLE
         FOREIGN KEY (post_id) REFERENCES Post (id),
         FOREIGN KEY (reader_id) REFERENCES Reader (id),
         FOREIGN KEY (comment_id) REFERENCES Comment (id)
-    ) DEFAULT CHARSET = utf8 DEFAULT COLLATE utf8_unicode_ci;
+    ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE
     IF NOT EXISTS Category (
@@ -76,7 +76,7 @@ CREATE TABLE
         deleted_at DATETIME NULL,
         PRIMARY KEY (id),
         FOREIGN KEY (category_id) REFERENCES Category (id)
-    ) DEFAULT CHARSET = utf8 DEFAULT COLLATE utf8_unicode_ci;
+    ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE
     IF NOT EXISTS Post_x_Category (
@@ -85,7 +85,7 @@ CREATE TABLE
         PRIMARY KEY (post_id, category_id),
         FOREIGN KEY (post_id) REFERENCES Post (id),
         FOREIGN KEY (category_id) REFERENCES Category (id)
-    ) DEFAULT CHARSET = utf8 DEFAULT COLLATE utf8_unicode_ci;
+    ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 INSERT IGNORE INTO Settings (id, title, description, hint, value)
 VALUES
