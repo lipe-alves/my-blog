@@ -102,7 +102,7 @@ class PostsController extends ComponentsController
         $post = $this->getCurrentPost();
         if (!$post) throw new ResourceNotFoundException("Post não encontrado!");
 
-        $updates = $request->getPost();
+        $updates = $request->getPatch();
 
         $post_service = new PostService();
 
