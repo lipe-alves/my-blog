@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Core\DatabaseConnection;
 use App\Core\DatabaseService;
 use App\Exceptions\MissingParamException;
 
@@ -127,8 +126,9 @@ class PostService extends DatabaseService
 
         if (isset($title)) {
             $title = remove_multiple_whitespaces($title);
-
             if (!$title) throw new MissingParamException('"título do post"');
+            
+            $updates["title"] = $title;
 
             $slug = $this->generatePostSlug($title, $post_id); 
             $updates["slug"] = $slug;
