@@ -1,6 +1,6 @@
 <div class="AdminActions">
     <button
-        class="AdminActions-action AdminActions-save button is-info"
+        class="AdminActions-action AdminActions-save button is-warning"
         type="button"
         onclick="handleResetChanges(this)"
         title="Resetar alterações">
@@ -14,6 +14,14 @@
         title="Salvar alterações">
         <i class="fa-solid fa-floppy-disk"></i>
         <span>Salvar alterações</span>
+    </button>
+    <button
+        class="AdminActions-action AdminActions-logout button is-info"
+        type="button"
+        onclick="handleLogout(this)"
+        title="Sair">
+        <i class="fa fa-sign-out"></i>
+        <span>Sair</span>
     </button>
 </div>
 <link

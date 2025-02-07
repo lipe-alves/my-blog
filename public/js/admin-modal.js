@@ -52,9 +52,9 @@ async function handleAuth() {
         passwordInput.prop("disabled", disabled);
     };
 
-    const authenticate = async () => {
+    const login = async () => {
         const password = passwordInput.val();
-        await api.admin.authenticate(password);
+        await api.admin.login(password);
 
         clearQueryParams();
         window.location.reload();
@@ -62,7 +62,7 @@ async function handleAuth() {
 
     try {
         setFormDisabled(true);
-        await delayAsync(authenticate, 3000);
+        await delayAsync(login, 3000);
     } catch (err) {
         toast.error(err.message);
     } finally {

@@ -10,6 +10,11 @@
 }
 
 .AdminActions-action {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
     min-width: 50px;
 }
 
@@ -19,13 +24,11 @@
 }
 
 .AdminActions-action span {
-    transition: width 800ms ease-in-out;
+    transition: width 800ms ease-in-out, margin-left 800ms ease-in-out;
+    text-align: left;
 }
 
-.AdminActions-save:hover span {
-    width: 150px;
-}
-
-.AdminActions-reset:hover span {
+.AdminActions-action:hover span {
+    margin-left: 1em;
     width: 150px;
 }

@@ -2,15 +2,14 @@
 
 namespace App\Controllers;
 
-use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
 use App\Services\AdminService;
 use App\Exceptions\MissingParamException;
 
-class AdminController extends Controller
+class AdminController extends ComponentsController
 {
-    public function authenticate(Request $request, Response $response)
+    public function login(Request $request, Response $response)
     {
         $post = $request->getPost();
         extract($post);
@@ -33,6 +32,16 @@ class AdminController extends Controller
         $response->setStatus(200)->setJson([
             "success" => true,
             "message" => "Autenticado com sucesso!"
+        ])->send();
+    }
+
+    public function logout(Request $request, Response $response)
+    {
+        $request->setSession("is_admin", false);
+
+        $response->setStatus(200)->setJson([
+            "success" => true,
+            "message" => "Sessão finalizada com sucesso!"
         ])->send();
     }
 

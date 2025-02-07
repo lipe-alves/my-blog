@@ -117,14 +117,14 @@
 
         admin: {
             /** @param {string} password */
-            async authenticate(password) {
-                const resp = await apiEndpoint.post("/admin/authenticate", { password });
+            async login(password) {
+                const resp = await apiEndpoint.post("/admin/login", { password });
                 const data = resp.json();
-
-                if (data.success) {
-                    apiEndpoint.defaults.headers.authorization = `Basic ${btoa(`admin:${password}`)}`;
-                }
-
+                return data;
+            },
+            async logout() {
+                const resp = await apiEndpoint.post("/admin/logout");
+                const data = resp.json();
                 return data;
             }
         }

@@ -155,12 +155,13 @@ class PostsController extends ComponentsController
 
     public function commentForm()
     {
+        $post = $this->getCurrentPost();
         $get = $this->request->getGet();
         extract($get);
 
         $data = [
             "post" => [
-                "id" => $post_id
+                "id" => $post["id"]
             ]
         ];
 
@@ -197,7 +198,7 @@ class PostsController extends ComponentsController
 
     public function html(Request $request)
     {
-        $this->views["post-articles"] = "postArticle";
+        $this->views["post-article"] = "postArticle";
         $this->views["comment-list"] = "commentList";
         $this->views["comment-form"] = "commentForm";
         $this->views["index"] = "index";

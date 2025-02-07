@@ -54,4 +54,15 @@ $(document).ready(function () {
 
         window.views[key] = view;
     });
+
+    window.views.reloadAllViews = async function () {
+        const { getQueryParams } = window.functions;
+        const query = getQueryParams();
+    
+        for (const view of Object.values(window.views)) {
+            if ("reload" in view) {
+                await view.reload(query);
+            }
+        }
+    };
 });

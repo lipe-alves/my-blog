@@ -19,15 +19,6 @@ $(document).ready(function () {
     });
 });
 
-async function reloadAllViews() {
-    const { getQueryParams } = window.functions;
-    const query = getQueryParams();
-
-    for (const view of Object.values(window.views)) {
-        await view.reload(query);
-    }
-}
-
 /** 
  * @param {HTMLElement} controllerElement
  * @param {any} props 
@@ -87,7 +78,7 @@ async function handleDeleteCategory(button, categoryId) {
         const resp = await api.categories.delete(categoryId, postsNewCategoryId);
         window.admin.categories[categoryId] = null;
 
-        await reloadAllViews();
+        await window.views.reloadAllViews();
 
         return resp;
     };
@@ -180,7 +171,7 @@ async function handleAddNewCategory(button) {
         const categoryElement = $(`[data-category-id="${category.id}"]`)[0];
         window.admin.categories[category.id] = createController(categoryElement);
 
-        await reloadAllViews();
+        await window.views.reloadAllViews();
 
         return category;
     };
@@ -270,4 +261,35 @@ async function handleResetChanges(button) {
     setButtonDisabled(true);
     await delayAsync(resetChanges, 1500);
     setButtonDisabled(false);
+}
+
+async function handleLogout(button) {
+    const { api, toast } = window;
+    const { delayAsync } = window.functions;
+
+    button = $(button);
+
+    /** @param {boolean} disabled */
+    const setButtonDisabled = (disabled) => {
+        button.prop("disabled", disabled);
+        button.toggleClass("is-loading");
+    };
+
+    const logout = async () => {
+        const resp = await api.admin.logout();
+        return resp;
+    };
+
+    try {
+        setButtonDisabled(true);
+
+        const resp = await delayAsync(logout, 3000);
+        setButtonDisabled(false);
+
+        toast.success(resp.message);
+        await delayAsync(() => window.location.reload(), 2000);
+    } catch (err) {
+        setButtonDisabled(false);
+        toast.error(err.message);
+    }
 }

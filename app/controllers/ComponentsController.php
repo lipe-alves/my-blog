@@ -8,13 +8,18 @@ use App\Core\Request;
 class ComponentsController extends Controller
 {
     public array $views = [
-        "post-filters" => "postFilters"
+        "post-filters" => "postFilters",
+        "header"       => "header"
     ];
 
     public function postFilters()
     {
         $get = $this->request->getGet();
         $this->component("filters", ["query" => $get]);
+    }
+
+    public function header() {
+        $this->component("header", []);
     }
 
     public function html(Request $request) 

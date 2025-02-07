@@ -63,8 +63,3 @@ function handleCloseReplyForm(formId) {
     const form = $(`#${formId}`);
     form.attr("data-visible", "false");
 }
-
-$(document).ready(function () {
-    const { createTextEditor } = window.functions;
-    createTextEditor(".Post-text");
-});
