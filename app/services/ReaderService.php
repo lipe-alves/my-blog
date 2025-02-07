@@ -75,6 +75,9 @@ class ReaderService extends DatabaseService
 
     public function updateReader(string $id, array $updates): array|false
     {
+        unset($updates["id"]);
+        unset($updates["created_at"]);
+        
         if (array_key_exists("fullname", $updates)) {
             $name_parts = explode(" ", $updates["fullname"]);
             $first_name = $name_parts[0];

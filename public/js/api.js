@@ -53,6 +53,16 @@
                 const resp = await apiEndpoint.get(`/posts/${queryString}`);
                 return resp.json();
             },
+
+            /**
+             * 
+             * @param {string} id 
+             * @param {{ [key: string]: any }} updates 
+             */
+            async update(id, updates) {
+                const resp = await apiEndpoint.patch(`/posts/${id}`, updates);
+                return resp.json();
+            }
         },
 
         comments: {

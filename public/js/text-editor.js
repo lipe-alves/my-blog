@@ -1,9 +1,12 @@
 (() => {
-
     class TextEditor extends Quill {
+        /** @property {string} old */
+        old;
+
         /** @param {string} selector */
         constructor(selector) {
             super(selector, { ...TextEditor.EDITOR_CONFIG });
+            this.old = this.value;
         }
 
         static get EDITOR_CONFIG() {
@@ -32,6 +35,23 @@
                 },
                 theme: "snow"
             };
+        }
+
+        get html() {
+            return this.root.innerHTML;
+        }
+
+        get value() {
+            return this.html;
+        }
+
+        /** @param {string} html */
+        set value(html) {
+            this.clipboard.dangerouslyPasteHTML(html);
+        }
+
+        get text() {
+            return this.getText();
         }
 
         /** @param {string} selector */

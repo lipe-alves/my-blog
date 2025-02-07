@@ -17,6 +17,37 @@ $(document).ready(function () {
         const categoryId = categoryElement.attr("data-category-id");
         window.admin.categories[categoryId] = createController(categoryElement[0]);
     });
+
+    window.admin.reset = function () {
+        for (const controller of Object.values(admin.settings)) {
+            controller.value = controller.old;
+        }
+
+        for (const controller of Object.values(admin.categories)) {
+            controller.value = controller.old;
+        }
+    };
+
+    window.admin.save = async function () {
+        const settingsUpdates = {};
+
+        for (const [settings, controller] of Object.entries(admin.settings)) {
+            if (controller.value === controller.old) continue;
+            settingsUpdates[settings] = controller.value;
+        }
+
+        let madeChanges = Object.keys(settingsUpdates).length > 0;
+        if (madeChanges) await api.settings.update(settingsUpdates);
+
+        for (const [categoryId, controller] of Object.entries(admin.categories)) {
+            if (controller.value === controller.old) continue;
+            const name = controller.value;
+            await api.categories.update(categoryId, { name });
+            madeChanges = true;
+        }
+
+        return madeChanges;
+    };
 });
 
 /** 
@@ -199,31 +230,10 @@ async function handleSaveChanges(button) {
         button.toggleClass("is-loading");
     };
 
-    const saveChanges = async () => {
-        const settingsUpdates = {};
-
-        for (const [settings, controller] of Object.entries(admin.settings)) {
-            if (controller.value === controller.old) continue;
-            settingsUpdates[settings] = controller.value;
-        }
-
-        let madeChanges = Object.keys(settingsUpdates).length > 0;
-        if (madeChanges) await api.settings.update(settingsUpdates);
-
-        for (const [categoryId, controller] of Object.entries(admin.categories)) {
-            if (controller.value === controller.old) continue;
-            const name = controller.value;
-            await api.categories.update(categoryId, { name });
-            madeChanges = true;
-        }
-
-        return madeChanges;
-    };
-
     try {
         setButtonDisabled(true);
 
-        const changesMade = await delayAsync(saveChanges, 3000);
+        const changesMade = await delayAsync(window.admin.save, 3000);
 
         if (changesMade) {
             toast.success("Alterações salvas com sucesso!");
@@ -248,18 +258,8 @@ async function handleResetChanges(button) {
         button.toggleClass("is-loading");
     };
 
-    const resetChanges = () => {
-        for (const controller of Object.values(admin.settings)) {
-            controller.value = controller.old;
-        }
-
-        for (const controller of Object.values(admin.categories)) {
-            controller.value = controller.old;
-        }
-    };
-
     setButtonDisabled(true);
-    await delayAsync(resetChanges, 1500);
+    await delayAsync(window.admin.reset, 1500);
     setButtonDisabled(false);
 }
 

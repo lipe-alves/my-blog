@@ -7,9 +7,11 @@ use App\Services\CommentsService;
 
 use App\Exceptions\MissingParamException;
 use App\Exceptions\InvalidFormatException;
+use App\Exceptions\InternalServerException;
 
 use App\Core\Request;
 use App\Core\Response;
+use App\Exceptions\ResourceNotFoundException;
 
 class PostsController extends ComponentsController
 {
@@ -95,6 +97,31 @@ class PostsController extends ComponentsController
         $response->setStatus(200)->setJson($result)->send();
     }
 
+    public function updatePost(Request $request, Response $response)
+    {
+        $post = $this->getCurrentPost();
+        if (!$post) throw new ResourceNotFoundException("Post não encontrado!");
+
+        $updates = $request->getPost();
+
+        $post_service = new PostService();
+
+        try {
+            $post_service->startTransaction();
+
+            $last_updated_post = $post_service->updatePost($post["id"], $updates);
+            $success = $last_updated_post !== false;
+            if (!$success) throw new InternalServerException();
+
+            $post_service->commit();
+
+            $response->setStatus(200)->setJson($last_updated_post)->send();
+        } catch (\Exception $e) {
+            $post_service->rollback();
+            throw $e;
+        }
+    }
+
     // Helpers
 
     private function getCurrentPost(): array|null
@@ -141,9 +168,9 @@ class PostsController extends ComponentsController
     {
         $post = $this->getCurrentPost();
 
-        $comments_service = new CommentsService();
+        $post_service = new CommentsService();
 
-        $post_comments = $comments_service->getPostComments($post["id"], [
+        $post_comments = $post_service->getPostComments($post["id"], [
             "comm.*",
             "r.first_name",
             "r.last_name",
@@ -193,6 +220,7 @@ class PostsController extends ComponentsController
             "title"       => "$post[title] - $blog_name",
             "description" => "Teste",
             "keywords"    => $keywords,
+            "post"        => $post
         ]);
     }
 

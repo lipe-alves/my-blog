@@ -4,9 +4,20 @@ namespace App\Services;
 
 use App\Core\DatabaseConnection;
 use App\Core\DatabaseService;
+use App\Exceptions\MissingParamException;
 
 class PostService extends DatabaseService
 {
+    private function generatePostSlug(string $new_title, string $post_id): string
+    {
+        $slug = preg_replace("/[^\w]/", " ", $new_title);
+        $slug = remove_accents($slug);
+        $slug = remove_multiple_whitespaces($slug);
+        $slug = strtolower($slug);
+        $slug = str_replace(" ", "-", $slug);
+        return $slug;
+    }
+
     public function getPosts(array $columns, array $data)
     {
         $fetch_categories = false;
@@ -93,26 +104,30 @@ class PostService extends DatabaseService
         return $posts;
     }
 
-    public function getPostCategories(string $post_id, array $columns = ["c.*"], int $limit = null)
+    public function getPostCategories(string $post_id, array $columns = ["c.*"])
     {
-        $conn = DatabaseConnection::create();
-        $columns = implode(", ", $columns);
+        $category_service = new CategoryService();
+        return $category_service->getPostCategories($post_id, $columns);
+    }
 
-        $sql = "SELECT $columns FROM Post_x_Category pxc
-            LEFT JOIN Category c ON pxc.category_id = c.id
-            WHERE pxc.post_id = :post_id
-        ";
-        $data = [
-            "post_id" => $post_id
-        ];
+    public function updatePost(string $post_id, array $updates): array|false 
+    {
+        unset($post["id"]);
+        unset($post["slug"]);
+        unset($post["created_at"]);
+        unset($post["updated_at"]);
 
-        if ($limit !== null) {
-            $sql .= " LIMIT :limit";
-            $data["limit"] = $limit;
+        $post = $this->getPostById($post_id);
+        $slug = $post["slug"];
+
+        extract($updates);
+
+        if (isset($title)) {
+            $title = remove_multiple_whitespaces($title);
+
+            if (!$title) throw new MissingParamException('"título do post"');
+            $slug = $this->generatePostSlug($title, $post_id); 
         }
-
-        $posts = $conn->select($sql, $data);
-
-        return $posts;
+        
     }
 }

@@ -1,4 +1,7 @@
 <?php
+$session = $this->request->getSession();
+extract($session);
+
 if (date_is_valid($post["created_at"])) {
     $post["created_at"] = strtotime($post["created_at"]);
     $post["created_at"] = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $post["created_at"]);
@@ -18,7 +21,13 @@ $last_category_index = $total_categories - 1;
     data-view="post-article" 
     class="Post-container"
 >
-    <h2 class="Post-title title is-2">
+    <h2 
+        class="Post-title title is-2"
+        <?php if ($is_admin): ?>
+            data-post-field="title"
+            contenteditable="true"
+        <?php endif; ?>    
+    >
         <?= $post["title"] ?>
     </h2>
     <div class="Post-subheader">
@@ -33,7 +42,12 @@ $last_category_index = $total_categories - 1;
             <?php endforeach; ?>
         </span>
     </div>
-    <div class="Post-text">
+    <div 
+        class="Post-text"
+        <?php if ($is_admin): ?>
+            data-post-field="text"
+        <?php endif; ?> 
+    >
         <?= $post["text"] ?>
     </div>
     <hr class="Post-separator">

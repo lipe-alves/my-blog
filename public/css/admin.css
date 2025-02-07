@@ -1,13 +1,12 @@
-[contenteditable="true"] {
+[contenteditable="true"]:not(.ql-editor) {
     cursor: text;
-}
-
-[data-settings][contenteditable="true"] {
     border: 3px dotted var(--bulma-link-text);
     border-radius: 4px;
 }
 
-[data-category-id][contenteditable="true"], [data-new-category][contenteditable="true"] {
+[data-category-id][contenteditable="true"],
+[data-new-category][contenteditable="true"] {
+    border: none;
     border-bottom: 3px dotted var(--bulma-link-text);
     border-radius: 4px;
 }

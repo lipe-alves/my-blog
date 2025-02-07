@@ -9,3 +9,4 @@ require_once ROOT_PATH . "/app/helpers/remove_multiple_whitespaces.php";
 require_once ROOT_PATH . "/app/helpers/array_find.php";
 require_once ROOT_PATH . "/app/helpers/get_initials.php";
 require_once ROOT_PATH . "/app/helpers/text_to_color.php";
+require_once ROOT_PATH . "/app/helpers/remove_accents.php";

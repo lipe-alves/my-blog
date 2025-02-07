@@ -24,5 +24,6 @@ $this->postFilters();
 <?php if ($is_admin): ?>
     <script
         type="text/javascript"
+        data-post-id="<?=$post["id"]?>"
         src="<?= BASE_URI ?>/app/views/pages/posts/post-editor.js?v=<?= time() ?>"></script>
 <?php endif; ?>

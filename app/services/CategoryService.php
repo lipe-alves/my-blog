@@ -42,6 +42,20 @@ class CategoryService extends DatabaseService
         return $category;
     }
 
+    public function getPostCategories(string $post_id, array $columns = ["c.*"])
+    {
+        $categories = $this->getCategories($columns, [
+            "join" => [
+                "type"       => "inner",
+                "table"      => "Post_x_Category",
+                "conditions" => [
+                    "pc.post_id" => $post_id,
+                ]
+            ]
+        ]);
+        return $categories;
+    }
+
     public function getAllCategories(array $columns = ["*"], $limit = null)
     {
         $data = [];
