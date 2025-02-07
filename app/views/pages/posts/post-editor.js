@@ -35,6 +35,7 @@ $(document).ready(function () {
         const madePostChanges = Object.keys(postUpdates).length > 0;
         if (madePostChanges) {
             await api.posts.update(postId, postUpdates);
+            await window.views.postArticle.reload();
         }
 
         madeChanges = madeChanges || madePostChanges;
