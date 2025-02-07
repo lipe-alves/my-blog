@@ -15,6 +15,12 @@ class PostService extends DatabaseService
         $slug = remove_multiple_whitespaces($slug);
         $slug = strtolower($slug);
         $slug = str_replace(" ", "-", $slug);
+
+        $slug_already_exists = $this->getPostBySlug($slug, ["p.id"]) !== null;
+        if ($slug_already_exists) {
+            $slug .= "-$post_id";
+        }
+
         return $slug;
     }
 
@@ -118,7 +124,6 @@ class PostService extends DatabaseService
         unset($post["updated_at"]);
 
         $post = $this->getPostById($post_id);
-        $slug = $post["slug"];
 
         extract($updates);
 
@@ -126,8 +131,11 @@ class PostService extends DatabaseService
             $title = remove_multiple_whitespaces($title);
 
             if (!$title) throw new MissingParamException('"título do post"');
+
             $slug = $this->generatePostSlug($title, $post_id); 
+            $updates["slug"] = $slug;
         }
         
+
     }
 }
