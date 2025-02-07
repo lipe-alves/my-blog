@@ -118,12 +118,10 @@ class PostService extends DatabaseService
 
     public function updatePost(string $post_id, array $updates): array|false 
     {
-        unset($post["id"]);
-        unset($post["slug"]);
-        unset($post["created_at"]);
-        unset($post["updated_at"]);
-
-        $post = $this->getPostById($post_id);
+        unset($updates["id"]);
+        unset($updates["slug"]);
+        unset($updates["created_at"]);
+        unset($updates["updated_at"]);
 
         extract($updates);
 
@@ -136,6 +134,11 @@ class PostService extends DatabaseService
             $updates["slug"] = $slug;
         }
         
+        $success = $this->update("Post", $updates, ["p.id" => $post_id]);
+        if (!$success) return false;
 
+        $post = $this->getPostById($post_id);
+        
+        return $post;
     }
 }
