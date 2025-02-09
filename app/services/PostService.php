@@ -9,10 +9,11 @@ class PostService extends DatabaseService
 {
     private function generatePostSlug(string $new_title, string $post_id): string
     {
-        $slug = preg_replace("/[^\w]/", " ", $new_title);
+        $slug = $new_title;
+        $slug = preg_replace("/[^\w]/u", " ", $slug);
         $slug = remove_accents($slug);
         $slug = remove_multiple_whitespaces($slug);
-        $slug = strtolower($slug);
+        $slug = mb_strtolower($slug, "UTF-8");
         $slug = str_replace(" ", "-", $slug);
 
         $slug_already_exists = $this->getPostBySlug($slug, ["p.id"]) !== null;
