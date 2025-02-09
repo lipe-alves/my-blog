@@ -15,29 +15,54 @@
             return resp.json();
         },
 
-        /** 
-         * @param {HTMLElment} viewElement 
-         * @param {{ [key: string]: any }} params
-         * @param {HTMLElement=} parent
-         * @returns {string}
-         */
-        async reload(viewElement, params = {}, parent = null) {
-            viewElement = $(viewElement);
+        views: {
+            /** 
+             * @param {string} viewName
+             * @param {HTMLElement} parent
+             * @param {{ [key: string]: any }} params
+             * @returns {string}
+             */
+            async render(viewName, parent, params = {}) {
+                parent = $(parent);
+    
+                params.view = viewName;
+    
+                const baseUrl = window.location.href.replace(window.location.search, "");
+                const viewEndpoint = createEndpoint(baseUrl);
+                const queryString = createQueryString(params);
+    
+                const resp = await viewEndpoint.get(`/${queryString}`);
+                const html = await resp.text();
+    
+                parent.html(html);
+    
+                return html;
+            },
+            /** 
+             * @param {HTMLElment} viewElement 
+             * @param {{ [key: string]: any }} params
+             * @param {HTMLElement=} parent
+             * @returns {string}
+             */
+            async reload(viewElement, params = {}, parent = null) {
+                viewElement = $(viewElement);
+    
+                const view = viewElement.attr("data-view");
+                params.view = view;
+    
+                const baseUrl = window.location.href.replace(window.location.search, "");
+                const viewEndpoint = createEndpoint(baseUrl);
+                const queryString = createQueryString(params);
+    
+                const resp = await viewEndpoint.get(`/${queryString}`);
+                const html = await resp.text();
+    
+                parent = parent ? $(parent) : viewElement;
+                parent.prop("outerHTML", html);
+    
+                return html;
+            },
 
-            const view = viewElement.attr("data-view");
-            params.view = view;
-
-            const baseUrl = window.location.href.replace(window.location.search, "");
-            const viewEndpoint = createEndpoint(baseUrl);
-            const queryString = createQueryString(params);
-
-            const resp = await viewEndpoint.get(`/${queryString}`);
-            const html = await resp.text();
-
-            parent = parent ? $(parent) : viewElement;
-            parent.prop("outerHTML", html);
-
-            return html;
         },
 
         settings: {

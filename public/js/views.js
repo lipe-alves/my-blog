@@ -1,8 +1,34 @@
 $(document).ready(function () {
     $("[data-view]").each(function () {
+        createView(this);
+    });
+
+    window.views.renderNewView = async function (viewName, viewParent) {
+        const { api } = window;
+        const { getQueryParams } = window.functions;
+        const query = getQueryParams();
+        
+        await api.views.render(viewName, viewParent, query);
+
+        const viewElement = $(viewParent).find(`[data-view="${viewName}"]`);
+        createView(viewElement);
+    };
+
+    window.views.reloadAllViews = async function () {
+        const { getQueryParams } = window.functions;
+        const query = getQueryParams();
+
+        for (const view of Object.values(window.views)) {
+            if ("reload" in view) {
+                await view.reload(query);
+            }
+        }
+    };
+
+    function createView(viewElement) {
         const { convertToCamelCase } = window.functions;
 
-        const viewElement = $(this);
+        viewElement = $(viewElement);
         const id = viewElement.attr("id");
         const key = convertToCamelCase(id);
         const loaderId = `loader-${id}`;
@@ -14,7 +40,7 @@ $(document).ready(function () {
 
                 this.loader.show();
 
-                await api.reload(this.element, params, parent);
+                await api.views.reload(this.element, params, parent);
 
                 $(this.element).append(loader.prop("outerHTML"));
 
@@ -53,16 +79,5 @@ $(document).ready(function () {
         }
 
         window.views[key] = view;
-    });
-
-    window.views.reloadAllViews = async function () {
-        const { getQueryParams } = window.functions;
-        const query = getQueryParams();
-    
-        for (const view of Object.values(window.views)) {
-            if ("reload" in view) {
-                await view.reload(query);
-            }
-        }
-    };
+    }
 });
