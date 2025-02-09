@@ -2,7 +2,7 @@ const postId = document.currentScript.dataset.postId;
 
 $(document).ready(function () {
     const { createTextEditor } = window.functions;
-    
+
     const postTitle = createController($('[data-post-field="title"]'));
     const textEditor = createTextEditor('[data-post-field="text"]');
 
@@ -31,10 +31,13 @@ $(document).ready(function () {
                 postUpdates[key] = controller.value;
             }
         }
-        
+
         const madePostChanges = Object.keys(postUpdates).length > 0;
         if (madePostChanges) {
-            await api.posts.update(postId, postUpdates);
+            const updatedPost = await api.posts.update(postId, postUpdates);
+
+            window.history.pushState(null, "", `${window.baseUrl}/posts/${updatedPost.slug}`);
+
             await window.views.postArticle.reload();
         }
 
