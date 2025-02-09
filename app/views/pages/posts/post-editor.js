@@ -1,10 +1,9 @@
 const postId = document.currentScript.dataset.postId;
 
 $(document).ready(function () {
-    const { createTextEditor } = window.functions;
-
-    const postTitle = createController($('[data-post-field="title"]'));
-    const textEditor = createTextEditor('[data-post-field="text"]');
+    const titleElement = $('[data-post-field="title"]');
+    const postTitle = createController(titleElement);
+    const textEditor = createPostTextEditor();
 
     window.admin.post = {
         title: postTitle,
@@ -37,12 +36,21 @@ $(document).ready(function () {
             const updatedPost = await api.posts.update(postId, postUpdates);
 
             window.history.pushState(null, "", `${window.baseUrl}/posts/${updatedPost.slug}`);
-
             await window.views.postArticle.reload();
+
+            const editor = createPostTextEditor();
+            window.admin.post.text = editor;
         }
 
         madeChanges = madeChanges || madePostChanges;
 
         return madeChanges;
+    };
+
+    function createPostTextEditor() {
+        const { createTextEditor } = window.functions;
+        const postTextSelector = '[data-post-field="text"]';
+        const editor = createTextEditor(postTextSelector);
+        return editor;
     };
 });
