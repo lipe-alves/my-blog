@@ -4,6 +4,7 @@
         events: {
             onHide: null,
         },
+
         reset() {
             const modal = $(this.element);
             modal.removeClass("is-active");
@@ -14,11 +15,11 @@
             modal.find(".modal-card").removeClass("animate__animated animate__zoomOut");
             this.events.onHide = null;
         },
-
         /**
          * @param {{
          *     title: string;
-         *     content: string;
+         *     content?: string;
+         *     view?: string;
          *     footer: string;
          *     buttons?: string[];
          *     onHide?: () => void;
@@ -47,8 +48,31 @@
                 this.events.onHide = params.onHide;
             }
 
-            modal.addClass("is-active");
-            modal.find(".modal-card").addClass("animate__animated animate__zoomIn");
+            const showAnimateModal = () => {
+                modal.addClass("is-active");
+                modal.find(".modal-card").addClass("animate__animated animate__zoomIn");
+            };
+
+            if (params.view) {
+                return new Promise(async (resolve, reject) => {
+                    try {
+                        const { api } = window;
+                        const { getQueryParams } = window.functions;
+
+                        const viewParams = getQueryParams();
+                        const contentField = $('[data-field="content"]')[0];
+                        await api.views.render(params.view, contentField, viewParams);
+
+                        showAnimateModal();
+
+                        resolve();
+                    } catch (err) {
+                        reject(err);
+                    }
+                });
+            }
+
+            showAnimateModal();
         },
         hide() {
             const modal = $(this.element);
