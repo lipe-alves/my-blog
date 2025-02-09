@@ -20,4 +20,16 @@ class TestsController extends Controller
             "date"    => date("D, d M Y H:i:s")
         ])->send();
     }
+
+    public function removeAccents(Request $request, Response $response)
+    {
+        $post = $request->getPost();
+        $original = $post["text"];
+        $result = remove_accents($original);
+
+        $response->setStatus(200)->setJson([
+            "original" => $original,
+            "result"   => $result
+        ])->send();
+    }
 }
