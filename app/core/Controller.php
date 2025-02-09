@@ -43,21 +43,26 @@ class Controller
         $this->showHtml("pages/$view", $data);
     }
 
+    protected function page(string $page, array $data = [])
+    {
+        extract($data);
+
+        if (isset($layout)) {
+            $this->layout($layout, array_merge([
+                "page" => $page,
+            ], $data));
+        } else {
+            $this->view($page, $data);
+        }
+    }
+
     protected function component(string $component, array $data = [])
     {
         $this->showHtml("components/$component", $data);
     }
 
-    protected function page(string $page, array $data = [])
+    protected function layout(string $layout, array $data = [])
     {
-        ob_start();
-
-        $this->view($page, $data);
-
-        $page_html = ob_get_clean();
-
-        $data["page_html"] = $page_html;
-
-        $this->component("base-page", $data);
+        $this->showHtml("layouts/$layout", $data);
     }
 }

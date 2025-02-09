@@ -1,0 +1,14 @@
+body, html, iframe {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body, html {
+    overflow: hidden;
+}
+
+iframe {
+    border: none;
+}

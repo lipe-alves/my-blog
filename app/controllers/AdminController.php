@@ -28,6 +28,7 @@ class AdminController extends ComponentsController
         }
         
         $request->setSession("is_admin", true);
+        $request->reloadSession();
 
         $response->setStatus(200)->setJson([
             "success" => true,
@@ -38,6 +39,7 @@ class AdminController extends ComponentsController
     public function logout(Request $request, Response $response)
     {
         $request->setSession("is_admin", false);
+        $request->reloadSession();
 
         $response->setStatus(200)->setJson([
             "success" => true,

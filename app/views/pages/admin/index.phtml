@@ -9,15 +9,14 @@
     ])
     ?>
     <title><?= $title ?></title>
-    <?php $this->component("dependencies") ?>
     <?php $this->component("fonts") ?>
 </head>
 
 <body>
-    <?php $this->component("modal") ?>
-    <script
-        type="text/javascript"
-        src="<?= BASE_URI ?>/app/views/pages/admin/script.js?v=<?= time() ?>"></script>
+    <iframe src="<?= BASE_URI ?>?admin=1"></iframe>
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URI ?>/app/views/pages/admin/styles.css?v=<?= time() ?>">
 </body>
 
 </html>

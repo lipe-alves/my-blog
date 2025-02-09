@@ -21,7 +21,7 @@ extract($session);
     <?php $this->component("navbar") ?>
     <?php $this->component("header") ?>
     <main class="Main">
-        <?= $page_html ?>
+        <?php $this->view($page, $data); ?>
     </main>
     <?php $this->component("back-to-top") ?>
     <?php $this->component("modal") ?>

@@ -217,6 +217,7 @@ class PostsController extends ComponentsController
         extract($settings);
 
         $this->page("posts", [
+            "layout"      => "base-page",
             "title"       => "$post[title] - $blog_name",
             "description" => "Teste",
             "keywords"    => $keywords,

@@ -90,6 +90,7 @@ class HomeController extends ComponentsController
         extract($settings);
 
         $this->page("home", [
+            "layout"            => "base-page",
             "title"             => $blog_name,
             "description"       => $blog_catchline,
             "keywords"          => [],
