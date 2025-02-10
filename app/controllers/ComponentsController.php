@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Core\Request;
+use App\Core\Response;
 
 class ComponentsController extends Controller
 {

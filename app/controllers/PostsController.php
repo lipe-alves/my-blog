@@ -157,6 +157,10 @@ class PostsController extends ComponentsController
             $post = $post_service->getPostBySlug($slug, $columns);
         }
 
+        if (!$post) {
+            throw new ResourceNotFoundException("Post não encontrado");
+        }
+
         $this->post = $post;
 
         return $post;
@@ -227,12 +231,20 @@ class PostsController extends ComponentsController
 
     public function html(Request $request)
     {
-        $this->views["post-article"] = "postArticle";
-        $this->views["comment-list"] = "commentList";
-        $this->views["comment-form"] = "commentForm";
-        $this->views["index"] = "index";
-        $this->views["default"] = "index";
+        try {
+            $this->views["post-article"] = "postArticle";
+            $this->views["comment-list"] = "commentList";
+            $this->views["comment-form"] = "commentForm";
+            $this->views["index"] = "index";
+            $this->views["default"] = "index";
 
-        parent::html($request);
+            parent::html($request);
+        } catch (\Exception $e) {
+            if ($e instanceof ResourceNotFoundException) {
+                $this->response->redirect(BASE_URI);
+            } else {
+                throw $e;
+            }
+        }
     }
 }
