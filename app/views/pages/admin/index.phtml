@@ -13,10 +13,13 @@
 </head>
 
 <body>
-    <iframe src="<?= BASE_URI ?>?admin=1"></iframe>
+    <iframe id="admin-window" src="<?= BASE_URI . $location ?>"></iframe>
     <link
         rel="stylesheet"
         href="<?= BASE_URI ?>/app/views/pages/admin/styles.css?v=<?= time() ?>">
+    <script 
+        type="text/javascript"
+        src="<?= BASE_URI ?>/app/views/pages/admin/script.js?v=<?= time() ?>"></script>
 </body>
 
 </html>

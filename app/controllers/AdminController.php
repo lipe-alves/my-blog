@@ -51,14 +51,28 @@ class AdminController extends ComponentsController
 
     public function index() 
     {
+        $get = $this->request->getGet();
         $session = $this->request->getSession();
         $settings = $session["settings"];
         extract($settings);
+
+        if (array_key_exists("location", $get)) {
+            $get["location"] = urldecode($get["location"]);
+        } else {
+            $get["location"] = "/?admin=1";
+        }
+
+        if ($get["location"] === "/") {
+            $get["location"] .= "?admin=1";
+        }
+
+        file_put_contents("get.txt", print_r($get, true));
         
         $this->page("admin", [
             "title"       => $blog_name,
             "description" => $blog_catchline,
-            "keywords"    => []
+            "keywords"    => [],
+            "location"    => $get["location"]
         ]);
     }
 
