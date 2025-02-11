@@ -55,32 +55,12 @@
 
         /** @param {TextEditor} editor */
         static async uploadImage(editor) {
-            const selection = editor.getSelection();
+            const { modal } = window;
 
-            const input = document.createElement("input");
-            input.setAttribute("type", "file");
-            input.setAttribute("accept", "image/*");
-            input.click();
-
-            input.onchange = () => {
-                const file = input.files[0];
-                if (file) {
-                    const formData = new FormData();
-                    formData.append("image", file);
-
-                    fetch("/api/files", {
-                        method: "POST",
-                        body: formData,
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            editor.insertEmbed(selection.index, "image", data.url);
-                        })
-                        .catch(error => {
-                            console.error("Error uploading image:", error);
-                        });
-                }
-            };
+            await modal.show({
+                title: "Biblioteca de Mídias",
+                view: "media-library"
+            });
         }
 
         get html() {

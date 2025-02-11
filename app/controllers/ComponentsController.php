@@ -9,8 +9,9 @@ use App\Core\Response;
 class ComponentsController extends Controller
 {
     public array $views = [
-        "post-filters" => "postFilters",
-        "header"       => "header"
+        "post-filters"  => "postFilters",
+        "header"        => "header",
+        "media-library" => "mediaLibrary"
     ];
 
     public function postFilters()
@@ -21,6 +22,10 @@ class ComponentsController extends Controller
 
     public function header() {
         $this->component("header", []);
+    }
+
+    public function mediaLibrary() {
+        $this->component("media-library", []);
     }
 
     public function html(Request $request) 
