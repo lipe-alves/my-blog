@@ -20,10 +20,12 @@ $(document).ready(function () {
 
     window.admin.reset = function () {
         for (const controller of Object.values(admin.settings)) {
+            if (!controller) continue;
             controller.value = controller.old;
         }
 
         for (const controller of Object.values(admin.categories)) {
+            if (!controller) continue;
             controller.value = controller.old;
         }
     };
@@ -32,6 +34,7 @@ $(document).ready(function () {
         const settingsUpdates = {};
 
         for (const [settings, controller] of Object.entries(admin.settings)) {
+            if (!controller) continue;
             if (controller.value === controller.old) continue;
             settingsUpdates[settings] = controller.value;
         }
@@ -40,6 +43,7 @@ $(document).ready(function () {
         if (madeChanges) await api.settings.update(settingsUpdates);
 
         for (const [categoryId, controller] of Object.entries(admin.categories)) {
+            if (!controller) continue;
             if (controller.value === controller.old) continue;
             const name = controller.value;
             await api.categories.update(categoryId, { name });
