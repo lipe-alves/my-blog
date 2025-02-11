@@ -127,6 +127,7 @@ class PostService extends DatabaseService
 
         if (isset($title)) {
             $title = remove_multiple_whitespaces($title);
+            $title = htmlspecialchars($title);
             if (!$title) throw new MissingParamException('"título do post"');
             
             $updates["title"] = $title;
