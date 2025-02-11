@@ -62,11 +62,13 @@ class AdminController extends ComponentsController
             $get["location"] = "/?admin=1";
         }
 
-        if ($get["location"] === "/") {
-            $get["location"] .= "?admin=1";
+        if (!str_contains($get["location"], "?")) {
+            $get["location"] .= "?";
         }
 
-        file_put_contents("get.txt", print_r($get, true));
+        if (!str_contains($get["location"], "admin=1")) {
+            $get["location"] .= "admin=1";
+        }
         
         $this->page("admin", [
             "title"       => $blog_name,
