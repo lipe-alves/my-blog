@@ -87,6 +87,7 @@ class CommentsService extends DatabaseService
 
         if (isset($text)) {
             $text = trim($text);
+            $text = htmlspecialchars($text);
         }
 
         if (!isset($text) || !$text) {

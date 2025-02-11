@@ -24,6 +24,8 @@ class ReaderService extends DatabaseService
 
     public function createReader(array $data): array|false
     {
+        $data = array_map("htmlspecialchars", $data);
+        
         extract($data);
 
         if (!isset($email)) {
@@ -90,6 +92,8 @@ class ReaderService extends DatabaseService
             $updates["last_name"] = $last_name;
             unset($updates["fullname"]);
         }
+
+        $updates = array_map("htmlspecialchars", $updates);
 
         extract($updates);
 
