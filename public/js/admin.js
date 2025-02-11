@@ -113,7 +113,7 @@ async function handleDeleteCategory(button, categoryId) {
         const resp = await api.categories.delete(categoryId, postsNewCategoryId);
         window.admin.categories[categoryId] = null;
 
-        await window.views.reloadAllViews();
+        await window.views.postFilters.reload();
 
         return resp;
     };
@@ -206,7 +206,7 @@ async function handleAddNewCategory(button) {
         const categoryElement = $(`[data-category-id="${category.id}"]`)[0];
         window.admin.categories[category.id] = createController(categoryElement);
 
-        await window.views.reloadAllViews();
+        await window.views.postFilters.reload();
 
         return category;
     };
@@ -223,7 +223,7 @@ async function handleAddNewCategory(button) {
 }
 
 async function handleSaveChanges(button) {
-    const { api, admin, toast } = window;
+    const { toast } = window;
     const { delayAsync } = window.functions;
 
     button = $(button);
