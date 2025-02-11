@@ -1,13 +1,9 @@
 const postId = document.currentScript.dataset.postId;
 
 $(document).ready(function () {
-    const titleElement = $('[data-post-field="title"]');
-    const postTitle = createController(titleElement);
-    const textEditor = createPostTextEditor();
-
     window.admin.post = {
-        title: postTitle,
-        text: textEditor
+        title: createPostTitleEditor(),
+        text: createPostTextEditor()
     };
 
     const originalReset = window.admin.reset;
@@ -15,12 +11,13 @@ $(document).ready(function () {
 
     window.admin.reset = function () {
         originalReset();
-        postTitle.value = postTitle.old;
-        textEditor.value = textEditor.old;
+        const { post } = window.admin;
+        post.title.value = post.title.old;
+        post.text.value = post.text.old;
     };
 
     window.admin.save = async function () {
-        const { api } = window;
+        const { baseUrl, api, admin, views } = window;
         let madeChanges = await originalSave();
 
         const postUpdates = {};
@@ -35,11 +32,11 @@ $(document).ready(function () {
         if (madePostChanges) {
             const updatedPost = await api.posts.update(postId, postUpdates);
 
-            window.history.pushState(null, "", `${window.baseUrl}/posts/${updatedPost.slug}`);
-            await window.views.postArticle.reload();
+            window.history.pushState(null, "", `${baseUrl}/posts/${updatedPost.slug}`);
+            await views.postArticle.reload();
 
-            const editor = createPostTextEditor();
-            window.admin.post.text = editor;
+            admin.post.title = createPostTitleEditor();
+            admin.post.text = createPostTextEditor();
         }
 
         madeChanges = madeChanges || madePostChanges;
@@ -47,10 +44,13 @@ $(document).ready(function () {
         return madeChanges;
     };
 
+    function createPostTitleEditor() {
+        return createController('[data-post-field="title"]');
+    }
+
     function createPostTextEditor() {
         const { createTextEditor } = window.functions;
-        const postTextSelector = '[data-post-field="text"]';
-        const editor = createTextEditor(postTextSelector);
+        const editor = createTextEditor('[data-post-field="text"]');
         return editor;
-    };
+    }
 });

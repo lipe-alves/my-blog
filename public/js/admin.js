@@ -9,13 +9,13 @@ $(document).ready(function () {
     $("[data-settings]").each(function () {
         const settingsElement = $(this);
         const settings = settingsElement.attr("data-settings");
-        window.admin.settings[settings] = createController(settingsElement[0]);
+        window.admin.settings[settings] = createController(`[data-settings="${settings}"]`);
     });
 
     $("[data-category-id]").each(function () {
         const categoryElement = $(this);
         const categoryId = categoryElement.attr("data-category-id");
-        window.admin.categories[categoryId] = createController(categoryElement[0]);
+        window.admin.categories[categoryId] = createController(`[data-category-id="${categoryId}"]`);
     });
 
     window.admin.reset = function () {
@@ -55,20 +55,18 @@ $(document).ready(function () {
 });
 
 /** 
- * @param {HTMLElement} controllerElement
+ * @param {string} selector
  * @param {any} props 
  */
-function createController(controllerElement, props = {}) {
-    controllerElement = $(controllerElement);
-
+function createController(selector, props = {}) {
     let controller = { ...props, old: "" };
 
     controller = new Proxy(controller, {
         get(target, prop) {
             if (prop === "value") {
-                return controllerElement.text().replace("\n", " ").replace(/\s+/g, " ").trim();
+                return $(selector).text().replace("\n", " ").replace(/\s+/g, " ").trim();
             } else if (prop === "element") {
-                return controllerElement[0];
+                return $(selector);
             }
 
             return target[prop];
@@ -76,7 +74,7 @@ function createController(controllerElement, props = {}) {
         set(target, prop, value) {
             if (prop === "value") {
                 value = value.replace("\n", " ").replace(/\s+/g, " ").trim();
-                controllerElement.text(value);
+                $(selector).text(value);
             } else if (prop === "element") {
                 return false;
             } else {
@@ -203,8 +201,7 @@ async function handleAddNewCategory(button) {
 
     const createCategory = async () => {
         const category = await api.categories.create({ name: newCategoryName });
-        const categoryElement = $(`[data-category-id="${category.id}"]`)[0];
-        window.admin.categories[category.id] = createController(categoryElement);
+        window.admin.categories[category.id] = createController(`[data-category-id="${category.id}"]`);
 
         await window.views.postFilters.reload();
 
