@@ -185,10 +185,12 @@
                 return docHref === viewHref;
             });
 
-            if (alreadyExists) {
-                const parent = viewLink.parentNode;
-                parent.removeChild(viewLink);
+            if (!alreadyExists) {
+                document.querySelector("head").innerHTML += viewLink.outerHTML;
             }
+
+            const parent = viewLink.parentNode;
+            parent.removeChild(viewLink);
         }
 
         const viewScripts = Array.from(pseudo.querySelectorAll("script"));
@@ -202,10 +204,12 @@
                 return docSrc === viewSrc;
             });
 
-            if (alreadyExists) {
-                const parent = viewScript.parentNode;
-                parent.removeChild(viewScript);
+            if (!alreadyExists) {
+                document.body.innerHTML += viewScript.outerHTML;
             }
+
+            const parent = viewScript.parentNode;
+            parent.removeChild(viewScript);
         }
 
         return pseudo.innerHTML;
