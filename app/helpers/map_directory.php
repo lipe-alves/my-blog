@@ -1,6 +1,6 @@
 <?php 
 
-function map_directory(string $directory): array 
+function map_directory(string $directory, string $date_format = DEFAULT_DATABASE_DATETIME_FORMAT): array 
 {
     $result = [];
     
@@ -21,9 +21,9 @@ function map_directory(string $directory): array
             "permissions" => substr(sprintf("%o", $item->getPerms()), -4),
             "owner" => $item->getOwner(),
             "group" => $item->getGroup(),
-            "modification_time" => date("Y-m-d H:i:s", $item->getMTime()),
-            "access_time" => date("Y-m-d H:i:s", $item->getATime()),
-            "creation_time" => date("Y-m-d H:i:s", $item->getCTime()),
+            "modification_time" => strftime($date_format, $item->getMTime()),
+            "access_time" => strftime($date_format, $item->getATime()),
+            "creation_time" => strftime($date_format, $item->getCTime()),
         ];
         
         $info["path"] = str_replace(ROOT_PATH, "", $info["path"]);
@@ -36,6 +36,10 @@ function map_directory(string $directory): array
             $result[$dir_path] = $info;
         } else {
             $file_path = $info["path"];
+            
+            $mime_type = mime_content_type($item->getRealPath());
+            $info["mime_type"] = $mime_type;
+            
             $result[$dir_path]["files"][$file_path] = $info;
         }
     }
