@@ -24,18 +24,19 @@
              */
             async render(viewName, parent, params = {}) {
                 parent = $(parent);
-    
+
                 params.view = viewName;
-    
+
                 const baseUrl = window.location.href.replace(window.location.search, "");
                 const viewEndpoint = createEndpoint(baseUrl);
                 const queryString = createQueryString(params);
-    
+
                 const resp = await viewEndpoint.get(`/${queryString}`);
-                const html = await resp.text();
-    
+                let html = await resp.text();
+                html = removeDuplicateDependencies(html);
+
                 parent.html(html);
-    
+
                 return html;
             },
             /** 
@@ -46,20 +47,21 @@
              */
             async reload(viewElement, params = {}, parent = null) {
                 viewElement = $(viewElement);
-    
+
                 const view = viewElement.attr("data-view");
                 params.view = view;
-    
+
                 const baseUrl = window.location.href.replace(window.location.search, "");
                 const viewEndpoint = createEndpoint(baseUrl);
                 const queryString = createQueryString(params);
-    
+
                 const resp = await viewEndpoint.get(`/${queryString}`);
-                const html = await resp.text();
-    
+                let html = await resp.text();
+                html = removeDuplicateDependencies(html);
+
                 parent = parent ? $(parent) : viewElement;
                 parent.prop("outerHTML", html);
-    
+
                 return html;
             },
 
@@ -166,4 +168,46 @@
     };
 
     window.api = api;
+
+    /** @param {string} html */
+    function removeDuplicateDependencies(html) {
+        const pseudo = document.createElement("div");
+        pseudo.innerHTML = html;
+
+        const viewLinks = Array.from(pseudo.querySelectorAll("link"));
+        const docLinks = Array.from(document.querySelectorAll("link"));
+
+        for (const viewLink of viewLinks) {
+            const viewHref = viewLink.getAttribute("href").split("?v=")[0];
+
+            const alreadyExists = docLinks.some(docLink => {
+                const docHref = docLink.getAttribute("href").split("?v=")[0];
+                return docHref === viewHref;
+            });
+
+            if (alreadyExists) {
+                const parent = viewLink.parentNode;
+                parent.removeChild(viewLink);
+            }
+        }
+
+        const viewScripts = Array.from(pseudo.querySelectorAll("script"));
+        const docScripts = Array.from(document.querySelectorAll("script"));
+
+        for (const viewScript of viewScripts) {
+            const viewSrc = viewScript.getAttribute("src").split("?v=")[0];
+
+            const alreadyExists = docScripts.some((docScript) => {
+                const docSrc = docScript.getAttribute("src").split("?v=")[0];
+                return docSrc === viewSrc;
+            });
+
+            if (alreadyExists) {
+                const parent = viewScript.parentNode;
+                parent.removeChild(viewScript);
+            }
+        }
+
+        return pseudo.innerHTML;
+    }
 })();
