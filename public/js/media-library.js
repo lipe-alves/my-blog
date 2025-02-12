@@ -4,15 +4,22 @@
     }
 
     const mediaLibrary = {
-        async show() {
+        configs: {
+            media_type: "image/*"
+        },
+
+        async show(configs) {
             const { modal } = window;
+
+            this.configs = configs;
 
             await modal.show({
                 title: "Biblioteca de Mídia",
-                view: "media-library"
+                view: "media-library",
+                params: configs
             });
 
-
+            
         }
     };
 

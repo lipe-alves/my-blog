@@ -20,6 +20,7 @@
          *     title: string;
          *     content?: string;
          *     view?: string;
+         *     params?: any;
          *     footer: string;
          *     buttons?: string[];
          *     onHide?: () => void;
@@ -59,7 +60,7 @@
                         const { api } = window;
                         const { getQueryParams } = window.functions;
 
-                        const viewParams = getQueryParams();
+                        const viewParams = params.params || getQueryParams();
                         const contentField = $('[data-field="content"]')[0];
                         await api.views.render(params.view, contentField, viewParams);
 
