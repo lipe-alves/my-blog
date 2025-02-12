@@ -16,6 +16,35 @@ class Controller
         $this->response = $response;
     }
 
+    private function moveStylesheetsToHead(string $html)
+    {
+        preg_match_all("/<link[^>]*>/i", $html, $matches);
+
+        foreach ($matches[0] as $link) {
+            $html = str_replace($link, "", $html);
+            $html = str_replace("</head>", "$link\n</head>", $html);
+        }
+        
+        return $html;
+    }
+
+    private function moveScriptsToBodyEnd(string $html)
+    {
+        preg_match_all("/<script[^>]*>[^<]*<\/script>/i", $html, $matches);
+
+        foreach ($matches[0] as $script) {
+            $html = str_replace($script, "", $html);
+            $html = str_replace("</body>", "$script\n</body>", $html);
+        }
+        
+        return $html;
+    }
+
+    private function removeHtmlComments(string $html)
+    {
+        return preg_replace("/<!--.*?-->/", "", $html);
+    }
+
     private function showHtml(string $path, array $data = [])
     {
         extract($data);
@@ -34,6 +63,16 @@ class Controller
         require $phtml_path;
 
         $html = ob_get_clean();
+
+        if (str_contains($html, "</head>")) {
+            $html = $this->moveStylesheetsToHead($html);
+        }
+
+        if (str_contains($html, "</body>")) {
+            $html = $this->moveScriptsToBodyEnd($html);
+        }
+
+        $html = $this->removeHtmlComments($html);
 
         $this->response->setStatus(200)->setHtml($html)->send();
     }
