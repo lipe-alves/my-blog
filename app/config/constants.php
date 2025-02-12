@@ -19,3 +19,4 @@ define("API_URL", $api_url);
 define("DEFAULT_DISPLAY_DATETIME_FORMAT", "%e de %B de %Y às %H:%M");
 define("DEFAULT_DATABASE_DATETIME_FORMAT", "Y-m-d H:i:s");
 define("SESSION_TIMEOUT", 1800);
+define("UPLOAD_PATH", ROOT_PATH . "/public/media");

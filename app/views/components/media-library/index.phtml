@@ -1,7 +1,14 @@
+<?php 
+$directory = map_directory(UPLOAD_PATH);
+?>
 <div
     id="media-library"
     class="MediaLibrary"
     data-view="media-library"
 >
-
+    <?= json_encode($directory) ?>
 </div>
+<link 
+    rel="stylesheet" 
+    href="<?= BASE_URI ?>/views/components/media-library/styles.css?v=<?= time() ?>"
+/>
