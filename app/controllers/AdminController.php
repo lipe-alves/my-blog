@@ -69,6 +69,10 @@ class AdminController extends ComponentsController
         if (!str_contains($get["location"], "admin=1")) {
             $get["location"] .= "admin=1";
         }
+
+        $url = parse_url($get["location"]);
+        $get["location"] = "$url[path]?$url[query]";
+        $get["location"] = str_replace(BASE_URI, "", $get["location"]);
         
         $this->page("admin", [
             "title"       => $blog_name,

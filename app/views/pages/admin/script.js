@@ -4,7 +4,11 @@ let iframeHref = null;
 iframe.addEventListener("load", () => {
     setInterval(() => {
         const iframeWindow = iframe.contentWindow;
-        
+
+        if (!iframeWindow.functions) {
+            return;
+        }
+
         if (!window.functions) {
             window.functions = {};
         }
@@ -13,12 +17,12 @@ iframe.addEventListener("load", () => {
 
         const getQueryParams = cloneFunction(iframeWindow.functions.getQueryParams);
         window.functions.getQueryParams = getQueryParams;
-        
+
         const setQueryParams = cloneFunction(iframeWindow.functions.setQueryParams);
         window.functions.setQueryParams = setQueryParams;
 
-        const currIframeHref = iframeWindow.location.href.replace(baseUrl, "");
-    
+        let currIframeHref = iframeWindow.location.href;
+
         if (currIframeHref !== iframeHref) {
             const query = getQueryParams();
             query.location = currIframeHref;
