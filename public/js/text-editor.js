@@ -55,12 +55,9 @@
 
         /** @param {TextEditor} editor */
         static async uploadImage(editor) {
-            const { modal } = window;
+            const { admin } = window;
 
-            await modal.show({
-                title: "Biblioteca de Mídias",
-                view: "media-library"
-            });
+            await admin.mediaLibrary.show();
         }
 
         get html() {

@@ -1,9 +1,14 @@
 $(document).ready(function () {
     if (!window.admin) {
-        window.admin = {
-            settings: {},
-            categories: {}
-        };
+        window.admin = {};
+    }
+
+    if (!window.admin.settings) {
+        window.admin.settings = {};
+    }
+
+    if (!window.admin.categories) {
+        window.admin.categories = {};
     }
 
     $("[data-settings]").each(function () {
