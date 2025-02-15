@@ -112,17 +112,20 @@ fieldset[disabled] .textarea,
     opacity: 0.5;
 }
 
-.button.is-success {
-    color: #fff;
-}
-
 a.active {
     text-decoration: underline;
 }
 
 .is-success {
-    --bulma-loading-color: #fff;
-    background-color: #84be5b;
+    --text-color: #fff;
+    --bulma-loading-color: var(--text-color);
+    --success-color: #84be5b;
+    background-color: var(--success-color);
+    color: var(--text-color);
+}
+
+.is-success.is-outlined {
+    --text-color: vaR(--success-color);
 }
 
 .is-success[disabled] {

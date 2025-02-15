@@ -6,9 +6,28 @@ $directory = map_directory(UPLOAD_PATH, DEFAULT_DISPLAY_DATETIME_FORMAT);
     class="MediaLibrary"
     data-view="media-library"
 >
-    <?= json_encode($directory) ?>
+    <header class="MediaLibrary-header">
+        <div class="MediaLibrary-current"></div>
+        <div class="MediaLibrary-actions">
+            <button class="MediaLibrary-uploadFile button is-info is-outlined">
+                <i class="fa-regular fa-file"></i>
+                <span>Novo arquivo</span>
+            </button> 
+            <button class="MediaLibrary-addFolder button is-success is-outlined">
+                <i class="fa-regular fa-folder"></i>
+                <span>Nova pasta</span>
+            </button> 
+        </div>
+    </header>
+    <main class="MediaLibrary-main">
+        <ul class="MediaLibrary-directories">
+            <?= json_encode($directory) ?>
+        </ul>
+        <div class="MediaLibrary-files"></div>
+    </main>
+    <footer class="MediaLibrary-footer"></footer>
 </div>
 <link 
     rel="stylesheet" 
-    href="<?= BASE_URI ?>/views/components/media-library/styles.css?v=<?= time() ?>"
+    href="<?= BASE_URI ?>/app/views/components/media-library/styles.css?v=<?= time() ?>"
 />
