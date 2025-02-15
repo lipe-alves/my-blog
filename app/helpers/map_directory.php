@@ -9,6 +9,8 @@ function map_directory(string $directory, string $date_format = DEFAULT_DATABASE
         RecursiveIteratorIterator::SELF_FIRST
     );
 
+    $items = [];
+
     foreach ($iterator as $item) {
         $dir_path = $item->isDir() ? $item->getPathname() : $item->getPath();
         $dir_path = str_replace(ROOT_PATH, "", $dir_path);
@@ -27,21 +29,26 @@ function map_directory(string $directory, string $date_format = DEFAULT_DATABASE
         ];
         
         $info["path"] = str_replace(ROOT_PATH, "", $info["path"]);
+        $info["path"] = str_replace("\/", "/", $info["path"]);
+        $info["path"] = str_replace("\\", "/", $info["path"]);
 
-        if ($item->isDir()) {
-            if (!array_key_exists("files", $info)) {
-                $info["files"] = [];
-            }
-
-            $result[$dir_path] = $info;
-        } else {
-            $file_path = $info["path"];
-            
-            $mime_type = mime_content_type($item->getRealPath());
-            $info["mime_type"] = $mime_type;
-            
-            $result[$dir_path]["files"][$file_path] = $info;
+        if ($info["type"] === "directory") {
+            $info["children"] = [];
         }
+
+        $items[$info["path"]] = $info;
+
+        $parent_path = explode("/", $info["path"]);
+        array_pop($parent_path);
+        $parent_path = implode("/", $parent_path);
+
+        if (array_key_exists($parent_path, $items)) {
+            $items[$parent_path]["children"][$info["path"]] = $info;
+        }
+    }
+
+    foreach ($items as $path => $item) {
+
     }
 
     return $result;
