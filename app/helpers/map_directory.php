@@ -1,55 +1,61 @@
 <?php 
 
+function extract_data_from_path(string $path, string $date_format) {
+    if (!str_contains($path, ROOT_PATH)) {
+        $path = ROOT_PATH.$path;
+    }
+
+    $info = new SplFileInfo($path);
+
+    $data = [
+        "path" => $info->getPathname(),
+        "name" => $info->getFilename(),
+        "type" => $info->isDir() ? "directory" : "file",
+        "size" => $info->getSize(),
+        "permissions" => substr(sprintf("%o", $info->getPerms()), -4),
+        "owner" => $info->getOwner(),
+        "group" => $info->getGroup(),
+        "modification_time" => trim(strftime($date_format, $info->getMTime())),
+        "access_time" => trim(strftime($date_format, $info->getATime())),
+        "creation_time" => trim(strftime($date_format, $info->getCTime())),
+    ];
+    
+    $data["path"] = str_replace(ROOT_PATH, "", $data["path"]);
+    $data["path"] = str_replace("\/", "/", $data["path"]);
+    $data["path"] = str_replace("\\", "/", $data["path"]);
+
+    if ($data["type"] === "directory") {
+        $data["children"] = [];
+    }
+
+    return $data;
+}
+
 function map_directory(string $directory, string $date_format = DEFAULT_DATABASE_DATETIME_FORMAT): array 
 {
-    $result = [];
-    
-    $iterator = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
-        RecursiveIteratorIterator::SELF_FIRST
-    );
+    $map = [];
 
-    $items = [];
+    $map[$directory] = extract_data_from_path($directory, $date_format);
 
-    foreach ($iterator as $item) {
-        $dir_path = $item->isDir() ? $item->getPathname() : $item->getPath();
-        $dir_path = str_replace(ROOT_PATH, "", $dir_path);
+    $children = scandir($directory);
 
-        $info = [
-            "path" => $item->getPathname(),
-            "name" => $item->getFilename(),
-            "type" => $item->isDir() ? "directory" : "file",
-            "size" => $item->getSize(),
-            "permissions" => substr(sprintf("%o", $item->getPerms()), -4),
-            "owner" => $item->getOwner(),
-            "group" => $item->getGroup(),
-            "modification_time" => strftime($date_format, $item->getMTime()),
-            "access_time" => strftime($date_format, $item->getATime()),
-            "creation_time" => strftime($date_format, $item->getCTime()),
-        ];
-        
-        $info["path"] = str_replace(ROOT_PATH, "", $info["path"]);
-        $info["path"] = str_replace("\/", "/", $info["path"]);
-        $info["path"] = str_replace("\\", "/", $info["path"]);
+    foreach ($children as $child_path) {
+        if ($child_path === "." || $child_path === "..") {
+            continue;
+        }
+
+        $info = extract_data_from_path("$directory/$child_path", $date_format);
 
         if ($info["type"] === "directory") {
-            $info["children"] = [];
+            $path = ROOT_PATH.$info["path"];
+            $children_map = map_directory($path, $date_format);
+            $info["children"] = $children_map[$path]["children"];
         }
 
-        $items[$info["path"]] = $info;
-
-        $parent_path = explode("/", $info["path"]);
-        array_pop($parent_path);
-        $parent_path = implode("/", $parent_path);
-
-        if (array_key_exists($parent_path, $items)) {
-            $items[$parent_path]["children"][$info["path"]] = $info;
-        }
+        $map[$directory]["children"][$info["path"]] = $info;
     }
 
-    foreach ($items as $path => $item) {
+    file_put_contents("map.txt", print_r($map, true));
 
-    }
-
-    return $result;
+    return $map;
 }
