@@ -49,13 +49,14 @@ function map_directory(string $directory, string $date_format = DEFAULT_DATABASE
         if ($info["type"] === "directory") {
             $path = ROOT_PATH.$info["path"];
             $children_map = map_directory($path, $date_format);
-            $info["children"] = $children_map[$path]["children"];
+            $info["children"] = $children_map[0]["children"];
         }
 
         $map[$directory]["children"][$info["path"]] = $info;
     }
-
-    file_put_contents("map.txt", print_r($map, true));
+    
+    $map[$directory]["children"] = array_values($map[$directory]["children"]);
+    $map = array_values($map);
 
     return $map;
 }
