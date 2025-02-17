@@ -77,7 +77,7 @@ class Response
         return $this;
     }
 
-    public function redirect($url)
+    public function redirect(string $url)
     {
         $this->setStatus(302);
         $this->setHeader("Location", $url);
