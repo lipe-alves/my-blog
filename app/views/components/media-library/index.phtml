@@ -1,5 +1,5 @@
 <?php 
-$directory = map_directory(UPLOAD_PATH, DEFAULT_DISPLAY_DATETIME_FORMAT);
+$map = map_directory(UPLOAD_PATH, DEFAULT_DISPLAY_DATETIME_FORMAT);
 ?>
 <div
     id="media-library"
@@ -20,10 +20,13 @@ $directory = map_directory(UPLOAD_PATH, DEFAULT_DISPLAY_DATETIME_FORMAT);
         </div>
     </header>
     <main class="MediaLibrary-main">
-        <ul class="MediaLibrary-directories">
-            <?= json_encode($directory) ?>
+        <ul class="MediaLibrary-items">
+            <?php foreach ($map as $item): ?>
+                <li class="MediaLibrary-item">
+                    <?php $this->component("media-library/$item[type]", $item) ?>
+                </li>
+            <?php endforeach; ?>
         </ul>
-        <div class="MediaLibrary-files"></div>
     </main>
     <footer class="MediaLibrary-footer"></footer>
 </div>

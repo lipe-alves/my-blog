@@ -21,21 +21,20 @@
     justify-content: flex-start;
 }
 
-.MediaLibrary-directories {
+ul.MediaLibrary-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
+    flex-wrap: wrap;
     gap: 1em;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-right: 1px solid rgba(0, 0, 0, 0.8);
 }
 
-.MediaLibrary-files {
-
+.MediaLibrary-item {
+    
 }
 
 .MediaLibrary-actions {

@@ -47,8 +47,6 @@ class Controller
 
     private function showHtml(string $path, array $data = [])
     {
-        extract($data);
-
         $phtml_path = ROOT_PATH . "/app/views/{$path}.phtml";
 
         if (!file_exists($phtml_path)) {
@@ -59,6 +57,8 @@ class Controller
             throw new \Exception("$path não existe");
         }
 
+        extract($data);
+        
         ob_start();
         require $phtml_path;
 
