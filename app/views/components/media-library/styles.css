@@ -34,7 +34,16 @@ ul.MediaLibrary-items {
 }
 
 .MediaLibrary-item {
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    cursor: pointer;
+}
+
+.MediaLibrary-item:hover .MediaLibrary-item-label {
+    text-decoration: underline;
 }
 
 .MediaLibrary-actions {

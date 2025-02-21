@@ -57,12 +57,11 @@
             if (params.view) {
                 return new Promise(async (resolve, reject) => {
                     try {
-                        const { api } = window;
-                        const { getQueryParams } = window.functions;
+                        const { views } = window;
 
-                        const viewParams = params.params || getQueryParams();
+                        const viewParams = params.params;
                         const contentField = $('[data-field="content"]')[0];
-                        await api.views.render(params.view, contentField, viewParams);
+                        await views.renderNewView(params.view, contentField, viewParams);
 
                         showAnimateModal();
 

@@ -1,5 +1,12 @@
 <?php 
-$map = map_directory(UPLOAD_PATH, DEFAULT_DISPLAY_DATETIME_FORMAT);
+$directory_path = UPLOAD_PATH;
+if (isset($base_path)) {
+    $directory_path .= "/$base_path";
+}
+$directory_path = preg_replace("/\/+/", "/", $directory_path);
+
+$map = map_directory($directory_path, DEFAULT_DISPLAY_DATETIME_FORMAT);
+$map = $map[0]["children"];
 ?>
 <div
     id="media-library"
@@ -34,3 +41,7 @@ $map = map_directory(UPLOAD_PATH, DEFAULT_DISPLAY_DATETIME_FORMAT);
     rel="stylesheet" 
     href="<?= BASE_URI ?>/app/views/components/media-library/styles.css?v=<?= time() ?>"
 />
+<script 
+    type="text/javascript" 
+    src="<?= BASE_URI ?>/app/views/components/media-library/script.js?v=<?= time() ?>"
+></script>

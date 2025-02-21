@@ -8,7 +8,7 @@
             media_type: "image/*"
         },
 
-        async show(configs) {
+        async show(configs = {}) {
             const { modal } = window;
 
             this.configs = configs;

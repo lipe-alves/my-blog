@@ -3,12 +3,16 @@ $(document).ready(function () {
         createView(this);
     });
 
-    window.views.renderNewView = async function (viewName, viewParent) {
+    window.views.renderNewView = async function (viewName, viewParent, params) {
         const { api } = window;
         const { getQueryParams } = window.functions;
-        const query = getQueryParams();
+
+        if (!params) {
+            const query = getQueryParams();
+            params = query;
+        }
         
-        await api.views.render(viewName, viewParent, query);
+        await api.views.render(viewName, viewParent, params);
 
         const viewElement = $(viewParent).find(`[data-view="${viewName}"]`);
         createView(viewElement);
