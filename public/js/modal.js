@@ -13,7 +13,11 @@
             });
             modal.find(".modal-card").removeClass("animate__animated animate__zoomIn");
             modal.find(".modal-card").removeClass("animate__animated animate__zoomOut");
-            this.events.onHide = null;
+
+
+            for (const event in this.events) {
+                this.events[event] = null;
+            }
         },
         /**
          * @param {{
@@ -28,6 +32,22 @@
          */
         show(params) {
             this.reset();
+
+            if (params.view) {
+                return new Promise(async (resolve, reject) => {
+                    try {
+                        const html = await getViewHtml(params.view, params.params);
+
+                        delete params.view;
+                        delete params.params;
+                        params.content = html;
+
+                        resolve(this.show(params));
+                    } catch (err) {
+                        reject(err);
+                    }
+                });
+            }
 
             const modal = $(this.element);
 
@@ -47,29 +67,6 @@
 
             if (params.onHide) {
                 this.events.onHide = params.onHide;
-            }
-
-            const showAnimateModal = () => {
-                modal.addClass("is-active");
-                modal.find(".modal-card").addClass("animate__animated animate__zoomIn");
-            };
-
-            if (params.view) {
-                return new Promise(async (resolve, reject) => {
-                    try {
-                        const { views } = window;
-
-                        const viewParams = params.params;
-                        const contentField = $('[data-field="content"]')[0];
-                        await views.renderNewView(params.view, contentField, viewParams);
-
-                        showAnimateModal();
-
-                        resolve();
-                    } catch (err) {
-                        reject(err);
-                    }
-                });
             }
 
             showAnimateModal();
@@ -104,4 +101,19 @@
     });
 
     window.modal = modal;
+
+    async function getViewHtml(viewName, viewParams) {
+        const { api } = window;
+
+        const pseudo = document.createElement("div");
+        const html = await api.views.render(viewName, pseudo, viewParams);
+
+        return html;
+    }
+
+    function showAnimateModal() {
+        const modal = $(window.modal.element);
+        modal.addClass("is-active");
+        modal.find(".modal-card").addClass("animate__animated animate__zoomIn");
+    }
 })();
