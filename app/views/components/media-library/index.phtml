@@ -29,7 +29,10 @@ $map = $map[0]["children"];
     <main class="MediaLibrary-main">
         <ul class="MediaLibrary-items">
             <?php foreach ($map as $item): ?>
-                <li class="MediaLibrary-item">
+                <li 
+                    class="MediaLibrary-item" 
+                    onclick="handleOpenItem('<?= $item['type'] ?>', '<?= $item['path'] ?>')"
+                >
                     <?php $this->component("media-library/$item[type]", $item) ?>
                 </li>
             <?php endforeach; ?>
