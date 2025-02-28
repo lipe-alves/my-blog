@@ -11,3 +11,4 @@ require_once ROOT_PATH . "/app/helpers/get_initials.php";
 require_once ROOT_PATH . "/app/helpers/text_to_color.php";
 require_once ROOT_PATH . "/app/helpers/remove_accents.php";
 require_once ROOT_PATH . "/app/helpers/map_directory.php";
+require_once ROOT_PATH . "/app/helpers/get_file_extension.php";

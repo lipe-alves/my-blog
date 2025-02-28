@@ -1,0 +1,12 @@
+<?php 
+$src_filename = "$extension.png";
+$src = "/public/images/media-library/files/$src_filename";
+if (!file_exists(ROOT_PATH.$src)) $src = str_replace($src_filename, "file.png", $src);
+?>
+<img 
+    src="<?= BASE_URI.$src ?>"
+    alt="<?= $name ?>"
+/>
+<span class="MediaLibrary-item-label">
+    <?= $name ?> <?=$extension?>
+</span>

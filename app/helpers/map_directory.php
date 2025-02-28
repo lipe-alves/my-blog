@@ -8,24 +8,26 @@ function extract_data_from_path(string $path, string $date_format) {
     $info = new SplFileInfo($path);
 
     $data = [
-        "path" => $info->getPathname(),
-        "name" => $info->getFilename(),
-        "type" => $info->isDir() ? "directory" : "file",
-        "size" => $info->getSize(),
-        "permissions" => substr(sprintf("%o", $info->getPerms()), -4),
-        "owner" => $info->getOwner(),
-        "group" => $info->getGroup(),
+        "path"              => $info->getPathname(),
+        "name"              => $info->getFilename(),
+        "type"              => $info->isDir() ? "directory" : "file",
+        "size"              => $info->getSize(),
+        "permissions"       => substr(sprintf("%o", $info->getPerms()), -4),
+        "owner"             => $info->getOwner(),
+        "group"             => $info->getGroup(),
         "modification_time" => trim(strftime($date_format, $info->getMTime())),
-        "access_time" => trim(strftime($date_format, $info->getATime())),
-        "creation_time" => trim(strftime($date_format, $info->getCTime())),
+        "access_time"       => trim(strftime($date_format, $info->getATime())),
+        "creation_time"     => trim(strftime($date_format, $info->getCTime())),
     ];
     
     $data["path"] = str_replace(ROOT_PATH, "", $data["path"]);
     $data["path"] = str_replace("\/", "/", $data["path"]);
     $data["path"] = str_replace("\\", "/", $data["path"]);
-
+    
     if ($data["type"] === "directory") {
         $data["children"] = [];
+    } else {
+        $data["extension"] = get_file_extension($data["path"]);
     }
 
     return $data;
