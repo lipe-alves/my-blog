@@ -1,6 +1,71 @@
+class View {
+    #id;
+    #loaderId;
+
+    /** @param {HTMLElement} viewElement */
+    constructor(viewElement) {
+        viewElement = $(viewElement);
+        this.#id = viewElement.attr("id");
+        this.#loaderId = `loader-${this.#id}`;
+    }
+
+    get id() {
+        return this.#id;
+    }
+
+    /** @returns {HTMLElement} */
+    get element() {
+        return $(`#${this.#id}`)[0];
+    }
+
+    get loader() {
+        const view = this;
+        const loaderId = this.#loaderId;
+
+        return {
+            show(params = {}) {
+                const { loader } = window;
+                return loader.show(view.element, { ...params, id: loaderId });
+            },
+            hide() {
+                const { loader } = window;
+                return loader.hide(loaderId);
+            }
+        }
+    }
+
+    async reload(params = {}, parent = null) {
+        const { api } = window;
+        const loader = $(`#${this.#loaderId}`).clone(true);
+
+        this.loader.show();
+
+        await api.views.reload(this.element, params, parent);
+
+        $(this.element).append(loader.prop("outerHTML"));
+
+        this.loader.hide();
+    }
+
+    static create(viewElement) {
+        const { convertToCamelCase } = window.functions;
+
+        const view = new View(viewElement);
+
+        const key = convertToCamelCase(view.id);
+        if (!window.views) {
+            window.views = {};
+        }
+
+        window.views[key] = view;
+
+        return view;
+    }
+}
+
 $(document).ready(function () {
     $("[data-view]").each(function () {
-        createView(this);
+        View.create(this);
     });
 
     window.views.renderNewView = async function (viewName, viewParent, params) {
@@ -15,7 +80,7 @@ $(document).ready(function () {
         await api.views.render(viewName, viewParent, params);
 
         const viewElement = $(viewParent).find(`[data-view="${viewName}"]`);
-        createView(viewElement);
+        View.create(viewElement);
     };
 
     window.views.reloadAllViews = async function () {
@@ -28,60 +93,4 @@ $(document).ready(function () {
             }
         }
     };
-
-    function createView(viewElement) {
-        const { convertToCamelCase } = window.functions;
-
-        viewElement = $(viewElement);
-        const id = viewElement.attr("id");
-        const key = convertToCamelCase(id);
-        const loaderId = `loader-${id}`;
-
-        let view = {
-            async reload(params = {}, parent = null) {
-                const { api } = window;
-                const loader = $(`#${loaderId}`).clone(true);
-
-                this.loader.show();
-
-                await api.views.reload(this.element, params, parent);
-
-                $(this.element).append(loader.prop("outerHTML"));
-
-                this.loader.hide();
-            },
-            loader: {
-                show(params = {}) {
-                    const { loader } = window;
-                    return loader.show(view.element, { ...params, id: loaderId });
-                },
-                hide() {
-                    const { loader } = window;
-                    return loader.hide(loaderId);
-                }
-            }
-        };
-
-        view = new Proxy(view, {
-            get(target, prop) {
-                if (prop === "element") {
-                    return $(`#${id}`)[0];
-                }
-                return target[prop];
-            },
-            set(target, prop, value) {
-                if (prop === "element") {
-                    throw new Error("element is readonly");
-                }
-                target[prop] = value;
-                return true;
-            }
-        });
-
-        if (!window.views) {
-            window.views = {};
-        }
-
-        window.views[key] = view;
-    }
 });
