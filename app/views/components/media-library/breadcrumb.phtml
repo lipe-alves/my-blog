@@ -1,0 +1,61 @@
+<?php
+$current_path = get_current_path($directory_path);
+$folders = split_folders($current_path);
+?>
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <?php foreach ($folders as $i => $folder): ?>
+            <li>
+                <a 
+                    href="javascript:handleNavigateToFolder('<?= get_folder_fullpath($i, $folders) ?>')"
+                    <?php if (folder_is_active($i, $folders)): ?>
+                        class="active"
+                    <?php endif; ?>    
+                >
+                    <?= $folder ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</nav>
+
+<?php 
+function split_folders(string $path): array
+{
+    $folders = explode("/", $path);
+    $folders = array_filter($folders, function ($folder) {
+        return (bool)$folder;
+    });
+    return $folders;
+}
+
+function folder_is_active(int $i, array $folders): bool 
+{
+    $last_index = count($folders);
+    return $i === $last_index;
+}
+
+function get_current_path(string $directory_path): string
+{
+    $current_path = $directory_path;
+    $current_path = hide_base_path($current_path, UPLOAD_PATH);
+    return $current_path;
+}
+
+function get_folder_fullpath(int $i, array $folders): string 
+{
+    $fullpath = [];
+
+    foreach ($folders as $j => $folder) {
+        if ($j >= $i) {
+            $fullpath[] = $folder;
+        } else {
+            break;
+        }
+    }
+
+    $fullpath = implode("/", $fullpath);
+    $fullpath = preg_replace("/\/+/", "/", $fullpath);
+
+    return $fullpath;
+}

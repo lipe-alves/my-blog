@@ -1,10 +1,9 @@
 <?php 
 
-function extract_data_from_path(string $path, string $date_format) {
-    if (!str_contains($path, ROOT_PATH)) {
-        $path = ROOT_PATH.$path;
-    }
-
+function extract_data_from_path(
+    string $path, 
+    string $date_format
+) {
     $info = new SplFileInfo($path);
 
     $data = [
@@ -20,7 +19,6 @@ function extract_data_from_path(string $path, string $date_format) {
         "creation_time"     => trim(strftime($date_format, $info->getCTime())),
     ];
     
-    $data["path"] = str_replace(ROOT_PATH, "", $data["path"]);
     $data["path"] = str_replace("\/", "/", $data["path"]);
     $data["path"] = str_replace("\\", "/", $data["path"]);
     
@@ -33,7 +31,10 @@ function extract_data_from_path(string $path, string $date_format) {
     return $data;
 }
 
-function map_directory(string $directory, string $date_format = DEFAULT_DATABASE_DATETIME_FORMAT): array 
+function map_directory(
+    string $directory,
+    string $date_format = DEFAULT_DATABASE_DATETIME_FORMAT
+): array 
 {
     $map = [];
 
@@ -49,8 +50,7 @@ function map_directory(string $directory, string $date_format = DEFAULT_DATABASE
         $info = extract_data_from_path("$directory/$child_path", $date_format);
 
         if ($info["type"] === "directory") {
-            $path = ROOT_PATH.$info["path"];
-            $children_map = map_directory($path, $date_format);
+            $children_map = map_directory($info["path"], $date_format);
             $info["children"] = $children_map[0]["children"];
         }
 

@@ -1,20 +1,6 @@
 <?php 
-$directory_path = UPLOAD_PATH;
-if (isset($base_path)) {
-    $parts = explode("/", UPLOAD_PATH);
-
-    foreach ($parts as $part) {
-        $base_path = str_replace($part, "", $base_path);
-    }
-
-    $base_path = preg_replace("/\/+/", "/", $base_path);
-
-    $directory_path .= "/$base_path";
-}
-$directory_path = preg_replace("/\/+/", "/", $directory_path);
-
-$map = map_directory($directory_path, DEFAULT_DISPLAY_DATETIME_FORMAT);
-$map = $map[0]["children"];
+$directory_path = get_directory_path(isset($base_path) ? $base_path : null);
+$map = get_directory_map($directory_path);
 ?>
 <div
     id="media-library"
@@ -22,7 +8,9 @@ $map = $map[0]["children"];
     data-view="media-library"
 >
     <header class="MediaLibrary-header">
-        <div class="MediaLibrary-current"></div>
+        <div class="MediaLibrary-current">
+            <?php $this->component("media-library/breadcrumb", ["directory_path" => $directory_path]) ?>
+        </div>
         <div class="MediaLibrary-actions">
             <button class="MediaLibrary-uploadFile button is-info is-outlined">
                 <i class="fa-regular fa-file"></i>
@@ -39,7 +27,7 @@ $map = $map[0]["children"];
             <?php foreach ($map as $item): ?>
                 <li 
                     class="MediaLibrary-item" 
-                    onclick="handleOpenItem('<?= $item['type'] ?>', '<?= $item['path'] ?>')"
+                    onclick="handleOpenItem('<?= $item['type'] ?>', '<?= get_secure_path($item) ?>')"
                 >
                     <?php $this->component("media-library/$item[type]", $item) ?>
                 </li>
@@ -56,3 +44,24 @@ $map = $map[0]["children"];
     type="text/javascript" 
     src="<?= BASE_URI ?>/app/views/components/media-library/script.js?v=<?= time() ?>"
 ></script>
+<?php 
+
+function get_directory_path(string $base_path = null)
+{
+    $base_path = isset($base_path) ? $base_path : "";
+    $directory_path =  UPLOAD_PATH."/$base_path";
+    return $directory_path;
+}
+
+function get_directory_map(string $directory_path) 
+{
+    $directory = str_replace(UPLOAD_PATH, "", $directory_path);
+    $map = map_directory($directory_path, DEFAULT_DISPLAY_DATETIME_FORMAT);
+    $map = $map[0]["children"];
+    return $map;
+}
+
+function get_secure_path(array $item)
+{
+    return hide_base_path($item["path"], UPLOAD_PATH);
+}
