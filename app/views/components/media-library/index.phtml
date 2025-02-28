@@ -1,6 +1,14 @@
 <?php 
 $directory_path = UPLOAD_PATH;
 if (isset($base_path)) {
+    $parts = explode("/", UPLOAD_PATH);
+
+    foreach ($parts as $part) {
+        $base_path = str_replace($part, "", $base_path);
+    }
+
+    $base_path = preg_replace("/\/+/", "/", $base_path);
+
     $directory_path .= "/$base_path";
 }
 $directory_path = preg_replace("/\/+/", "/", $directory_path);
