@@ -53,6 +53,14 @@ ul.MediaLibrary-items {
     justify-content: center;
     gap: 0;
     cursor: pointer;
+    width: fit-content;
+    height: 128px;
+}
+
+.MediaLibrary-item img {
+    width: 96px;
+    height: 96px;
+
 }
 
 .MediaLibrary-item:hover .MediaLibrary-item-label {
