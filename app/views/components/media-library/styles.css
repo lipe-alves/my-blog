@@ -71,4 +71,19 @@ ul.MediaLibrary-items {
     gap: 1em;
 }
 
-.MediaLibrary-current .breadcrumb {}
+.MediaLibrary-current .breadcrumb ul {
+    margin-left: 0;
+}
+
+.MediaLibrary-current .breadcrumb li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5em;
+    margin: 0;
+}
+
+.MediaLibrary-current .breadcrumb li a {
+    text-align: center;
+    height: 100%;
+}
