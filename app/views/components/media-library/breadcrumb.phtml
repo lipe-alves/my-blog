@@ -4,10 +4,15 @@ $folders = split_folders($current_path);
 ?>
 <nav class="breadcrumb" aria-label="breadcrumbs">
     <ul>
+        <li>
+            <a href="javascript:handleOpenItem('directory', '/')">
+                <i class="fa fa-home"></i>
+            </a>
+        </li>
         <?php foreach ($folders as $i => $folder): ?>
             <li>
                 <a 
-                    href="javascript:handleNavigateToFolder('<?= get_folder_fullpath($i, $folders) ?>')"
+                    href="javascript:handleOpenItem('directory', '<?= get_folder_fullpath($i, $folders) ?>')"
                     <?php if (folder_is_active($i, $folders)): ?>
                         class="active"
                     <?php endif; ?>    
@@ -47,7 +52,7 @@ function get_folder_fullpath(int $i, array $folders): string
     $fullpath = [];
 
     foreach ($folders as $j => $folder) {
-        if ($j >= $i) {
+        if ($j <= $i) {
             $fullpath[] = $folder;
         } else {
             break;
@@ -56,6 +61,7 @@ function get_folder_fullpath(int $i, array $folders): string
 
     $fullpath = implode("/", $fullpath);
     $fullpath = preg_replace("/\/+/", "/", $fullpath);
+    $fullpath = "/$fullpath";
 
     return $fullpath;
 }
