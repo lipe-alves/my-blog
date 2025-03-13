@@ -6,11 +6,24 @@
     gap: 0;
 }
 
-.MediaLibrary-header, .MediaLibrary-footer {
+.MediaLibrary-footer {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+}
+
+.MediaLibrary-header {
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    justify-content: center;
+    gap: 1em;
+    width: 100%;
+}
+
+.MediaLibrary-current, .MediaLibrary-actions {
     width: 100%;
 }
 
@@ -57,3 +70,5 @@ ul.MediaLibrary-items {
 .MediaLibrary-actions .button {
     gap: 1em;
 }
+
+.MediaLibrary-current .breadcrumb {}

@@ -8,9 +8,6 @@ $map = get_directory_map($directory_path);
     data-view="media-library"
 >
     <header class="MediaLibrary-header">
-        <div class="MediaLibrary-current">
-            <?php $this->component("media-library/breadcrumb", ["directory_path" => $directory_path]) ?>
-        </div>
         <div class="MediaLibrary-actions">
             <button class="MediaLibrary-uploadFile button is-info is-outlined">
                 <i class="fa-regular fa-file"></i>
@@ -20,6 +17,9 @@ $map = get_directory_map($directory_path);
                 <i class="fa-regular fa-folder"></i>
                 <span>Nova pasta</span>
             </button> 
+        </div>
+        <div class="MediaLibrary-current">
+            <?php $this->component("media-library/breadcrumb", ["directory_path" => $directory_path]) ?>
         </div>
     </header>
     <main class="MediaLibrary-main">
