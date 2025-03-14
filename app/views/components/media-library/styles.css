@@ -32,18 +32,17 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
+    width: 100%;
 }
 
 ul.MediaLibrary-items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1em;
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 1em;
+    width: 100%;
 }
 
 .MediaLibrary-item {
@@ -60,7 +59,6 @@ ul.MediaLibrary-items {
 .MediaLibrary-item img {
     width: 96px;
     height: 96px;
-
 }
 
 .MediaLibrary-item:hover .MediaLibrary-item-label {
