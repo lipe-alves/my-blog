@@ -28,6 +28,7 @@ $map = get_directory_map($directory_path);
                 <li 
                     class="MediaLibrary-item" 
                     onclick="handleOpenItem('<?= $item['type'] ?>', '<?= get_secure_path($item) ?>')"
+                    title="<?= $item["name"] ?>"
                 >
                     <?php $this->component("media-library/$item[type]", $item) ?>
                 </li>
