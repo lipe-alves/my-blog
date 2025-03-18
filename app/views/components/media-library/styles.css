@@ -61,6 +61,14 @@ ul.MediaLibrary-items {
     height: 96px;
 }
 
+.MediaLibrary-item-label {
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    width: 100%; 
+    white-space: nowrap;
+    text-align: center;
+}
+
 .MediaLibrary-item:hover .MediaLibrary-item-label {
     text-decoration: underline;
 }
