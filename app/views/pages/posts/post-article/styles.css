@@ -61,3 +61,13 @@
     --bulma-content-table-foot-cell-border-width: 2px 0 0;
     --bulma-content-table-foot-cell-color: var(--bulma-text-strong);
 }
+
+.Post-category-delete {
+    padding: 0 4px;
+    border-radius: 50%;
+}
+
+.Post-category-delete:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--bulma-danger);
+}

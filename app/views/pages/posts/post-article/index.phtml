@@ -36,10 +36,25 @@ $last_category_index = $total_categories - 1;
             <?php foreach ($post["category_names"] as $i => $category_name): ?>
                 <a
                     class="Post-category"
-                    href="<?= BASE_URI . "/?category=$category_name" ?>">
+                    <?php if (!$is_admin): ?>
+                        href="<?= BASE_URI . "/?category=$category_name" ?>"
+                    <?php else: ?>
+                        href="javascript:void(0)"
+                    <?php endif; ?>
+                >
                     <?= $category_name ?>
+                    <?php if ($is_admin): ?>
+                        <button class="Post-category-delete">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    <?php endif; ?>
                 </a><?= $i !== $last_category_index ? ", " : "" ?>
-            <?php endforeach; ?>
+            <?php endforeach;?>
+            <?php if ($is_admin): ?>
+                <span class="Post-categorySelector">
+
+                </span>
+            <?php endif; ?>
         </span>
     </div>
     <div 
