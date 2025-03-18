@@ -52,7 +52,6 @@ ul.MediaLibrary-items {
     justify-content: center;
     gap: 0;
     cursor: pointer;
-    width: fit-content;
     height: 128px;
 }
 
@@ -64,7 +63,7 @@ ul.MediaLibrary-items {
 .MediaLibrary-item-label {
     text-overflow: ellipsis;
     overflow: hidden; 
-    width: 100%; 
+    width: 132px; 
     white-space: nowrap;
     text-align: center;
 }
