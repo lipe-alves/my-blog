@@ -16,7 +16,8 @@ class PostService extends DatabaseService
         $slug = mb_strtolower($slug, "UTF-8");
         $slug = str_replace(" ", "-", $slug);
 
-        $slug_already_exists = $this->getPostBySlug($slug, ["p.id"]) !== null;
+        $post = $this->getPostBySlug($slug, ["p.id"]);
+        $slug_already_exists = isset($post) && $post["id"] !== $post_id;
         if ($slug_already_exists) {
             $slug .= "-$post_id";
         }
@@ -134,6 +135,17 @@ class PostService extends DatabaseService
 
             $slug = $this->generatePostSlug($title, $post_id); 
             $updates["slug"] = $slug;
+        }
+
+        if (isset($categories)) {
+            $category_service = new CategoryService($this->conn);
+            $success = $category_service->removeCategoriesFromPost($post_id);
+            if (!$success) return false;
+            
+            foreach ($categories as $id_or_name) {
+                $success = $category_service->addCategoryToPost($post_id, $id_or_name);
+                if (!$success) return false;
+            }
         }
         
         $success = $this->update("Post", $updates, ["p.id" => $post_id]);

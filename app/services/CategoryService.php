@@ -67,6 +67,52 @@ class CategoryService extends DatabaseService
         return $categories;
     }
 
+    public function removeCategoriesFromPost(string $post_id, array $data = []): bool 
+    {
+        $data["join"] = [
+            "type"       => "inner",
+            "table"      => "Post_x_Category",
+            "conditions" => [
+                "pc.post_id" => $post_id,
+            ]
+        ];
+        $categories_to_remove = $this->getCategories(["c.id"], $data);
+        $ids = array_map(function ($cat) {
+            return $cat["id"];
+        }, $categories_to_remove);
+
+        return $this->delete("Post_x_Category", [
+            "pc.category_id" => $ids,
+            "pc.post_id"     => $post_id
+        ]);
+    }
+
+    public function addCategoryToPost(string $post_id, string $category_id_or_name): bool 
+    {
+        $category_id = $category_id_or_name;
+
+        if (!is_numeric($category_id)) {
+            $category_name = $category_id_or_name;
+            $category = $this->getCategoryByName($category_name, ["c.id"]);
+            if (!isset($category)) throw new ResourceNotFoundException("Categoria de nome \"$category_name\" não encontrada!");
+
+            $category_id = $category_id["id"];
+        } else {
+            $category = $this->getCategoryById($category_id, ["c.id"]);
+            if (!isset($category)) throw new ResourceNotFoundException("Categoria de ID $category_id não encontrada!");
+        }
+
+        $success = $this->insert("Post_x_Category", [
+            [
+                "post_id"     => $post_id,
+                "category_id" => $category_id
+            ]
+        ]);
+        $success = $success !== false;
+        
+        return $success;
+    }
+
     public function deleteCategory(string $id, string $posts_new_category_id = null): bool
     {
         $category = $this->getCategoryById($id, ["c.id"]);
