@@ -63,3 +63,9 @@ function handleCloseReplyForm(formId) {
     const form = $(`#${formId}`);
     form.attr("data-visible", "false");
 }
+
+/** @param {string} categoryName */
+function handleRemoveCategory(categoryName) {
+    const a = $(`.Post-categories a[data-category-name="${categoryName}"]`);
+    a.remove();
+}

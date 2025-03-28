@@ -40,11 +40,15 @@ $last_category_index = $total_categories - 1;
                         href="<?= BASE_URI . "/?category=$category_name" ?>"
                     <?php else: ?>
                         href="javascript:void(0)"
+                        data-category-name="<?= $category_name ?>"
                     <?php endif; ?>
                 >
                     <?= $category_name ?>
                     <?php if ($is_admin): ?>
-                        <button class="Post-category-delete">
+                        <button 
+                            class="Post-category-delete" 
+                            onclick="handleRemoveCategory('<?= $category_name ?>')"
+                        >
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     <?php endif; ?>
