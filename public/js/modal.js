@@ -1,9 +1,13 @@
 (() => {
-    let modal = {
+    class Modal {
         /** @type {{ [key: string]: () => void | null }} */
-        events: {
+        #events = {
             onHide: null,
-        },
+        }
+
+        get element() {
+            return $("#modal")[0];
+        }
 
         reset() {
             const modal = $(this.element);
@@ -16,9 +20,10 @@
 
 
             for (const event in this.events) {
-                this.events[event] = null;
+                this.#events[event] = null;
             }
-        },
+        }
+
         /**
          * @param {{
          *     title: string;
@@ -66,11 +71,12 @@
             }
 
             if (params.onHide) {
-                this.events.onHide = params.onHide;
+                this.#events.onHide = params.onHide;
             }
 
             showAnimateModal();
-        },
+        }
+
         hide() {
             const modal = $(this.element);
 
@@ -78,27 +84,15 @@
             modal.find(".modal-card").addClass("animate__animated animate__zoomOut");
 
             setTimeout(() => {
-                if (this.events.onHide) {
-                    this.events.onHide();
+                if (this.#events.onHide) {
+                    this.#events.onHide();
                 }
                 this.reset();
             }, 800);
         }
-    };
+    }
 
-    modal = new Proxy(modal, {
-        get(target, prop) {
-            if (prop === "element") return $("#modal")[0];
-            return target[prop];
-        },
-        set(target, prop, value) {
-            if (prop === "element") {
-                throw new Error("element is readonly");
-            }
-            target[prop] = value;
-            return true;
-        }
-    });
+    const modal = new Modal();
 
     window.modal = modal;
 

@@ -1,99 +1,115 @@
-$(document).ready(function () {
-    if (!window.admin) {
-        window.admin = {};
+(() => {
+    const { removeWhitespaces, removeNewlines } = window.functions;
+
+    class AdminController {
+        #selector;
+        #old;
+        #props;
+    
+        /**
+         * @param {string} selector 
+         * @param {any} props 
+         */
+        constructor(selector, props = {}) {
+            this.#selector = selector;
+            this.#props = props;
+            this.#old = this.value;
+        }
+    
+        get selector() {
+            return this.#selector;
+        }
+    
+        get props() {
+            return this.#props;
+        }
+    
+        get value() {
+            let text = $(this.selector).text();
+            text = removeWhitespaces(text);
+            text = removeNewlines(text);
+            return text;
+        }
+    
+        /** @param {string} value */
+        set value(value) {
+            value = removeWhitespaces(value);
+            value = removeNewlines(value);
+            $(this.selector).text(value);
+        }
+    
+        get old() {
+            return this.#old;
+        }
+    
+        get element() {
+            return $(this.selector)[0];
+        }
+    
+        /**
+         * @param {string} selector 
+         * @param {any} props 
+         */
+        static create(selector, props) {
+            return new AdminController(selector);
+        }
     }
 
-    if (!window.admin.settings) {
-        window.admin.settings = {};
-    }
-
-    if (!window.admin.categories) {
-        window.admin.categories = {};
-    }
-
-    $("[data-settings]").each(function () {
-        const settingsElement = $(this);
-        const settings = settingsElement.attr("data-settings");
-        window.admin.settings[settings] = createController(`[data-settings="${settings}"]`);
-    });
-
-    $("[data-category-id]").each(function () {
-        const categoryElement = $(this);
-        const categoryId = categoryElement.attr("data-category-id");
-        window.admin.categories[categoryId] = createController(`[data-category-id="${categoryId}"]`);
-    });
-
-    window.admin.reset = function () {
-        for (const controller of Object.values(admin.settings)) {
-            if (!controller) continue;
-            controller.value = controller.old;
-        }
-
-        for (const controller of Object.values(admin.categories)) {
-            if (!controller) continue;
-            controller.value = controller.old;
-        }
-    };
-
-    window.admin.save = async function () {
-        const settingsUpdates = {};
-
-        for (const [settings, controller] of Object.entries(admin.settings)) {
-            if (!controller) continue;
-            if (controller.value === controller.old) continue;
-            settingsUpdates[settings] = controller.value;
-        }
-
-        let madeChanges = Object.keys(settingsUpdates).length > 0;
-        if (madeChanges) await api.settings.update(settingsUpdates);
-
-        for (const [categoryId, controller] of Object.entries(admin.categories)) {
-            if (!controller) continue;
-            if (controller.value === controller.old) continue;
-            const name = controller.value;
-            await api.categories.update(categoryId, { name });
-            madeChanges = true;
-        }
-
-        return madeChanges;
-    };
-});
-
-/** 
- * @param {string} selector
- * @param {any} props 
- */
-function createController(selector, props = {}) {
-    let controller = { ...props, old: "" };
-
-    controller = new Proxy(controller, {
-        get(target, prop) {
-            if (prop === "value") {
-                return $(selector).text().replace("\n", " ").replace(/\s+/g, " ").trim();
-            } else if (prop === "element") {
-                return $(selector);
+    const admin = {
+        settings: {},
+        categories: {},
+        reset() {
+            for (const controller of Object.values(admin.settings)) {
+                if (!controller) continue;
+                controller.value = controller.old;
             }
-
-            return target[prop];
+    
+            for (const controller of Object.values(admin.categories)) {
+                if (!controller) continue;
+                controller.value = controller.old;
+            }
         },
-        set(target, prop, value) {
-            if (prop === "value") {
-                value = value.replace("\n", " ").replace(/\s+/g, " ").trim();
-                $(selector).text(value);
-            } else if (prop === "element") {
-                return false;
-            } else {
-                target[prop] = value;
+        async save() {
+            const settingsUpdates = {};
+    
+            for (const [settings, controller] of Object.entries(admin.settings)) {
+                if (!controller) continue;
+                if (controller.value === controller.old) continue;
+                settingsUpdates[settings] = controller.value;
             }
-
-            return true;
+    
+            let madeChanges = Object.keys(settingsUpdates).length > 0;
+            if (madeChanges) await api.settings.update(settingsUpdates);
+    
+            for (const [categoryId, controller] of Object.entries(admin.categories)) {
+                if (!controller) continue;
+                if (controller.value === controller.old) continue;
+                const name = controller.value;
+                await window.api.categories.update(categoryId, { name });
+                madeChanges = true;
+            }
+    
+            return madeChanges;
         }
+    };
+
+    window.functions.createController = AdminController.create;
+    window.admin = admin;
+
+    $(document).ready(function () {
+        $("[data-settings]").each(function () {
+            const settingsElement = $(this);
+            const settings = settingsElement.attr("data-settings");
+            admin.settings[settings] = AdminController.create(`[data-settings="${settings}"]`);
+        });
+    
+        $("[data-category-id]").each(function () {
+            const categoryElement = $(this);
+            const categoryId = categoryElement.attr("data-category-id");
+            admin.categories[categoryId] = AdminController.create(`[data-category-id="${categoryId}"]`);
+        });
     });
-
-    controller.old = controller.value;
-
-    return controller;
-}
+})();
 
 async function handleDeleteCategory(button, categoryId) {
     const { modal, toast } = window;
@@ -190,7 +206,7 @@ function handleOpenCategoryDeletionModal(categoryId) {
 
 async function handleAddNewCategory(button) {
     const { api, toast } = window;
-    const { delayAsync, removeWhitespaces, removeNewlines } = window.functions;
+    const { delayAsync, removeWhitespaces, removeNewlines, createController } = window.functions;
 
     button = $(button);
     const nameFieldElement = $('[data-new-category="true"]');
