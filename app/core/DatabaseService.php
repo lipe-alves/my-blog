@@ -233,6 +233,10 @@ class DatabaseService
 
     public function update(string $table, array $updates, array $conditions): bool
     {
+        $amount_of_updates = array_keys($updates);
+        $amount_of_updates = count($amount_of_updates);
+        if ($amount_of_updates == 0) return true;
+
         $data = [];
 
         $updates = array_map(function (mixed $value, string $column) use (&$data) {

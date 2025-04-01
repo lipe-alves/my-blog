@@ -46,12 +46,15 @@ class CategoryService extends DatabaseService
     {
         $categories = $this->getCategories($columns, [
             "join" => [
-                "type"       => "inner",
-                "table"      => "Post_x_Category",
-                "conditions" => [
-                    "pc.post_id" => $post_id,
+                [
+                    "type"       => "inner",
+                    "table"      => "Post_x_Category",
+                    "conditions" => [
+                        "pc.category_id" => "c.id"
+                    ]
                 ]
-            ]
+            ],
+            "pc.post_id" => $post_id
         ]);
         return $categories;
     }
@@ -69,22 +72,17 @@ class CategoryService extends DatabaseService
 
     public function removeCategoriesFromPost(string $post_id, array $data = []): bool 
     {
-        $data["join"] = [
-            "type"       => "inner",
-            "table"      => "Post_x_Category",
-            "conditions" => [
-                "pc.post_id" => $post_id,
-            ]
-        ];
-        $categories_to_remove = $this->getCategories(["c.id"], $data);
+        $post_categories = $this->getPostCategories($post_id);
+        
         $ids = array_map(function ($cat) {
             return $cat["id"];
-        }, $categories_to_remove);
+        }, $post_categories);
+        $ids = implode(",", $ids);
 
-        return $this->delete("Post_x_Category", [
-            "pc.category_id" => $ids,
-            "pc.post_id"     => $post_id
-        ]);
+        $data["pc.post_id"] = $post_id;
+        $data["pc.category_id"] = $ids;
+
+        return $this->delete("Post_x_Category", $data);
     }
 
     public function addCategoryToPost(string $post_id, string $category_id_or_name): bool 

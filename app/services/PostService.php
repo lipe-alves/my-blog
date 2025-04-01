@@ -138,7 +138,13 @@ class PostService extends DatabaseService
         }
 
         if (isset($categories)) {
+            if (is_string($categories)) {
+                $categories = explode(",", $categories);
+                $categories = array_map("trim", $categories);
+            }
+
             $category_service = new CategoryService($this->conn);
+
             $success = $category_service->removeCategoriesFromPost($post_id);
             if (!$success) return false;
             
@@ -146,6 +152,8 @@ class PostService extends DatabaseService
                 $success = $category_service->addCategoryToPost($post_id, $id_or_name);
                 if (!$success) return false;
             }
+
+            unset($updates["categories"]);
         }
         
         $success = $this->update("Post", $updates, ["p.id" => $post_id]);
