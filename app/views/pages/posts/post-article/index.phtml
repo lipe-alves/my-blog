@@ -69,7 +69,9 @@ $last_category_index = $total_categories - 1;
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     <?php endif; ?>
-                </a><?= $i !== $last_category_index ? ", " : "" ?>
+                </a><?php if (!$is_admin): ?>
+                    <?= $i !== $last_category_index ? ", " : "" ?>
+                <?php endif;?>
             <?php endforeach;?>
         </span>
         <?php if ($is_admin): ?>
