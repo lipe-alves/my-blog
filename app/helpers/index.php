@@ -13,3 +13,4 @@ require_once ROOT_PATH . "/app/helpers/remove_accents.php";
 require_once ROOT_PATH . "/app/helpers/map_directory.php";
 require_once ROOT_PATH . "/app/helpers/get_file_extension.php";
 require_once ROOT_PATH . "/app/helpers/hide_base_path.php";
+require_once ROOT_PATH . "/app/helpers/array_contains.php";

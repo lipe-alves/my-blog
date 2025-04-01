@@ -13,6 +13,15 @@ if (date_is_valid($post["updated_at"])) {
 }
 
 $post["category_names"] = explode(",", $post["category_names"]);
+$post["categories"] = [];
+
+foreach ($post["category_names"] as $category_name) {
+    $category = array_find($categories, function ($category) use ($category_name) {
+        return $category["name"] === $category_name;
+    }); 
+    $post["categories"][] = $category;
+}
+
 $total_categories = count($post["category_names"]);
 $last_category_index = $total_categories - 1;
 ?>
@@ -30,37 +39,50 @@ $last_category_index = $total_categories - 1;
     >
         <?= $post["title"] ?>
     </h2>
-    <div class="Post-subheader">
-        <span class="Post-createdAt"><?= $post["created_at"] ?></span>
+    <p class="Post-subheader">
+        <span class="Post-createdAt">
+            <?= $post["created_at"] ?>
+        </span>
         <span class="Post-categories">
-            <?php foreach ($post["category_names"] as $i => $category_name): ?>
+            <?php foreach ($post["categories"] as $i => $category): ?>
                 <a
                     class="Post-category"
                     <?php if (!$is_admin): ?>
-                        href="<?= BASE_URI . "/?category=$category_name" ?>"
+                        href="<?= BASE_URI . "/?category=$category[name]" ?>"
                     <?php else: ?>
                         href="javascript:void(0)"
-                        data-category-name="<?= $category_name ?>"
+                        data-post-category-id="<?= $category["id"] ?>"
+                        data-post-category-name="<?= $category["name"] ?>"
+                        data-deleted="false"
                     <?php endif; ?>
                 >
-                    <?= $category_name ?>
+                    <?= $category["name"] ?>
                     <?php if ($is_admin): ?>
                         <button 
                             class="Post-category-delete" 
-                            onclick="handleRemoveCategory('<?= $category_name ?>')"
+                            onclick="handleRemoveCategory('<?= $category['id'] ?>')"
                         >
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     <?php endif; ?>
                 </a><?= $i !== $last_category_index ? ", " : "" ?>
             <?php endforeach;?>
-            <?php if ($is_admin): ?>
-                <span class="Post-categorySelector">
-
-                </span>
-            <?php endif; ?>
         </span>
-    </div>
+        <?php if ($is_admin): ?>
+            <span class="Post-categorySelector">
+                <select id="category-select" class="Post-categorySelector-select select">
+                    <?php foreach ($categories as $category): 
+                        $disabled = array_contains($post["category_names"], $category["name"]);
+                        $disabled = $disabled ? " disabled" : "";
+                        ?>
+                        <option value="<?= $category["id"] ?>"<?= $disabled ?>>
+                            <?= $category["name"] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </span>
+        <?php endif; ?>
+    </p>
     <div 
         class="Post-text content"
         <?php if ($is_admin): ?>
