@@ -2,7 +2,7 @@
 
 function extract_data_from_path(
     string $path, 
-    string $date_format = DEFAULT_DATABASE_DATETIME_FORMAT
+    string $date_format = "%Y-%m-%d"
 ) {
     $info = new SplFileInfo($path);
 
