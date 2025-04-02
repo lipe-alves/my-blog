@@ -2,7 +2,7 @@
 $current_path = get_current_path($directory_path);
 $folders = split_folders($current_path);
 ?>
-<nav class="breadcrumb" aria-label="breadcrumbs">
+<nav class="breadcrumb" aria-label="breadcrumbs" data-current-path="<?= $current_path ?>">
     <ul>
         <?php if ($current_path !== "/"): ?>
             <li>

@@ -9,6 +9,11 @@ use App\Exceptions\InternalServerException;
 use App\Services\MediaLibraryService;
 
 class MediaController extends Controller {
+    private function isFile(string $path)
+    {
+        return (bool)preg_match("/\.\w+$/", $path);
+    }
+    
     public function insertFile(Request $request, Response $response)
     {
         $get = $request->getGet();
@@ -19,29 +24,45 @@ class MediaController extends Controller {
         $response->setStatus(200)->setJson($files)->send();
     }
 
-    public function updateFile(Request $request, Response $response) 
+    public function updateMediaItem(Request $request, Response $response)
     {
         $get = $request->getGet();
-        $patch = $request->getPatch();
+        $updates = $request->getPatch();
         $path = $get["path"];
 
-        $file = MediaLibraryService::updateFile($path, $patch);
+        $is_file = $this->isFile($path);
+        $item = null;
 
-        $response->setStatus(200)->setJson($file)->send();
+        if ($is_file) {
+            $item = MediaLibraryService::updateFile($path, $updates);
+        } else {
+            $item = MediaLibraryService::updateFolder($path, $updates);
+        }
+
+        if (!isset($item)) throw new InternalServerException();
+
+        $response->setStatus(200)->setJson($item)->send();
     }
 
-    public function deleteFile(Request $request, Response $response) 
+    public function deleteMediaItem(Request $request, Response $response)
     {
         $get = $request->getGet();
-        $patch = $request->getPatch();
         $path = $get["path"];
 
-        $success = MediaLibraryService::deleteFile($path, $patch);
+        $is_file = $this->isFile($path);
+        $success = false;
+
+        if ($is_file) {
+            $success = MediaLibraryService::deleteFile($path);
+        } else {
+            $success = MediaLibraryService::deleteFolder($path);
+        }
+
         if (!$success) throw new InternalServerException();
 
         $response->setStatus(200)->setJson([
             "success" => true,
-            "message" => "Arquivo excluído com sucesso!"
+            "message" => $is_file ? "Arquivo excluído com sucesso!" : "Pasta excluída com sucesso!"
         ])->send();
     }
 }

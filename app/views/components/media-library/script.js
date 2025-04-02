@@ -3,10 +3,16 @@
  * @param {string} path 
  */
 async function handleOpenItem(type, path) {
-    if (type === "directory") {
-        await handleOpenDirectory(path);
-    } else if (type === "file") {
-        await handleOpenFile(path);
+    const { toast } = window;
+
+    try {
+        if (type === "directory") {
+            await handleOpenDirectory(path);
+        } else if (type === "file") {
+            await handleOpenFile(path);
+        }
+    } catch (err) {
+        toast.error(err.message);
     }
 }
 
@@ -20,12 +26,21 @@ async function handleOpenFile(path) {
 }
 
 async function handleUpdateDirectoryName(span) {
+    const { toast } = window;
     const { removeWhitespaces, removeNewlines } = window.functions;
+    const { mediaLibrary } = window.admin;
+    
     span = $(span);
     
-    let value = span.text();
-    value = removeNewlines(value);
-    value = removeWhitespaces(value);
+    let name = span.text();
+    name = removeNewlines(name);
+    name = removeWhitespaces(name);
     
-    span.text(value);
+    span.text(name);
+
+    try {
+        await mediaLibrary.rename(mediaLibrary.currentPath, name);
+    } catch (err) {
+        toast.error(err.message);
+    }
 }

@@ -152,6 +152,18 @@
             }
         },
 
+        media: {
+            /**
+             * @param {string} path 
+             * @param {string} newName 
+             */
+            async rename(path, newName) {
+                const resp = await apiEndpoint.patch(`/media/?path=${path}`, { name: newName });
+                const data = resp.json();
+                return data;
+            }
+        },
+
         admin: {
             /** @param {string} password */
             async login(password) {

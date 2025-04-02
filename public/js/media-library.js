@@ -17,6 +17,11 @@
         get configs() {
             return this.#configs;
         }
+        
+        get currentPath() {
+            const breadcrumb = $(this.element).find(".breadcrumb");
+            return breadcrumb.attr("data-current-path");
+        }
 
         async show(configs = {}) {
             const { modal } = window;
@@ -34,6 +39,26 @@
         async setBasePath(path) {
             this.#configs.base_path = path;
             await this.reload();
+        }
+
+        /**
+         * @param {string} path 
+         * @param {string} newName 
+         */
+        async rename(path, newName) {
+            const { api } = window;
+            const data = await api.media.rename(path, newName);
+            const isCurrent = this.currentPath === path;
+            
+            if (isCurrent) {
+                let oldName = this.currentPath.split("/");
+                oldName = oldName[oldName.length - 1];
+
+                const newCurrentPath = this.currentPath.replace(oldName, newName);
+                await this.setBasePath(newCurrentPath);
+            }
+
+            return data;
         }
 
         async reload() {
