@@ -72,9 +72,12 @@
          * @param {string} categoryName 
          */
         add(categoryId, categoryName) {
-            const postCategories = $(".Post-categories");
+            if (!categoryId || !categoryName) {
+                return;
+            }
 
-            const existing = postCategories.find(`[data-post-category-id="${categoryId}"][data-deleted="true"]`);
+            const postCategories = $(".Post-categories");
+            const existing = postCategories.find(`[data-post-category-id="${categoryId}"]`);
 
             if (existing[0]) {
                 existing.attr("data-deleted", false);
@@ -167,8 +170,6 @@
             }
         }
 
-        console.log(postUpdates);
-
         const madePostChanges = Object.keys(postUpdates).length > 0;
         if (madePostChanges) {
             const updatedPost = await api.posts.update(postId, postUpdates);
@@ -178,6 +179,7 @@
 
             admin.post.title = createPostTitleEditor();
             admin.post.text = createPostTextEditor();
+            admin.categories = PostCategoryEditor.create();
         }
 
         madeChanges = madeChanges || madePostChanges;

@@ -79,7 +79,6 @@ $last_category_index = $total_categories - 1;
                 <select 
                     id="category-select" 
                     class="Post-categorySelector-select select"
-                    onchange="handleAddCategory()"
                 >
                     <?php foreach ($categories as $category): 
                         $disabled = array_contains($post["category_names"], $category["name"]);
@@ -90,6 +89,12 @@ $last_category_index = $total_categories - 1;
                         </option>
                     <?php endforeach; ?>
                 </select>
+                <button
+                    class="Post-categorySelector-button"
+                    onclick="handleAddCategory()"
+                >
+                    <i class="fa fa-plus"></i>
+                </button>
             </span>
         <?php endif; ?>
     </p>
