@@ -1,19 +1,10 @@
 <?php 
 $src = get_src($extension, $path);
-
-$src_filename = "$extension.png";
-$src = "/public/images/media-library/files/$src_filename";
-if (!file_exists(ROOT_PATH.$src)) $src = str_replace($src_filename, "file.png", $src);
 ?>
 <img 
-    src="<?= BASE_URI.$src ?>"
+    src="<?= $src ?>"
     alt="<?= $name ?>"
 />
 <span class="MediaLibrary-item-label">
     <?= $name ?>
 </span>
-<?php 
-function get_src(string $extension, string $file_path): string {
-
-}
-?>

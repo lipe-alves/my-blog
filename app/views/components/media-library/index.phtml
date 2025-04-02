@@ -56,7 +56,6 @@ function get_directory_path(string $base_path = null)
 
 function get_directory_map(string $directory_path) 
 {
-    $directory = str_replace(UPLOAD_PATH, "", $directory_path);
     $map = map_directory($directory_path, DEFAULT_DISPLAY_DATETIME_FORMAT);
     $map = $map[0]["children"];
     return $map;
@@ -65,4 +64,25 @@ function get_directory_map(string $directory_path)
 function get_secure_path(array $item)
 {
     return hide_base_path($item["path"], UPLOAD_PATH);
+}
+
+function get_src(string $extension, string $file_path): string {
+    $src = "/public/images/media-library/files/file.png";
+
+    $is_image = preg_match("/\.(jpg|jpeg|svg|png|gif|tiff|bmp|webp)$/", $file_path);
+    if ($is_image && file_exists($file_path)) {
+        $image_src = hide_base_path($file_path, ROOT_PATH);
+        $src = $image_src;
+    } else {
+        $icon_src = ROOT_PATH."/public/images/media-library/files/$extension.png";
+        
+        if (file_exists($icon_src)) {
+            $icon_src = hide_base_path($icon_src, ROOT_PATH);
+            $src = $icon_src;
+        }
+    }
+    
+    $src = BASE_URI.$src;
+
+    return $src;
 }

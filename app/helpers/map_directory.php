@@ -21,6 +21,7 @@ function extract_data_from_path(
     
     $data["path"] = str_replace("\/", "/", $data["path"]);
     $data["path"] = str_replace("\\", "/", $data["path"]);
+    $data["path"] = preg_replace("/\/+/", "/", $data["path"]);
     
     if ($data["type"] === "directory") {
         $data["children"] = [];
