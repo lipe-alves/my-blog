@@ -6,7 +6,7 @@ $folders = split_folders($current_path);
     <ul>
         <?php if ($current_path !== "/"): ?>
             <li>
-                <a href="javascript:handleOpenItem('directory', '/')">
+                <a href="javascript:handleOpenItem('/')">
                     <i class="fa fa-home"></i>
                 </a>
             </li>
@@ -21,7 +21,7 @@ $folders = split_folders($current_path);
                         href="javascript:void(0)"
                         class="active"
                     <?php else: ?>
-                        href="javascript:handleOpenItem('directory', '<?= $fullpath ?>')"
+                        href="javascript:handleOpenItem('<?= $fullpath ?>')"
                     <?php endif; ?>    
                 >
                     <span 
