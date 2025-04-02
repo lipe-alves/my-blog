@@ -97,6 +97,15 @@ ul.MediaLibrary-items {
 }
 
 .MediaLibrary-current .breadcrumb li a {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
     text-align: center;
     height: 100%;
+}
+
+.MediaLibrary-current .breadcrumb li a span[contenteditable="true"] {
+    border-left: none;
+    border-right: none;
+    border-top: none;
 }

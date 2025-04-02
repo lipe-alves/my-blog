@@ -11,15 +11,30 @@ $folders = split_folders($current_path);
                 </a>
             </li>
         <?php endif; ?>
-        <?php foreach ($folders as $i => $folder): ?>
+        <?php foreach ($folders as $i => $folder): 
+            $fullpath = get_folder_fullpath($i, $folders);
+            $is_active = folder_is_active($i, $folders);
+            ?>
             <li>
                 <a 
-                    href="javascript:handleOpenItem('directory', '<?= get_folder_fullpath($i, $folders) ?>')"
-                    <?php if (folder_is_active($i, $folders)): ?>
+                    <?php if ($is_active): ?>
+                        href="javascript:void(0)"
                         class="active"
+                    <?php else: ?>
+                        href="javascript:handleOpenItem('directory', '<?= $fullpath ?>')"
                     <?php endif; ?>    
                 >
-                    <?= $folder ?>
+                    <span 
+                        <?php if ($is_active): ?> 
+                            contenteditable="true" 
+                            onfocusout="handleUpdateDirectoryName(this)"
+                        <?php endif; ?>
+                    >
+                        <?= $folder ?>
+                    </span>
+                    <?php if ($is_active): ?>
+                        <i class="fa-solid fa-pencil"></i>
+                    <?php endif; ?>
                 </a>
             </li>
         <?php endforeach; ?>
