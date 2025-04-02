@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Exceptions\ApiException;
 use App\Exceptions\MissingParamException;
+use App\Exceptions\ResourceNotFoundException;
+USE App\Exceptions\DuplicateDataException;
 
 class MediaLibraryService
 {
@@ -27,6 +29,14 @@ class MediaLibraryService
         $old_path = $path;
         $dir_data = extract_data_from_path($old_path, DEFAULT_DISPLAY_DATETIME_FORMAT);
         $new_path = str_replace($dir_data["name"], $name, $old_path);
+
+        if (!file_exists($old_path)) {
+            throw new ResourceNotFoundException("$old_path não existe!");
+        }
+
+        if (file_exists($new_path) && $dir_data["name"] !== $name) {
+            throw new DuplicateDataException("Nome da pasta (\"$name\") já está sendo utilizado!");
+        }
 
         if (!rename($old_path, $new_path)) {
             throw new ApiException("Erro ao renomear pasta.", 500);

@@ -9,7 +9,7 @@ async function handleOpenItem(path) {
     }
 }
 
-async function handleUpdateDirectoryName(span) {
+async function handleUpdateDirectoryName(span, oldName) {
     const { toast } = window;
     const { removeWhitespaces, removeNewlines } = window.functions;
     const { mediaLibrary } = window.admin;
@@ -26,5 +26,6 @@ async function handleUpdateDirectoryName(span) {
         await mediaLibrary.rename(mediaLibrary.currentPath, name);
     } catch (err) {
         toast.error(err.message);
+        span.text(oldName);
     }
 }
