@@ -37,9 +37,7 @@ class Response
     public function setJson(array $data): self
     {
         $this->setHeader("Content-Type", "application/json");
-        $this->body = json_encode(
-            $data instanceof EntityModel ? $data->data : $data
-        );
+        $this->body = json_encode($data);
         return $this;
     }
 

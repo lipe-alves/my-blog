@@ -29,6 +29,12 @@ function extract_data_from_path(
         $data["extension"] = get_file_extension($data["path"]);
     }
 
+    foreach ($data as $key => $value) {
+        if (is_string($value)) {
+            $data[$key] = utf8_encode($value);
+        }
+    }
+
     return $data;
 }
 
