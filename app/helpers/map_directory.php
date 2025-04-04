@@ -11,7 +11,7 @@ function extract_data_from_path(
         "name"              => $info->getFilename(),
         "type"              => $info->isDir() ? "directory" : "file",
         "size"              => $info->getSize(),
-        "permissions"       => substr(sprintf("%o", $info->getPerms()), -4),
+        "permissions"       => $info->getPerms(),
         "owner"             => $info->getOwner(),
         "group"             => $info->getGroup(),
         "modification_time" => trim(strftime($date_format, $info->getMTime())),
@@ -26,14 +26,15 @@ function extract_data_from_path(
     if ($data["type"] === "directory") {
         $data["children"] = [];
     } else {
+        $data["mimetype"] = mime_content_type($path);
         $data["extension"] = get_file_extension($data["path"]);
     }
 
-    foreach ($data as $key => $value) {
-        if (is_string($value)) {
-            $data[$key] = utf8_encode($value);
-        }
-    }
+    // foreach ($data as $key => $value) {
+    //     if (is_string($value)) {
+    //         $data[$key] = utf8_encode($value);
+    //     }
+    // }
 
     return $data;
 }
