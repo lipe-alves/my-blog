@@ -37,6 +37,18 @@ class Response
     public function setJson(array $data): self
     {
         $this->setHeader("Content-Type", "application/json");
+        
+        foreach ($data as $key => $value) {
+            if (is_string($value)) {
+                $result = htmlentities($value, 0, "UTF-8");
+                if (!$result) {
+                    $result = htmlentities(utf8_encode($value), 0, "UTF-8");
+                }
+                
+                $data[$key] = $result;
+            }
+        }
+
         $this->body = json_encode($data);
         return $this;
     }
