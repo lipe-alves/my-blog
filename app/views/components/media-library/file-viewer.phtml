@@ -1,8 +1,36 @@
+<?php 
+$url = UPLOAD_URI.$path;
+?>
+
 <section class="MediaLibrary-file">
     <div class="MediaLibrary-file-viewer">
-        <object data="<?= UPLOAD_URI.$path ?>" width="300" height="200"></object>
+        <object 
+            type="<?= $mimetype ?>"
+            name="<?= $name ?>"
+            data="<?= $url ?>"
+        ></object>
     </div>
     <ul class="MediaLibrary-file-info">
-        
+        <li>
+            Nome: <?= $name ?>
+        </li>
+        <li>
+            Localização: <?= $path ?>
+        </li>
+        <li>
+            Link: <a href="<?= $url ?>" target="_blank">Abrir</a>
+        </li>
+        <li>
+            Tipo: <?= $mimetype ?>
+        </li>
+        <li>
+            Última modificação em <?= $modification_time ?>
+        </li>
+        <li>
+            Último acesso em <?= $access_time ?>
+        </li>
+        <li>
+            Criado em <?= $creation_time ?>
+        </li>
     </ul>
 </section>

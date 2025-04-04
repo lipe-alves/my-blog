@@ -29,3 +29,11 @@ async function handleUpdateDirectoryName(span, oldName) {
         span.text(oldName);
     }
 }
+
+/** @param {string} url */
+function handleOpenFile(url) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_BLANK";
+    a.click();
+}

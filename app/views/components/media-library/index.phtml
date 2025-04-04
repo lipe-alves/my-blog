@@ -27,7 +27,7 @@ $map = get_directory_map($directory_path);
     <main class="MediaLibrary-main">
         <?php if ($is_file): 
             $file_path = get_file_path($base_path);
-            $item = extract_data_from_path($file_path);
+            $item = extract_data_from_path($file_path, DEFAULT_DISPLAY_DATETIME_FORMAT);
             $secure_path = get_secure_path($item);
             $item["path"] = $secure_path;
             $this->component("media-library/file-viewer", $item);
