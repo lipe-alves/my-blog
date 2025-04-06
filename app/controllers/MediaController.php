@@ -29,16 +29,8 @@ class MediaController extends Controller {
         $get = $request->getGet();
         $updates = $request->getPatch();
         $path = $get["path"];
-
-        $is_file = $this->isFile($path);
-        $item = null;
-
-        if ($is_file) {
-            $item = MediaLibraryService::updateFile($path, $updates);
-        } else {
-            $item = MediaLibraryService::updateFolder($path, $updates);
-        }
-
+        
+        $item = MediaLibraryService::updateMedia($path, $updates);
         if (!isset($item)) throw new InternalServerException();
 
         $response->setStatus(200)->setJson($item)->send();

@@ -12,13 +12,18 @@ $url = UPLOAD_URI.$path;
     </div>
     <ul class="MediaLibrary-file-info">
         <li>
-            Nome: <?= $name ?>
+            Nome: <span 
+                contenteditable="true"
+                onfocusout="handleRenameMediaItem(event, '<?= $path ?>', '<?= $name ?>')"
+            ><?= $name ?></span>
         </li>
         <li>
             Localização: <?= $path ?>
         </li>
         <li>
-            Link: <a href="<?= $url ?>" target="_blank">Abrir</a>
+            Link: <a href="<?= $url ?>" target="_blank">
+                Abrir <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
         </li>
         <li>
             Tipo: <?= $mimetype ?>

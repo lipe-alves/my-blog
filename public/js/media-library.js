@@ -17,7 +17,7 @@
         get configs() {
             return this.#configs;
         }
-        
+
         get currentPath() {
             const breadcrumb = $(this.element).find(".breadcrumb");
             return breadcrumb.attr("data-current-path");
@@ -48,15 +48,12 @@
         async rename(path, newName) {
             const { api } = window;
             const data = await api.media.rename(path, newName);
-            const isCurrent = this.currentPath === path;
-            
-            if (isCurrent) {
-                let oldName = this.currentPath.split("/");
-                oldName = oldName[oldName.length - 1];
 
-                const newCurrentPath = this.currentPath.replace(oldName, newName);
-                await this.setBasePath(newCurrentPath);
-            }
+            let oldName = path.split("/");
+            oldName = oldName[oldName.length - 1];
+
+            const newCurrentPath = path.replace(oldName, newName);
+            await this.setBasePath(newCurrentPath);
 
             return data;
         }
@@ -70,7 +67,7 @@
             await api.views.render("media-library", parent[0], this.#configs);
         }
     }
-    
+
     if (!window.admin) {
         window.admin = {};
     }

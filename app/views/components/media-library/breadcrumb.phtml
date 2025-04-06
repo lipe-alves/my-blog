@@ -27,7 +27,7 @@ $folders = split_folders($current_path);
                     <span 
                         <?php if ($is_active): ?> 
                             contenteditable="true" 
-                            onfocusout="handleUpdateDirectoryName(this, '<?= $folder ?>')"
+                            onfocusout="handleRenameMediaItem(event, '<?= $fullpath ?>', '<?= $folder ?>')"
                         <?php endif; ?>
                     >
                         <?= $folder ?>

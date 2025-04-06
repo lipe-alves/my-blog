@@ -4,6 +4,15 @@ function extract_data_from_path(
     string $path, 
     string $date_format = "%Y-%m-%d"
 ) {
+    $treatPath = function (string $path) {
+        $path = str_replace("\/", "/", $path);
+        $path = str_replace("\\", "/", $path);
+        $path = preg_replace("/\/+/", "/", $path);
+        return $path;
+    };
+
+    $path = $treatPath($path);
+
     $info = new SplFileInfo($path);
 
     $data = [
@@ -19,9 +28,7 @@ function extract_data_from_path(
         "creation_time"     => trim(strftime($date_format, $info->getCTime())),
     ];
     
-    $data["path"] = str_replace("\/", "/", $data["path"]);
-    $data["path"] = str_replace("\\", "/", $data["path"]);
-    $data["path"] = preg_replace("/\/+/", "/", $data["path"]);
+    $data["path"] = $treatPath($data["path"]);
     
     if ($data["type"] === "directory") {
         $data["children"] = [];

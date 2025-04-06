@@ -9,22 +9,30 @@ async function handleOpenItem(path) {
     }
 }
 
-async function handleUpdateDirectoryName(span, oldName) {
+/**
+ * @param {Event} event 
+ * @param {string} path 
+ * @param {string} oldName 
+ */
+async function handleRenameMediaItem(event, path, oldName) {
+    event.stopPropagation();
+    
     const { toast } = window;
     const { removeWhitespaces, removeNewlines } = window.functions;
     const { mediaLibrary } = window.admin;
-    
-    span = $(span);
-    
-    let name = span.text();
-    name = removeNewlines(name);
-    name = removeWhitespaces(name);
-    
-    span.text(name);
+
+    const span = $(event.target);
+
+    let newName = span.text();
+    newName = removeNewlines(newName);
+    newName = removeWhitespaces(newName);
+
+    span.text(newName);
 
     try {
-        await mediaLibrary.rename(mediaLibrary.currentPath, name);
+        await mediaLibrary.rename(path, newName);
     } catch (err) {
+        console.log("err", err);
         toast.error(err.message);
         span.text(oldName);
     }
