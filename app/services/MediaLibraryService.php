@@ -51,9 +51,10 @@ class MediaLibraryService
 
     private static function deleteFolder(string $path): bool
     {
-        $data = extract_data_from_path($path);
+        $map = map_directory($path);
+        $dir = $map[0];
 
-        foreach ($data["children"] as $child) {
+        foreach ($dir["children"] as $child) {
             $success = true;
 
             if ($child["type"] === "directory") {
