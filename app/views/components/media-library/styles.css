@@ -49,6 +49,7 @@ ul.MediaLibrary-items {
 }
 
 .MediaLibrary-item {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,6 +57,17 @@ ul.MediaLibrary-items {
     gap: 0;
     cursor: pointer;
     height: 128px;
+}
+
+.MediaLibrary-item-actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
 }
 
 .MediaLibrary-item img {
@@ -143,4 +155,16 @@ ul.MediaLibrary-items {
     list-style: none !important;
     margin-left: 0 !important;
     margin-top: 0 !important;
+    width: 100%;
+}
+
+.MediaLibrary-file-info span[contenteditable="true"] {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    color: var(--bulma-link-text);
+}
+
+.MediaLibrary-file-info i {
+    color: var(--bulma-link-text);
 }

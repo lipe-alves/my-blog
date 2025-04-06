@@ -49,16 +49,39 @@ class MediaLibraryService
         return $new_media;
     }
 
-    public static function deleteFolder(string $path): bool
+    private static function deleteFolder(string $path): bool
     {
-        $success = false;
-        return $success;
+        $data = extract_data_from_path($path);
+
+        foreach ($data["children"] as $child) {
+            $success = true;
+
+            if ($child["type"] === "directory") {
+                $success = MediaLibraryService::deleteFolder($child["path"]);
+            } else {
+                $success = unlink($child["path"]);
+            }
+
+            if (!$success)
+                return false;
+        }
+
+        return rmdir($path);
     }
 
-    public static function deleteFile(string $path): bool
+    public static function deleteMedia(string $path): bool
     {
         $path = MediaLibraryService::treatPath($path);
-        $success = unlink($path);
+        $media_data = extract_data_from_path($path);
+        $is_directory = $media_data["type"] === "directory";
+        $success = false;
+
+        if ($is_directory) {
+            $success = MediaLibraryService::deleteFolder($path);
+        } else {
+            $success = unlink($path);
+        }
+
         return $success;
     }
 }

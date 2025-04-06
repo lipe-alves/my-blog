@@ -42,14 +42,7 @@ class MediaController extends Controller {
         $path = $get["path"];
 
         $is_file = $this->isFile($path);
-        $success = false;
-
-        if ($is_file) {
-            $success = MediaLibraryService::deleteFile($path);
-        } else {
-            $success = MediaLibraryService::deleteFolder($path);
-        }
-
+        $success = MediaLibraryService::deleteMedia($path);
         if (!$success) throw new InternalServerException();
 
         $response->setStatus(200)->setJson([

@@ -68,7 +68,7 @@ if (!isset($category)) {
                     </span>
                     <?php if ($is_admin): ?>
                         <button 
-                            class="DeleteButton button is-danger is-rounded" 
+                            class="DeleteButton button is-danger icon-button" 
                             onclick="handleOpenCategoryDeletionModal(<?=$ctg['id']?>)"
                         >
                             <i class="fa-solid fa-trash"></i>
@@ -87,7 +87,7 @@ if (!isset($category)) {
                         Título nova categoria
                     </a>
                     <button 
-                        class="AddButton button is-success is-rounded" 
+                        class="AddButton button is-success icon-button" 
                         onclick="handleAddNewCategory(this)"
                     >
                         <i class="fa-solid fa-plus"></i>

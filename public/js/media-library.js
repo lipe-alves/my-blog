@@ -1,4 +1,6 @@
 (() => {
+    const { api, modal } = window;
+
     class MediaLibrary {
         #configs;
         #id;
@@ -24,8 +26,6 @@
         }
 
         async show(configs = {}) {
-            const { modal } = window;
-
             this.#configs = configs;
 
             await modal.show({
@@ -46,7 +46,6 @@
          * @param {string} newName 
          */
         async rename(path, newName) {
-            const { api } = window;
             const data = await api.media.rename(path, newName);
 
             let oldName = path.split("/");
@@ -58,9 +57,15 @@
             return data;
         }
 
-        async reload() {
-            const { api } = window;
+        /** @param {string} path */
+        async delete(path) {
+            const data = await api.media.delete(path);
+            await this.reload();
 
+            return data;
+        }
+
+        async reload() {
             const element = $(this.element);
             const parent = element.parent();
 

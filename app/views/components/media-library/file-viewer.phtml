@@ -16,9 +16,10 @@ $url = UPLOAD_URI.$path;
                 contenteditable="true"
                 onfocusout="handleRenameMediaItem(event, '<?= $path ?>', '<?= $name ?>')"
             ><?= $name ?></span>
+            <i class="fa-solid fa-pencil"></i>
         </li>
         <li>
-            Localização: <?= $path ?>
+            Localização: <b><?= $path ?></b>
         </li>
         <li>
             Link: <a href="<?= $url ?>" target="_blank">
@@ -26,16 +27,16 @@ $url = UPLOAD_URI.$path;
             </a>
         </li>
         <li>
-            Tipo: <?= $mimetype ?>
+            Tipo: <b><?= $mimetype ?></b>
         </li>
         <li>
-            Última modificação em <?= $modification_time ?>
+            Última modificação em <b><?= $modification_time ?></b>
         </li>
         <li>
-            Último acesso em <?= $access_time ?>
+            Último acesso em <b><?= $access_time ?></b>
         </li>
         <li>
-            Criado em <?= $creation_time ?>
+            Criado em <b><?= $creation_time ?></b>
         </li>
     </ul>
 </section>

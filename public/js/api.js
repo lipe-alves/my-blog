@@ -161,6 +161,13 @@
                 const resp = await apiEndpoint.patch(`/media/?path=${path}`, { name: newName });
                 const data = resp.json();
                 return data;
+            },
+
+            /** @param {string} path */
+            async delete(path) {
+                const resp = await apiEndpoint.delete(`/media/?path=${path}`);
+                const data = resp.json();
+                return data;
             }
         },
 

@@ -33,13 +33,23 @@ $map = get_directory_map($directory_path);
             $this->component("media-library/file-viewer", $item);
         endif; ?>
         <ul class="MediaLibrary-items">
-            <?php foreach ($map as $item): ?>
+            <?php foreach ($map as $item): 
+                $path = get_secure_path($item);
+                ?>
                 <li 
                     class="MediaLibrary-item" 
-                    onclick="handleOpenItem('<?= get_secure_path($item) ?>')"
+                    onclick="handleOpenItem('<?= $path ?>')"
                     title="<?= $item["name"] ?>"
                 >
                     <?php $this->component("media-library/$item[type]", $item) ?>
+                    <span class="MediaLibrary-item-actions">
+                        <button 
+                            class="button is-danger icon-button"
+                            onclick="handleDeleteMediaItem(event, '<?= $path ?>')"    
+                        >
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </span>
                 </li>
             <?php endforeach; ?>
         </ul>

@@ -32,7 +32,6 @@ async function handleRenameMediaItem(event, path, oldName) {
     try {
         await mediaLibrary.rename(path, newName);
     } catch (err) {
-        console.log("err", err);
         toast.error(err.message);
         span.text(oldName);
     }
@@ -44,4 +43,18 @@ function handleOpenFile(url) {
     a.href = url;
     a.target = "_BLANK";
     a.click();
+}
+
+async function handleDeleteMediaItem(event, path) {
+    event.stopPropagation();
+
+    const { toast } = window;
+    const { mediaLibrary } = window.admin;
+
+    try {
+        await mediaLibrary.delete(path);
+        toast.success("Item excluído com sucesso!");
+    } catch (err) {
+        toast.error(err.message);
+    }   
 }
