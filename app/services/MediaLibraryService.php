@@ -12,7 +12,7 @@ class MediaLibraryService
     private static function treatPath(string $path): string 
     {
         $path = UPLOAD_PATH."/$path";
-        $path = str_replace("//", "/", $path);
+        $path = preg_replace("/\/+/", "/", $path);
         return $path;
     }
 

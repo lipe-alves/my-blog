@@ -55,6 +55,10 @@ $map = get_directory_map($directory_path);
         </ul>
     </main>
     <footer class="MediaLibrary-footer"></footer>
+    <?php $this->component("modal", [
+        "id" => "media-library-modal",
+        "onclose" => "window.admin.mediaLibrary.modal.hide()"
+    ]) ?>
 </div>
 <link 
     rel="stylesheet" 

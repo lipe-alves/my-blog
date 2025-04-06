@@ -1,12 +1,20 @@
 (() => {
     class Modal {
+        /** @type {string} */
+        #id;
         /** @type {{ [key: string]: () => void | null }} */
         #events = {
             onHide: null,
         }
 
+        /** @param {string} */
+        constructor(id) {
+            this.#id = id;
+            this.reset();
+        }
+
         get element() {
-            return $("#modal")[0];
+            return $(`#${this.#id}`)[0];
         }
 
         reset() {
@@ -90,11 +98,16 @@
                 this.reset();
             }, 800);
         }
+
+        /** @param {string} id */
+        static create(id) {
+            return new Modal(id);
+        }
     }
 
-    const modal = new Modal();
-
+    const modal = Modal.create("modal");
     window.modal = modal;
+    window.functions.createModal = Modal.create;
 
     async function getViewHtml(viewName, viewParams) {
         const { api } = window;

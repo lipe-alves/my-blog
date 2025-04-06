@@ -1,4 +1,9 @@
-<div id="modal" class="modal">
+<?php
+$id = !isset($id) ? "modal" : $id;
+$onclose = !isset($onclose) ? "window.modal.hide()" : $onclose;
+?>
+
+<div id="<?= $id ?>" class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
         <header class="modal-card-head">
@@ -6,7 +11,7 @@
             <button 
                 class="delete" 
                 aria-label="close"
-                onclick="window.modal.hide()"
+                onclick="<?= $onclose ?>"
             ></button>
         </header>
         <section class="modal-card-body">
