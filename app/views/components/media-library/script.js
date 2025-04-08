@@ -45,9 +45,35 @@ function handleOpenFile(url) {
     a.click();
 }
 
-async function handleDeleteMediaItem(event, path) {
+/**
+ * @param {Event} event 
+ * @param {string} path 
+ */
+function handleOpenMediaItemDeletionModal(event, path) {
     event.stopPropagation();
 
+    const { mediaLibrary } = window.admin;
+
+    mediaLibrary.modal.show({
+        title: `Tem certeza que deseja excluir "${path}"?`,
+        buttons: [
+            `<button
+                class="button" 
+                onclick="window.mediaLibrary.modal.hide()"
+            >
+                Cancelar
+            </button>`,
+            `<button 
+                class="button is-danger" 
+                onclick="handleDeleteMediaItem('${path}')"
+            >
+                Excluir
+            </button>`
+        ],
+    });
+}
+
+async function handleDeleteMediaItem(path) {
     const { toast } = window;
     const { mediaLibrary } = window.admin;
 
@@ -56,5 +82,5 @@ async function handleDeleteMediaItem(event, path) {
         toast.success("Item excluído com sucesso!");
     } catch (err) {
         toast.error(err.message);
-    }   
+    }
 }

@@ -1,15 +1,22 @@
 (() => {
     const { api, modal } = window;
+    const { createModal } = window.functions;
 
     class MediaLibrary {
         #configs;
         #id;
+        #modal;
 
         constructor(mediaLibraryId) {
             this.#id = mediaLibraryId;
             this.#configs = {
                 media_type: "image/*"
             };
+            this.#modal = createModal("media-library-modal");
+        }
+
+        get modal() {
+            return this.#modal;
         }
 
         get element() {

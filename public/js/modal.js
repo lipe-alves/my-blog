@@ -82,7 +82,7 @@
                 this.#events.onHide = params.onHide;
             }
 
-            showAnimateModal();
+            this.showAnimateModal();
         }
 
         hide() {
@@ -97,6 +97,12 @@
                 }
                 this.reset();
             }, 800);
+        }
+
+        showAnimateModal() {
+            const modal = $(this.element);
+            modal.addClass("is-active");
+            modal.find(".modal-card").addClass("animate__animated animate__zoomIn");
         }
 
         /** @param {string} id */
@@ -116,11 +122,5 @@
         const html = await api.views.render(viewName, pseudo, viewParams);
 
         return html;
-    }
-
-    function showAnimateModal() {
-        const modal = $(window.modal.element);
-        modal.addClass("is-active");
-        modal.find(".modal-card").addClass("animate__animated animate__zoomIn");
     }
 })();
