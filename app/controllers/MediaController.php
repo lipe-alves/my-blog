@@ -6,6 +6,7 @@ use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
 use App\Exceptions\InternalServerException;
+use App\Exceptions\MissingParamException;
 use App\Services\MediaLibraryService;
 
 class MediaController extends Controller {
@@ -13,19 +14,56 @@ class MediaController extends Controller {
     {
         return (bool)preg_match("/\.\w+$/", $path);
     }
-    
-    public function insertFile(Request $request, Response $response)
-    {
-        $get = $request->getGet();
-        $files = $request->getFiles();
-        $path = $get["path"];
-        
 
-        $response->setStatus(200)->setJson($files)->send();
+    private function validatePath() 
+    {
+        $get = $this->request->getGet();
+        if (!isset($get["path"])) {
+            throw new MissingParamException('"caminho"');
+        }
+
+        $path = $get["path"];
+        if (!$path) {
+            throw new MissingParamException('"caminho"');
+        }
+    }
+    
+    public function insertMediaItem(Request $request, Response $response)
+    {
+        $this->validatePath();
+
+        $get = $request->getGet();
+        $post = $request->getPost();
+        $form_files = $request->getFiles();
+        $form_files = $form_files["files"];
+        $n_files = count($form_files["name"]);
+        $files = [];
+
+        for ($i = 0; $i < $n_files; $i++) {
+            $file = [
+                "name" => $form_files["name"][$i],
+                "type" => $form_files["type"][$i],
+                "tmp_name" => $form_files["tmp_name"][$i],
+                "error" => $form_files["error"][$i],
+                "size" => $form_files["size"][$i],
+            ];
+
+            $files[] = $file;
+        }
+
+        $path = $get["path"];
+        $type = $get["type"];
+
+        $params = array_merge($post, ["files" => $files]);
+        $results = MediaLibraryService::createMedia($path, $type, $params);
+
+        $response->setStatus(200)->setJson($results)->send();
     }
 
     public function updateMediaItem(Request $request, Response $response)
     {
+        $this->validatePath();
+
         $get = $request->getGet();
         $updates = $request->getPatch();
         $path = $get["path"];
@@ -38,6 +76,8 @@ class MediaController extends Controller {
 
     public function deleteMediaItem(Request $request, Response $response)
     {
+        $this->validatePath();
+
         $get = $request->getGet();
         $path = $get["path"];
 

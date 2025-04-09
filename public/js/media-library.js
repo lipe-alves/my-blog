@@ -50,6 +50,16 @@
 
         /**
          * @param {string} path 
+         * @param {File[]} files 
+         */
+        async upload(path, files) {
+            const data = await api.media.upload(path, files);
+            await this.reload();
+            return data;
+        }
+
+        /**
+         * @param {string} path 
          * @param {string} newName 
          */
         async rename(path, newName) {

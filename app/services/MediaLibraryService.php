@@ -5,15 +5,83 @@ namespace App\Services;
 use App\Exceptions\ApiException;
 use App\Exceptions\MissingParamException;
 use App\Exceptions\ResourceNotFoundException;
-USE App\Exceptions\DuplicateDataException;
+use App\Exceptions\DuplicateDataException;
+use App\Exceptions\InvalidInputException;
+use App\Exceptions\InvalidFormatException;
 
 class MediaLibraryService
 {
     private static function treatPath(string $path): string 
     {
+        $path = hide_base_path($path, UPLOAD_PATH);
         $path = UPLOAD_PATH."/$path";
         $path = preg_replace("/\/+/", "/", $path);
         return $path;
+    }
+
+    private static function uploadFile(string $path, array $file): array 
+    {
+        $tmp_name = $file["tmp_name"];
+        $content = file_get_contents($tmp_name);
+        $file_path = "$path/$file[name]";
+        $file_path = MediaLibraryService::treatPath($file_path);
+        
+        file_put_contents($file_path, $content);
+
+        return extract_data_from_path($file_path, DEFAULT_DISPLAY_DATETIME_FORMAT);
+    }
+
+    public static function createMedia(
+        string $path, 
+        string $type, 
+        array $params
+    ): array 
+    {
+        $path = MediaLibraryService::treatPath($path);
+
+        if (!file_exists($path)) {
+            throw new ResourceNotFoundException("$path não existe!");
+        }
+
+        $dir_data = extract_data_from_path($path);
+        if ($dir_data["type"] !== "directory") {
+            throw new InvalidInputException("$path não é um caminho para uma pasta!");
+        }
+
+        if (!in_array($type, ["file", "folder"])) {
+            throw new InvalidFormatException('"tipo"', ["file", "folder"]);
+        }
+
+        extract($params);
+
+        if ($type === "folder") {
+            if (!isset($name) || !$name) {
+                throw new MissingParamException("nome $field");
+            }
+    
+            if (!is_string($name)) {
+                throw new InvalidFormatException("nome $field", ["texto"]);
+            }
+
+            return [];
+        } else {
+            if (!isset($files) || !$files) {
+                throw new MissingParamException("lista de arquivos");
+            }
+
+            if (!is_array($files)) {
+                throw new InvalidFormatException("lista de arquivos", ["vetor"]);
+            }
+
+            $results = [];
+
+            foreach ($files as $file) {
+                $file_data = MediaLibraryService::uploadFile($path, $file);
+                $results[] = $file_data;
+            }
+
+            return $results;
+        }
     }
 
     public static function updateMedia(string $path, array $updates): array 
@@ -33,6 +101,10 @@ class MediaLibraryService
 
         if (!isset($name) || !$name) {
             throw new MissingParamException("nome $field");
+        }
+
+        if (!is_string($name)) {
+            throw new InvalidFormatException("nome $field", ["texto"]);
         }
         
         $new_path = str_replace($media_data["name"], $name, $old_path);
@@ -85,4 +157,5 @@ class MediaLibraryService
 
         return $success;
     }
+
 }

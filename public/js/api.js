@@ -155,11 +155,14 @@
         media: {
             /**
              * @param {string} path 
-             * @param {File} file 
+             * @param {File[]} files
              */
-            async upload(path, file) {
+            async upload(path, files) {
                 const form = new FormData();
-                form.append("file", file);
+                
+                for (const file of files) {
+                    form.append("files[]", file);
+                }
 
                 const resp = await apiEndpoint.post(`/media/?type=file&path=${path}`, form);
                 const data = resp.json();
