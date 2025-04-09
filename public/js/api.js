@@ -155,6 +155,30 @@
         media: {
             /**
              * @param {string} path 
+             * @param {File} file 
+             */
+            async upload(path, file) {
+                const form = new FormData();
+                form.append("file", file);
+
+                const resp = await apiEndpoint.post(`/media/?type=file&path=${path}`, form);
+                const data = resp.json();
+                
+                return data;
+            },
+
+            /**
+             * @param {string} path 
+             * @param {File} file 
+             */
+            async createFolder(path, name) {
+                const resp = await apiEndpoint.post(`/media/?type=folder&path=${path}`, { name });
+                const data = resp.json();
+                return data;
+            },
+
+            /**
+             * @param {string} path 
              * @param {string} newName 
              */
             async rename(path, newName) {
