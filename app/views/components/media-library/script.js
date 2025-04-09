@@ -16,7 +16,7 @@ async function handleOpenItem(path) {
  */
 async function handleRenameMediaItem(event, path, oldName) {
     event.stopPropagation();
-    
+
     const { toast } = window;
     const { removeWhitespaces, removeNewlines } = window.functions;
     const { mediaLibrary } = window.admin;
@@ -59,7 +59,7 @@ function handleOpenMediaItemDeletionModal(event, path) {
         buttons: [
             `<button
                 class="button" 
-                onclick="window.mediaLibrary.modal.hide()"
+                onclick="window.admin.mediaLibrary.modal.hide()"
             >
                 Cancelar
             </button>`,
