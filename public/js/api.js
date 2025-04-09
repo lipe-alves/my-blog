@@ -163,7 +163,7 @@
 
                 const resp = await apiEndpoint.post(`/media/?type=file&path=${path}`, form);
                 const data = resp.json();
-                
+
                 return data;
             },
 
@@ -266,14 +266,14 @@
     /** @param {HTMLScriptElement} script */
     function includeScript(script) {
         const clone = document.createElement("script");
-        
+
         for (const attr of Array.from(script.attributes)) {
             clone[attr.name] = attr.value;
         }
 
         clone.onload = console.log;
         clone.onerror = console.error;
-        
+
         document.body.appendChild(clone);
     }
 })();

@@ -17,6 +17,17 @@
             /** @type {RequestInit} */
             defaults: {},
 
+            convertBody(body) {
+                if (
+                    body instanceof Blob ||
+                    body instanceof FormData ||
+                    body instanceof URLSearchParams ||
+                    typeof body === "string"
+                ) return body;
+
+                return JSON.stringify(body);
+            },
+
             /**
              * @param {string} path
              * @param {RequestInit} config
@@ -28,7 +39,8 @@
                 path = "/" + path;
                 url += path;
                 url = url.replace(/(?<!:)\/+/g, "/");
-                config = { ...this.defaults, ...config }
+                config = { ...this.defaults, ...config };
+                config.body = this.convertBody(config.body);
 
                 const resp = await fetch(url, config);
                 if (!resp.ok) throw await resp.json();
@@ -58,7 +70,7 @@
                 return this.request(path, {
                     ...config,
                     method: "POST",
-                    body: JSON.stringify(data),
+                    body: data,
                 });
             },
 
@@ -73,7 +85,7 @@
                 return this.request(path, {
                     ...config,
                     method: "PATCH",
-                    body: JSON.stringify(data),
+                    body: data,
                 });
             },
 
@@ -88,7 +100,7 @@
                 return this.request(path, {
                     ...config,
                     method: "PUT",
-                    body: JSON.stringify(data),
+                    body: data,
                 });
             },
 
@@ -100,7 +112,7 @@
                 const { data = {} } = config;
                 return this.request(path, {
                     ...config,
-                    body: JSON.stringify(data),
+                    body: data,
                     method: "DELETE",
                 });
             },
