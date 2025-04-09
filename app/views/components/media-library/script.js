@@ -84,3 +84,26 @@ async function handleDeleteMediaItem(path) {
         toast.error(err.message);
     }
 }
+
+async function handleUploadFile() {
+    const { toast, api } = window;
+    const { mediaLibrary } = window.admin;
+
+    const uploadFile = async evt => {
+        const files = Array.from(evt.target.files);
+        const file = files[0];
+        if (!file) return;
+
+        try {
+            await api.media.upload(mediaLibrary.currentPath, file);
+            toast.success("Arquivo enviado com sucesso!");
+        } catch (err) {
+            toast.error(err.message);
+        }
+    };
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.onchange = uploadFile;
+    input.click();
+}
