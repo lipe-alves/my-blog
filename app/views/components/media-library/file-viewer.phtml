@@ -30,6 +30,9 @@ $url = UPLOAD_URI.$path;
             Tipo: <b><?= $mimetype ?></b>
         </li>
         <li>
+            Tamanho: <b><?= display_bytes($size) ?></b>
+        </li>
+        <li>
             Última modificação em <b><?= $modification_time ?></b>
         </li>
         <li>
