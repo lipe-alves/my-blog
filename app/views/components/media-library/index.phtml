@@ -11,11 +11,14 @@ $map = get_directory_map($directory_path);
 >
     <header class="MediaLibrary-header">
         <div class="MediaLibrary-actions">
-            <button class="MediaLibrary-uploadFile button is-info is-outlined">
+            <button 
+                class="MediaLibrary-uploadFile button is-info"
+                onclick="handleUploadFile()"
+            >
                 <i class="fa-regular fa-file"></i>
                 <span>Novo arquivo</span>
             </button> 
-            <button class="MediaLibrary-addFolder button is-success is-outlined">
+            <button class="MediaLibrary-addFolder button is-success">
                 <i class="fa-regular fa-folder"></i>
                 <span>Nova pasta</span>
             </button> 
