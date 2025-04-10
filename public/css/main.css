@@ -10,6 +10,8 @@
     --select-background-color: #f5f4f4;
     --select-text-color: #444444;
     --success-color: #84be5b;
+    --success-color-hover: #9ccb7b;
+    --success-color-disabled: #84be5b;
 }
 
 body {
@@ -139,12 +141,16 @@ a.active {
     color: var(--text-color);
 }
 
+.is-success:hover {
+    background-color: var(--success-color-hover);
+}
+
 .is-success.is-outlined {
-    --text-color: vaR(--success-color);
+    --text-color: var(--success-color);
 }
 
 .is-success[disabled] {
-    background-color: #84be5b;
+    background-color: var(--success-color-disabled);
     border-color: none;
     opacity: 0.5;
 }
