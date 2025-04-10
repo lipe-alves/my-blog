@@ -9,6 +9,7 @@
     --content-max-width: 900px;
     --select-background-color: #f5f4f4;
     --select-text-color: #444444;
+    --success-color: #84be5b;
 }
 
 body {
@@ -105,7 +106,7 @@ hr {
     border-radius: 6px;
 }
 
-.button.is-danger {
+.is-danger, .is-info {
     color: #fff;
 }
 
@@ -134,7 +135,6 @@ a.active {
 .is-success {
     --text-color: #fff;
     --bulma-loading-color: var(--text-color);
-    --success-color: #84be5b;
     background-color: var(--success-color);
     color: var(--text-color);
 }
