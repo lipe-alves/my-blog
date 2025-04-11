@@ -39,8 +39,11 @@
             await modal.show({
                 title: "Biblioteca de Mídia",
                 view: "media-library",
-                params: configs
+                params: configs,
+                hideFooter: true
             });
+
+            modal.footer.dataset.visible = "false";
         }
 
         /** @param {string} path */

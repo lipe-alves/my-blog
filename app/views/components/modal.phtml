@@ -1,6 +1,7 @@
 <?php
 $id = !isset($id) ? "modal" : $id;
 $onclose = !isset($onclose) ? "window.modal.hide()" : $onclose;
+$hide_footer = !isset($hide_footer) ? false : $hide_footer;
 ?>
 
 <div id="<?= $id ?>" class="modal">
@@ -17,6 +18,8 @@ $onclose = !isset($onclose) ? "window.modal.hide()" : $onclose;
         <section class="modal-card-body">
             <div class="content" data-field="content"></div>
         </section>
-        <footer class="modal-card-foot" data-field="footer"></footer>
+        <?php if (!$hide_footer): ?> 
+            <footer class="modal-card-foot" data-field="footer" data-visible="true"></footer>
+        <?php endif; ?>
     </div>
 </div>

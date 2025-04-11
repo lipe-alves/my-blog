@@ -17,8 +17,25 @@
             return $(`#${this.#id}`)[0];
         }
 
+        get header() {
+            return $(this.element).find("> .modal-card > .modal-card-head:first")[0];
+        }
+
+        get body() {
+            return $(this.element).find("> .modal-card > .modal-card-body:first")[0];
+        }
+
+        get content() {
+            return $(this.element).find('> .modal-card > [data-field="content"]:first')[0];
+        }
+
+        get footer() {
+            return $(this.element).find('> .modal-card > [data-field="footer"]:first')[0];
+        }
+
         reset() {
             const modal = $(this.element);
+
             modal.removeClass("is-active");
             modal.find("[data-field]").each(function () {
                 $(this).html("");
@@ -26,10 +43,11 @@
             modal.find(".modal-card").removeClass("animate__animated animate__zoomIn");
             modal.find(".modal-card").removeClass("animate__animated animate__zoomOut");
 
-
             for (const event in this.events) {
                 this.#events[event] = null;
             }
+
+            this.footer.dataset.visible = true;
         }
 
         /**
@@ -41,6 +59,7 @@
          *     footer: string;
          *     buttons?: string[];
          *     onHide?: () => void;
+         *     hideFooter?: boolean;
          * }} params 
          */
         show(params) {
@@ -77,6 +96,8 @@
                 if (!fieldElement[0]) continue;
                 fieldElement.html(value);
             }
+
+            this.footer.dataset.visible = !Boolean(params.hideFooter);
 
             if (params.onHide) {
                 this.#events.onHide = params.onHide;

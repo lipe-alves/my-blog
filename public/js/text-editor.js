@@ -57,7 +57,10 @@
         static async uploadImage(editor) {
             const { admin } = window;
 
-            await admin.mediaLibrary.show();
+            await admin.mediaLibrary.show({
+                accept: "image/*",
+                multiple: false
+            });
         }
 
         get html() {
