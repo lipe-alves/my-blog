@@ -98,7 +98,16 @@
                 fieldElement.html(value);
             }
 
-            this.footer.dataset.visible = !Boolean(params.hideFooter);
+            const footerVisible = !Boolean(params.hideFooter);
+            this.footer.dataset.visible = footerVisible;
+
+            if (!footerVisible) {
+                this.body.style.borderBottomLeftRadius = "var(--bulma-modal-card-head-radius)";
+                this.body.style.borderBottomRightRadius = "var(--bulma-modal-card-head-radius)";
+            } else {
+                this.body.style.borderBottomLeftRadius = "";
+                this.body.style.borderBottomRightRadius = "";
+            }
 
             if (params.onHide) {
                 this.#events.onHide = params.onHide;
