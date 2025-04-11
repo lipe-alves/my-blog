@@ -12,6 +12,7 @@
     --success-color: #84be5b;
     --success-color-hover: #9ccb7b;
     --success-color-disabled: #84be5b;
+    --bulma-modal-content-width: 42rem;
 }
 
 body {
