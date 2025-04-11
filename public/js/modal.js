@@ -47,7 +47,8 @@
                 this.#events[event] = null;
             }
 
-            this.footer.dataset.visible = true;
+            if (this.footer)
+                this.footer.dataset.visible = true;
         }
 
         /**
