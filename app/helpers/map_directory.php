@@ -37,12 +37,6 @@ function extract_data_from_path(
         $data["extension"] = get_file_extension($data["path"]);
     }
 
-    // foreach ($data as $key => $value) {
-    //     if (is_string($value)) {
-    //         $data[$key] = utf8_encode($value);
-    //     }
-    // }
-
     return $data;
 }
 
@@ -73,6 +67,12 @@ function map_directory(
     }
     
     $map[$directory]["children"] = array_values($map[$directory]["children"]);
+    usort($map[$directory]["children"], function ($a, $b) {
+        $same = $a["type"] === $b["type"];
+        if ($same) return 0;
+        if ($a["type"] === "directory") return -1;
+        return 1;
+    });
     $map = array_values($map);
 
     return $map;

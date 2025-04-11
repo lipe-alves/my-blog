@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\ApiException;
+use App\Exceptions\InternalServerException;
 use App\Exceptions\MissingParamException;
 use App\Exceptions\ResourceNotFoundException;
 use App\Exceptions\DuplicateDataException;
@@ -11,12 +12,33 @@ use App\Exceptions\InvalidFormatException;
 
 class MediaLibraryService
 {
+    private const PROHIBITED_CHARS = [
+        "\\", 
+        "/",
+        ":",
+        "*",
+        "?",
+        '"', 
+        "<",
+        ">",
+        "|"
+    ];
+
     private static function treatPath(string $path): string 
     {
         $path = hide_base_path($path, UPLOAD_PATH);
         $path = UPLOAD_PATH."/$path";
         $path = preg_replace("/\/+/", "/", $path);
         return $path;
+    }
+
+    private static function treatFolderName(string $name): string 
+    {
+        $name = str_replace(MediaLibraryService::PROHIBITED_CHARS, "", $name);
+        $name = remove_multiple_whitespaces($name);
+        $name = remove_newlines($name);
+        $name = substr($name, 0, 254);
+        return $name;
     }
 
     private static function uploadFile(string $path, array $file): array 
@@ -63,7 +85,22 @@ class MediaLibraryService
                 throw new InvalidFormatException("nome $field", ["texto"]);
             }
 
-            return [];
+            $name = MediaLibraryService::treatFolderName($name);
+
+            $folder_path = "$path/$name";
+            $folder_path = MediaLibraryService::treatPath($folder_path);
+            if (file_exists($folder_path)) {
+                throw new InvalidInputException("Nome de pasta (\"$name\") já existe!");
+            }
+            
+            $success = mkdir($folder_path); 
+            if (!$success) {
+                throw new InternalServerException();
+            }
+
+            $dir_data = extract_data_from_path($folder_path, DEFAULT_DISPLAY_DATETIME_FORMAT);
+
+            return $dir_data;
         } else {
             if (!isset($files) || !$files) {
                 throw new MissingParamException("lista de arquivos");

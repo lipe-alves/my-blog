@@ -35,26 +35,32 @@ class MediaController extends Controller {
         $get = $request->getGet();
         $post = $request->getPost();
         $form_files = $request->getFiles();
-        $form_files = $form_files["files"];
-        $n_files = count($form_files["name"]);
-        $files = [];
-
-        for ($i = 0; $i < $n_files; $i++) {
-            $file = [
-                "name" => $form_files["name"][$i],
-                "type" => $form_files["type"][$i],
-                "tmp_name" => $form_files["tmp_name"][$i],
-                "error" => $form_files["error"][$i],
-                "size" => $form_files["size"][$i],
-            ];
-
-            $files[] = $file;
-        }
-
         $path = $get["path"];
         $type = $get["type"];
+        $params = [];
+       
+        if ($type === "file") {
+            $form_files = $form_files["files"];
+            $n_files = count($form_files["name"]);
+            $files = [];
+            
+            for ($i = 0; $i < $n_files; $i++) {
+                $file = [
+                    "name" => $form_files["name"][$i],
+                    "type" => $form_files["type"][$i],
+                    "tmp_name" => $form_files["tmp_name"][$i],
+                    "error" => $form_files["error"][$i],
+                    "size" => $form_files["size"][$i],
+                ];
+    
+                $files[] = $file;
+            }
 
-        $params = array_merge($post, ["files" => $files]);
+            $params = array_merge($post, ["files" => $files]);
+        } else {
+            $params = $post;
+        }
+
         $results = MediaLibraryService::createMedia($path, $type, $params);
 
         $response->setStatus(200)->setJson($results)->send();

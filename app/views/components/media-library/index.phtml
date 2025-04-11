@@ -18,7 +18,10 @@ $map = get_directory_map($directory_path);
                 <i class="fa-regular fa-file"></i>
                 <span>Novo arquivo</span>
             </button> 
-            <button class="MediaLibrary-addFolder button is-success">
+            <button 
+                class="MediaLibrary-addFolder button is-success"
+                onclick="handleOpenUploadFolderModal()"
+            >
                 <i class="fa-regular fa-folder"></i>
                 <span>Nova pasta</span>
             </button> 

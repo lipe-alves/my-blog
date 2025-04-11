@@ -60,6 +60,16 @@
 
         /**
          * @param {string} path 
+         * @param {string} name 
+         */
+        async createFolder(path, name) {
+            const data = await api.media.createFolder(path, name);
+            await this.reload();
+            return data;
+        }
+
+        /**
+         * @param {string} path 
          * @param {string} newName 
          */
         async rename(path, newName) {

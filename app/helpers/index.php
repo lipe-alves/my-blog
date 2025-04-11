@@ -15,3 +15,4 @@ require_once ROOT_PATH . "/app/helpers/get_file_extension.php";
 require_once ROOT_PATH . "/app/helpers/hide_base_path.php";
 require_once ROOT_PATH . "/app/helpers/array_contains.php";
 require_once ROOT_PATH . "/app/helpers/display_bytes.php";
+require_once ROOT_PATH . "/app/helpers/remove_newlines.php";

@@ -107,3 +107,69 @@ async function handleUploadFile() {
     input.onchange = uploadFile;
     input.click();
 }
+
+function handleOpenUploadFolderModal() {
+    const { mediaLibrary } = window.admin;
+
+    mediaLibrary.modal.show({
+        title: "Nova pasta",
+        content: `
+            <div class="field">
+                <label class="label">
+                    Digite o nome da pasta:
+                </label>
+                <div class="control">
+                    <input
+                        id="new-folder-name"
+                        class="input"
+                        type="text"
+                        placeholder="Nome da pasta"
+                    >
+                </div>
+            </div>
+        `,
+        buttons: [
+            `<button
+                class="button is-danger" 
+                onclick="window.admin.mediaLibrary.modal.hide()"
+            >
+                Cancelar
+            </button>`,
+            `<button 
+                class="button is-success" 
+                onclick="handleUploadFolder(this)"
+            >
+                Enviar
+            </button>`
+        ],
+    });
+}
+
+/** @param {HTMLButtonElement} button */
+async function handleUploadFolder(button) {
+    const { mediaLibrary } = window.admin;
+    const { removeWhitespaces, removeNewlines } = window.functions;
+
+    button = $(button);
+    
+    const input = $("#new-folder-name");
+    let name = input.val();
+    name = removeWhitespaces(name);
+    name = removeNewlines(name);
+
+    /** @param {boolean} disabled */
+    const setButtonDisabled = (disabled) => {
+        button.prop("disabled", disabled);
+        button.toggleClass("is-loading");
+    };
+
+    try {
+        setButtonDisabled(true);
+        await mediaLibrary.createFolder(mediaLibrary.currentPath, name);
+        toast.success("Pasta adicionada com sucesso!");
+    } catch (err) {
+        toast.error(err.message);
+    } finally {
+        setButtonDisabled(false);
+    }
+}
