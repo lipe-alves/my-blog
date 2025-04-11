@@ -208,3 +208,8 @@ function handleSelectFile(checkbox) {
         sendButton.innerHTML += multiple ? " arquivos" : "um arquivo";
     }
 }
+
+function handleSendFiles() {
+    const { mediaLibrary } = window.admin;
+    mediaLibrary.dispatchEvent("sendfiles", ["test"]);
+}

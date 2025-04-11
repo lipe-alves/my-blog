@@ -61,6 +61,10 @@
                 accept: "image/*",
                 multiple: false
             });
+
+            admin.mediaLibrary.addEventListener("sendfiles", (files) => {
+                console.log("files", files);
+            });
         }
 
         get html() {

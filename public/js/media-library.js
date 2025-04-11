@@ -6,6 +6,7 @@
         #configs;
         #id;
         #modal;
+        #events;
 
         constructor(mediaLibraryId) {
             this.#id = mediaLibraryId;
@@ -13,6 +14,7 @@
                 accept: "*",
                 multiple: false
             };
+            this.#events = {};
             this.#modal = createModal("media-library-modal");
         }
 
@@ -39,6 +41,7 @@
 
         async show(configs = {}) {
             this.#configs = configs;
+            this.#events = {};
 
             await modal.show({
                 title: "Biblioteca de Mídia",
@@ -46,8 +49,22 @@
                 params: configs,
                 hideFooter: true
             });
+        }
 
-            modal.footer.dataset.visible = "false";
+        /**
+         * @param {string} event 
+         * @param {(...args: any[]) => void} callback 
+         */
+        addEventListener(event, callback) {
+            this.#events[event] = callback;
+        }
+
+        /**
+         * @param {string} event 
+         * @param {...args: any[]} args 
+         */
+        dispatchEvent(event, ...args) {
+            this.#events[event](...args);
         }
 
         /** @param {string} path */

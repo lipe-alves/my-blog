@@ -73,6 +73,7 @@ $map = get_directory_map($directory_path);
         <button 
             id="send-selected-items-button"
             class="button is-success" 
+            onclick="handleSendFiles()"
             disabled
         >
             Selecione <?= $multiple ? "arquivos" : "um arquivo" ?>
