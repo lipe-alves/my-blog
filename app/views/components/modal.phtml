@@ -2,6 +2,7 @@
 $id = !isset($id) ? "modal" : $id;
 $onclose = !isset($onclose) ? "window.modal.hide()" : $onclose;
 $hide_footer = !isset($hide_footer) ? false : $hide_footer;
+$hide_footer = json_encode($hide_footer);
 ?>
 
 <div id="<?= $id ?>" class="modal">
@@ -18,8 +19,10 @@ $hide_footer = !isset($hide_footer) ? false : $hide_footer;
         <section class="modal-card-body">
             <div class="content" data-field="content"></div>
         </section>
-        <?php if (!$hide_footer): ?> 
-            <footer class="modal-card-foot" data-field="footer" data-visible="true"></footer>
-        <?php endif; ?>
+        <footer 
+            class="modal-card-foot" 
+            data-field="footer" 
+            data-visible="<?= $hide_footer ?>"
+        ></footer>
     </div>
 </div>
