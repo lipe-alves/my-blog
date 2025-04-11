@@ -41,6 +41,7 @@ $map = get_directory_map($directory_path);
         <ul class="MediaLibrary-items">
             <?php foreach ($map as $item): 
                 $path = get_secure_path($item);
+                $selectable = $item["type"] === "file" && filter_by_accept($item, $accept);
                 ?>
                 <li 
                     class="MediaLibrary-item" 
@@ -49,9 +50,17 @@ $map = get_directory_map($directory_path);
                 >
                     <?php $this->component("media-library/$item[type]", $item) ?>
                     <span class="MediaLibrary-item-actions">
+                        <?php if ($selectable): ?>
+                            <input 
+                                class="checkbox"
+                                type="checkbox"
+                                onclick="event.stopPropagation()"
+                                onchange="handleSelectFile(event, this)"
+                            />
+                        <?php endif; ?>
                         <button 
                             class="button is-danger icon-button"
-                            onclick="handleOpenMediaItemDeletionModal(event, '<?= $path ?>')"    
+                            onclick="handleOpenMediaItemDeletionModal(event, "<?= $path ?>")"    
                         >
                             <i class="fa-solid fa-trash"></i>
                         </button>
@@ -60,7 +69,11 @@ $map = get_directory_map($directory_path);
             <?php endforeach; ?>
         </ul>
     </main>
-    <footer class="MediaLibrary-footer"></footer>
+    <footer class="MediaLibrary-footer">
+        <button class="button is-info" disabled>
+            Selecione <?= $multiple ? "arquivos" : "um arquivo" ?>
+        </button>
+    </footer>
     <?php $this->component("modal", [
         "id" => "media-library-modal",
         "onclose" => "window.admin.mediaLibrary.modal.hide()"
@@ -130,4 +143,27 @@ function get_src(string $extension, string $file_path): string {
 function is_type_file(string $path): bool 
 {
     return (bool)preg_match("/\.\w+$/", $path);
+}
+
+function filter_by_accept(array $file, string $accept): bool 
+{
+    $accept_types = explode(",", $accept);
+    $accept_types = array_map("trim", $accept_types);
+
+    $pass = array_some($accept_types, function (string $type) use ($file) {
+        if ($type === "*") {
+            return true;
+        }
+
+        if (str_contains($type, "*")) {
+            $base_type = explode("/", $type);
+            $base_type = $base_type[0];
+            $base_type = "$base_type/";
+            return starts_with($file["mimetype"], $base_type);
+        }
+
+        return $file["extension"] === $type || ends_with($file["name"], $type);
+    });
+
+    return $pass;
 }

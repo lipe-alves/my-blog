@@ -173,3 +173,9 @@ async function handleUploadFolder(button) {
         setButtonDisabled(false);
     }
 }
+
+function handleSelectFile(event, checkbox) {
+
+    checkbox = $(checkbox);
+
+}

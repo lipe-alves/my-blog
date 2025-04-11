@@ -26,20 +26,13 @@ class ComponentsController extends Controller
 
     public function mediaLibrary() {
         $get = $this->request->getGet();
-        $params = [];
+        $params = array_merge([
+            "base_path" => "/",
+            "accept"    => "*",
+            "multiple"  => "true"
+        ], $get);
 
-        if (array_key_exists("base_path", $get)) {
-            $params["base_path"] = $get["base_path"];
-        }
-
-        if (array_key_exists("mime_type", $get)) {
-            $params["mime_type"] = explode(",", $get["mime_type"]);
-            $params["mime_type"] = array_map("trim", $params["mime_type"]);
-        }
-
-        if (array_key_exists("on_select", $get)) {
-            $params["on_select"] = $get["on_select"];
-        }
+        $params["multiple"] = $params["multiple"] === "true" || $params["multiple"] === "1";
 
         $this->component("media-library", $params);
     }

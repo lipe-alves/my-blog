@@ -10,7 +10,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     width: 100%;
 }
 
@@ -67,7 +67,12 @@ ul.MediaLibrary-items {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1em;
+    gap: 0.5em;
+}
+
+.MediaLibrary-item-actions .checkbox {
+    width: 16px;
+    height: 16px;
 }
 
 .MediaLibrary-item img {

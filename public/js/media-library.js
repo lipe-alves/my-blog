@@ -10,7 +10,8 @@
         constructor(mediaLibraryId) {
             this.#id = mediaLibraryId;
             this.#configs = {
-                media_type: "image/*"
+                accept: "*",
+                multiple: false
             };
             this.#modal = createModal("media-library-modal");
         }
