@@ -16,6 +16,10 @@
             this.#modal = createModal("media-library-modal");
         }
 
+        get configs() {
+            return this.#configs;
+        }
+
         get modal() {
             return this.#modal;
         }

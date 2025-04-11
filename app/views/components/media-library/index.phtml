@@ -55,7 +55,7 @@ $map = get_directory_map($directory_path);
                                 class="checkbox"
                                 type="checkbox"
                                 onclick="event.stopPropagation()"
-                                onchange="handleSelectFile(event, this)"
+                                onchange="handleSelectFile(this)"
                             />
                         <?php endif; ?>
                         <button 
@@ -70,7 +70,11 @@ $map = get_directory_map($directory_path);
         </ul>
     </main>
     <footer class="MediaLibrary-footer">
-        <button class="button is-info" disabled>
+        <button 
+            id="send-selected-items-button"
+            class="button is-success" 
+            disabled
+        >
             Selecione <?= $multiple ? "arquivos" : "um arquivo" ?>
         </button>
     </footer>

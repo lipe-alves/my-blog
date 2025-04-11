@@ -174,8 +174,37 @@ async function handleUploadFolder(button) {
     }
 }
 
-function handleSelectFile(event, checkbox) {
+function handleSelectFile(checkbox) {
+    const { mediaLibrary } = window.admin;
 
-    checkbox = $(checkbox);
+    let someChecked = false;
+    const checked = checkbox.checked;
+    if (checked)
+        someChecked = true;
+    
+    const sendButton = $("#send-selected-items-button")[0];
+    const multiple = Boolean(mediaLibrary.configs.multiple);
 
+    $(".MediaLibrary-item .checkbox").each(function () { 
+        const box = this;
+
+        if (checked && !multiple)
+            box.checked = false;
+
+        if (box.checked)
+            someChecked = true;
+    });
+
+    checkbox.checked = checked;
+
+    if (someChecked) {
+        sendButton.disabled = false;
+        sendButton.innerHTML = "Enviar arquivo";
+        if (multiple)
+            sendButton.innerHTML += "s";
+    } else {
+        sendButton.disabled = true;
+        sendButton.innerHTML = "Selecione ";
+        sendButton.innerHTML += multiple ? " arquivos" : "um arquivo";
+    }
 }
