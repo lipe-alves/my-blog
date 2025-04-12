@@ -56,4 +56,11 @@
     text-align: center;
 }
 
-
+.PostActions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1em;
+    width: 100%;
+}

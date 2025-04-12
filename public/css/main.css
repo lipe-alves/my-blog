@@ -83,6 +83,14 @@ hr {
     }
 }
 
+.button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+}
+
 .input, .textarea {
     --bulma-input-placeholder-color: #95a0b8;
     --bulma-input-disabled-background-color: var(--input-background-color);

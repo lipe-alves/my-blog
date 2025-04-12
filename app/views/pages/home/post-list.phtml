@@ -1,4 +1,7 @@
 <?php
+$session = $this->request->getSession();
+extract($session);
+
 $post_count = count($post_list);
 $no_posts = $post_count === 0;
 $show_no_posts_msg = $no_posts;
@@ -23,11 +26,24 @@ $filter_msg .= "...";
 <ul
     id="post-list"
     class="PostList"
-    data-view="post-list">
-    <?php if ($show_filter_title): ?>
+    data-view="post-list"
+>
+    <?php if ($is_admin): ?>
+        <li class="PostActions">
+            <button 
+                class="button is-success" 
+                onclick="window.open('<?= BASE_URI ?>/posts/new')"
+            >
+                <i class="fa-solid fa-plus"></i>
+                <span>Novo post</span>
+            </button>
+        </li>
+    <?php endif;
+    if ($show_filter_title): ?>
         <li
             id="filter-title"
-            class="subtitle is-5 is-italic">
+            class="subtitle is-5 is-italic"
+        >
             <span><?= $filter_msg ?></span>
             <a href="javascript:handleClearFilters()">Limpar</a>
         </li>
