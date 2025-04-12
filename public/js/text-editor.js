@@ -34,6 +34,7 @@
                             ["clean"]
                         ],
                         handlers: {
+                            video: TextEditor.toolbarHandler(TextEditor.uploadVideo),
                             image: TextEditor.toolbarHandler(TextEditor.uploadImage)
                         }
                     }
@@ -49,6 +50,10 @@
             };
         }
 
+        async uploadVideo() {
+            TextEditor.uploadVideo(this);
+        }
+
         async uploadImage() {
             TextEditor.uploadImage(this);
         }
@@ -57,13 +62,47 @@
         static async uploadImage(editor) {
             const { admin } = window;
 
+            let selection = editor.getSelection();
+            let index = selection?.index || 0;
+
             await admin.mediaLibrary.show({
                 accept: "image/*",
-                multiple: false
+                multiple: true
             });
 
-            admin.mediaLibrary.addEventListener("sendfiles", (files) => {
-                console.log("files", files);
+            admin.mediaLibrary.addEventListener("send-files", (files) => {
+                admin.mediaLibrary.hide();
+
+                for (const file of files) {
+                    editor.insertEmbed(index, "image", file.src);
+                    
+                    selection = editor.getSelection();
+                    index = selection?.index || 0;
+                }
+            });
+        }
+
+        /** @param {TextEditor} editor */
+        static async uploadVideo(editor) {
+            const { admin } = window;
+
+            let selection = editor.getSelection();
+            let index = selection?.index || 0;
+
+            await admin.mediaLibrary.show({
+                accept: "video/*",
+                multiple: true
+            });
+
+            admin.mediaLibrary.addEventListener("send-files", (files) => {
+                admin.mediaLibrary.hide();
+
+                for (const file of files) {
+                    editor.insertEmbed(index, "image", file.src);
+                    
+                    selection = editor.getSelection();
+                    index = selection?.index || 0;
+                }
             });
         }
 

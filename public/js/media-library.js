@@ -8,12 +8,14 @@
         #modal;
         #events;
 
+        static DEFAULT_CONFIGS = {
+            accept: "*",
+            multiple: false
+        };
+
         constructor(mediaLibraryId) {
             this.#id = mediaLibraryId;
-            this.#configs = {
-                accept: "*",
-                multiple: false
-            };
+            this.#configs = { ...MediaLibrary.DEFAULT_CONFIGS };
             this.#events = {};
             this.#modal = createModal("media-library-modal");
         }
@@ -49,6 +51,13 @@
                 params: configs,
                 hideFooter: true
             });
+        }
+
+        hide() {
+            this.#configs = { ...MediaLibrary.DEFAULT_CONFIGS };
+            this.#events = {};
+
+            modal.hide();
         }
 
         /**

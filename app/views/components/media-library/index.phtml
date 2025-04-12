@@ -40,13 +40,23 @@ $map = get_directory_map($directory_path);
         endif; ?>
         <ul class="MediaLibrary-items">
             <?php foreach ($map as $item): 
-                $path = get_secure_path($item);
                 $selectable = $item["type"] === "file" && filter_by_accept($item, $accept);
+                if ($item["type"] === "file") {
+                    $src = get_src($item["extension"], $item["path"]);
+                    $item["src"] = $src;
+                }
+                $path = get_secure_path($item);
+                $item["path"] = $path;
                 ?>
                 <li 
                     class="MediaLibrary-item" 
                     onclick="handleOpenItem('<?= $path ?>')"
                     title="<?= $item["name"] ?>"
+                    <?php foreach ($item as $key => $value): 
+                        if (is_array($value)) continue;
+                        ?>
+                        data-<?= $key ?>="<?= $value ?>"
+                    <?php endforeach; ?>
                 >
                     <?php $this->component("media-library/$item[type]", $item) ?>
                     <span class="MediaLibrary-item-actions">

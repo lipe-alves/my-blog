@@ -151,7 +151,7 @@ async function handleUploadFolder(button) {
     const { removeWhitespaces, removeNewlines } = window.functions;
 
     button = $(button);
-    
+
     const input = $("#new-folder-name");
     let name = input.val();
     name = removeWhitespaces(name);
@@ -181,11 +181,11 @@ function handleSelectFile(checkbox) {
     const checked = checkbox.checked;
     if (checked)
         someChecked = true;
-    
+
     const sendButton = $("#send-selected-items-button")[0];
     const multiple = Boolean(mediaLibrary.configs.multiple);
 
-    $(".MediaLibrary-item .checkbox").each(function () { 
+    $(".MediaLibrary-item .checkbox").each(function () {
         const box = this;
 
         if (checked && !multiple)
@@ -211,5 +211,18 @@ function handleSelectFile(checkbox) {
 
 function handleSendFiles() {
     const { mediaLibrary } = window.admin;
-    mediaLibrary.dispatchEvent("sendfiles", ["test"]);
+
+    const container = $(mediaLibrary.element);
+    const files = [];
+
+    container.find(".MediaLibrary-item").each(function () {
+        const item = $(this);
+        const checkbox = item.find('input[type="checkbox"]')[0];
+        if (checkbox?.checked) {
+            const file = { ...this.dataset };
+            files.push(file);
+        }
+    });
+
+    mediaLibrary.dispatchEvent("send-files", files);
 }
