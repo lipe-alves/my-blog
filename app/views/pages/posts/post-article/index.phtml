@@ -106,10 +106,12 @@ $last_category_index = $total_categories - 1;
     >
         <?= $post["text"] ?>
     </div>
-    <hr class="Post-separator">
-    <div class="Post-comments">
-        <?php $this->commentList() ?>
+    <?php if ($post["id"] !== "new"): ?>
         <hr class="Post-separator">
-        <?php $this->view("posts/add-comment", ["post" => $post]) ?>
-    </div>
+        <div class="Post-comments">
+            <?php $this->commentList() ?>
+            <hr class="Post-separator">
+            <?php $this->view("posts/add-comment", ["post" => $post]) ?>
+        </div>
+    <?php endif; ?>
 </article>

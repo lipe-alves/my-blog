@@ -124,6 +124,19 @@ class PostsController extends ComponentsController
 
     // Helpers
 
+    private function getBlankPost(): array 
+    {
+        return [
+            "id"             => "new",
+            "slug"           => "",
+            "title"          => "Sem título",
+            "text"           => "<p>Escreva aqui suas ideias...</p>",
+            "created_at"     => date(DEFAULT_DATABASE_DATETIME_FORMAT),
+            "updated_at"     => date(DEFAULT_DATABASE_DATETIME_FORMAT),
+            "category_names" => ""
+        ];
+    }
+
     private function getCurrentPost(): array|null
     {
         if (isset($this->post)) {
@@ -132,6 +145,11 @@ class PostsController extends ComponentsController
         
         $params = $this->request->getParams();
         $slug_or_id = $params["slug_or_id"];
+
+        if ($slug_or_id === "new") {
+            $this->post = $this->getBlankPost();
+            return $this->post;
+        }
 
         $is_id = is_numeric($slug_or_id);
         $is_slug = is_string($slug_or_id);
