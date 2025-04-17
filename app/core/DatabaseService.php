@@ -14,6 +14,7 @@ class DatabaseService
         "Category"        => "c",
         "Post_x_Category" => "pc",
         "Reader"          => "r",
+        "Draft"           => "d"
     ];
 
     protected DatabaseConnection $conn;
