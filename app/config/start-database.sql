@@ -101,7 +101,7 @@ CREATE TABLE
         FOREIGN KEY (category_id) REFERENCES Category (id)
     ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
-CREATE TABLE
+CREATE TABLE 
     IF NOT EXISTS Draft_x_Category (
         draft_id INT NOT NULL,
         category_id INT NOT NULL,
@@ -169,6 +169,12 @@ END;
 
 CREATE TRIGGER IF NOT EXISTS post_after_update BEFORE
 UPDATE ON Post FOR EACH ROW 
+BEGIN
+    SET new.updated_at = NOW();
+END;
+
+CREATE TRIGGER IF NOT EXISTS draft_after_update BEFORE
+UPDATE ON Draft FOR EACH ROW 
 BEGIN
     SET new.updated_at = NOW();
 END;
