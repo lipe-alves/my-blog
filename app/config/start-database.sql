@@ -37,7 +37,7 @@ CREATE TABLE
         deleted TINYINT (1) NOT NULL DEFAULT 0,
         deleted_at DATETIME NULL,
         PRIMARY KEY (id),
-        FOREIGN KEY (post_id) REFERENCES Post (id),
+        FOREIGN KEY (post_id) REFERENCES Post (id)
     ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE
