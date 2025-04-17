@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Core\DatabaseService;
+use App\Exceptions\InvalidInputException;
 use App\Exceptions\MissingParamException;
 
 class PostService extends DatabaseService
@@ -141,6 +142,14 @@ class PostService extends DatabaseService
             if (is_string($categories)) {
                 $categories = explode(",", $categories);
                 $categories = array_map("trim", $categories);
+                $categories = array_filter($categories, function ($category_name) {
+                    return (bool)$category_name;
+                });
+            }
+
+            $num_categories = count($categories);
+            if ($num_categories === 0) {
+                throw new InvalidInputException("Obrigatório informar pelo menos 1 categoria para o post.");
             }
 
             $category_service = new CategoryService($this->conn);
