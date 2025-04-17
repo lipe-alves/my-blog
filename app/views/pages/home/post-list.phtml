@@ -28,18 +28,7 @@ $filter_msg .= "...";
     class="PostList"
     data-view="post-list"
 >
-    <?php if ($is_admin): ?>
-        <li class="PostActions">
-            <button 
-                class="button is-success" 
-                onclick="window.open('<?= BASE_URI ?>/posts/new')"
-            >
-                <i class="fa-solid fa-plus"></i>
-                <span>Novo post</span>
-            </button>
-        </li>
-    <?php endif;
-    if ($show_filter_title): ?>
+    <?php if ($show_filter_title): ?>
         <li
             id="filter-title"
             class="subtitle is-5 is-italic"

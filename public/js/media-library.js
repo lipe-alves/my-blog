@@ -32,10 +32,6 @@
             return $(`#${this.#id}`)[0];
         }
 
-        get configs() {
-            return this.#configs;
-        }
-
         get currentPath() {
             const breadcrumb = $(this.element).find(".breadcrumb");
             return breadcrumb.attr("data-current-path");
