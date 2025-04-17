@@ -19,19 +19,8 @@ CREATE TABLE
         slug VARCHAR(60) UNIQUE NOT NULL,
         title VARCHAR(60) NOT NULL,
         text TEXT NOT NULL,
-        created_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-        updated_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-        deleted TINYINT (1) NOT NULL DEFAULT 0,
-        deleted_at DATETIME NULL,
-        PRIMARY KEY (id)
-    ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
-
-CREATE TABLE
-    IF NOT EXISTS Draft (
-        id INT NOT NULL AUTO_INCREMENT,
         post_id INT NULL,
-        title VARCHAR(60) NOT NULL,
-        text TEXT NOT NULL,
+        is_draft TINYINT (1) NOT NULL DEFAULT 0,
         created_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
         updated_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
         deleted TINYINT (1) NOT NULL DEFAULT 0,
@@ -101,15 +90,6 @@ CREATE TABLE
         FOREIGN KEY (category_id) REFERENCES Category (id)
     ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
-CREATE TABLE 
-    IF NOT EXISTS Draft_x_Category (
-        draft_id INT NOT NULL,
-        category_id INT NOT NULL,
-        PRIMARY KEY (draft_id, category_id),
-        FOREIGN KEY (draft_id) REFERENCES Draft (id),
-        FOREIGN KEY (category_id) REFERENCES Category (id)
-    ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
-
 INSERT IGNORE INTO Settings (id, title, description, hint, value)
 VALUES
     (
@@ -169,12 +149,6 @@ END;
 
 CREATE TRIGGER IF NOT EXISTS post_after_update BEFORE
 UPDATE ON Post FOR EACH ROW 
-BEGIN
-    SET new.updated_at = NOW();
-END;
-
-CREATE TRIGGER IF NOT EXISTS draft_after_update BEFORE
-UPDATE ON Draft FOR EACH ROW 
 BEGIN
     SET new.updated_at = NOW();
 END;

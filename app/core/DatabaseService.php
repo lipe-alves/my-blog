@@ -13,8 +13,7 @@ class DatabaseService
         "Comment"         => "comm",
         "Category"        => "c",
         "Post_x_Category" => "pc",
-        "Reader"          => "r",
-        "Draft"           => "d"
+        "Reader"          => "r"
     ];
 
     protected DatabaseConnection $conn;

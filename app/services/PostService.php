@@ -26,6 +26,52 @@ class PostService extends DatabaseService
         return $slug;
     }
 
+    protected function treatPostData(array &$data): void 
+    {
+        unset($data["id"]);
+        unset($data["slug"]);
+        unset($data["created_at"]);
+        unset($data["updated_at"]);
+
+        extract($data);
+
+        if (isset($title)) {
+            $title = remove_multiple_whitespaces($title);
+            $title = htmlspecialchars($title);
+            $data["title"] = $title;
+        }
+
+        if (isset($categories)) {
+            if (is_string($categories)) {
+                $categories = explode(",", $categories);
+            }
+
+            if (is_array($categories)) {
+                $categories = array_map("trim", $categories);
+                $categories = array_filter($categories, function ($category_name) {
+                    return (bool)$category_name;
+                });
+            }
+
+            $data["categories"] = $categories;
+        }
+    }
+
+    protected function validatePostData(array $data): void 
+    {
+        extract($data);
+
+        if (isset($title) && !$title) 
+            throw new MissingParamException('"título do post"');
+
+        if (isset($categories)) {
+            $num_categories = count($categories);
+            if ($num_categories === 0) {
+                throw new InvalidInputException("Obrigatório informar pelo menos 1 categoria para o post.");
+            }
+        }
+    }
+
     public function getPosts(array $columns, array $data)
     {
         $fetch_categories = false;
@@ -101,12 +147,13 @@ class PostService extends DatabaseService
     public function getRecentPosts(array $columns = ["*"], int $limit = 5)
     {
         $posts = $this->getPosts($columns, [
-            "p.deleted" => "0",
-            "order"     => [
+            "p.deleted"  => "0",
+            "p.is_draft" => "0",
+            "order"      => [
                 "column"    => "p.created_at",
                 "direction" => "DESC",
             ],
-            "limit"     => $limit
+            "limit"      => $limit
         ]);
 
         return $posts;
@@ -120,38 +167,17 @@ class PostService extends DatabaseService
 
     public function updatePost(string $post_id, array $updates): array|false 
     {
-        unset($updates["id"]);
-        unset($updates["slug"]);
-        unset($updates["created_at"]);
-        unset($updates["updated_at"]);
+        $this->treatPostData($updates);
+        $this->validatePostData($updates);
 
         extract($updates);
 
         if (isset($title)) {
-            $title = remove_multiple_whitespaces($title);
-            $title = htmlspecialchars($title);
-            if (!$title) throw new MissingParamException('"título do post"');
-            
-            $updates["title"] = $title;
-
             $slug = $this->generatePostSlug($title, $post_id); 
             $updates["slug"] = $slug;
         }
 
         if (isset($categories)) {
-            if (is_string($categories)) {
-                $categories = explode(",", $categories);
-                $categories = array_map("trim", $categories);
-                $categories = array_filter($categories, function ($category_name) {
-                    return (bool)$category_name;
-                });
-            }
-
-            $num_categories = count($categories);
-            if ($num_categories === 0) {
-                throw new InvalidInputException("Obrigatório informar pelo menos 1 categoria para o post.");
-            }
-
             $category_service = new CategoryService($this->conn);
 
             $success = $category_service->removeCategoriesFromPost($post_id);
