@@ -5,7 +5,7 @@
         #selector;
         #old;
         #props;
-    
+
         /**
          * @param {string} selector 
          * @param {any} props 
@@ -15,37 +15,37 @@
             this.#props = props;
             this.#old = this.value;
         }
-    
+
         get selector() {
             return this.#selector;
         }
-    
+
         get props() {
             return this.#props;
         }
-    
+
         get value() {
             let text = $(this.selector).text();
             text = removeWhitespaces(text);
             text = removeNewlines(text);
             return text;
         }
-    
+
         /** @param {string} value */
         set value(value) {
             value = removeWhitespaces(value);
             value = removeNewlines(value);
             $(this.selector).text(value);
         }
-    
+
         get old() {
             return this.#old;
         }
-    
+
         get element() {
             return $(this.selector)[0];
         }
-    
+
         /**
          * @param {string} selector 
          * @param {any} props 
@@ -63,7 +63,7 @@
                 if (!controller) continue;
                 controller.value = controller.old;
             }
-    
+
             for (const controller of Object.values(admin.categories)) {
                 if (!controller) continue;
                 controller.value = controller.old;
@@ -71,16 +71,16 @@
         },
         async save() {
             const settingsUpdates = {};
-    
+
             for (const [settings, controller] of Object.entries(admin.settings)) {
                 if (!controller) continue;
                 if (controller.value === controller.old) continue;
                 settingsUpdates[settings] = controller.value;
             }
-    
+
             let madeChanges = Object.keys(settingsUpdates).length > 0;
             if (madeChanges) await api.settings.update(settingsUpdates);
-    
+
             for (const [categoryId, controller] of Object.entries(admin.categories)) {
                 if (!controller) continue;
                 if (controller.value === controller.old) continue;
@@ -88,7 +88,7 @@
                 await window.api.categories.update(categoryId, { name });
                 madeChanges = true;
             }
-    
+
             return madeChanges;
         }
     };
@@ -102,7 +102,7 @@
             const settings = settingsElement.attr("data-settings");
             admin.settings[settings] = AdminController.create(`[data-settings="${settings}"]`);
         });
-    
+
         $("[data-category-id]").each(function () {
             const categoryElement = $(this);
             const categoryId = categoryElement.attr("data-category-id");
@@ -206,19 +206,12 @@ function handleOpenCategoryDeletionModal(categoryId) {
 
 async function handleAddNewCategory(button) {
     const { api, toast } = window;
-    const { delayAsync, removeWhitespaces, removeNewlines, createController } = window.functions;
+    const { delayAsync, removeWhitespaces, removeNewlines, createController, setButtonLoading } = window.functions;
 
-    button = $(button);
     const nameFieldElement = $('[data-new-category="true"]');
     let newCategoryName = nameFieldElement.text();
     newCategoryName = removeWhitespaces(newCategoryName);
     newCategoryName = removeNewlines(newCategoryName);
-
-    /** @param {boolean} disabled */
-    const setButtonDisabled = (disabled) => {
-        button.prop("disabled", disabled);
-        button.toggleClass("is-loading");
-    };
 
     const createCategory = async () => {
         const category = await api.categories.create({ name: newCategoryName });
@@ -230,30 +223,22 @@ async function handleAddNewCategory(button) {
     };
 
     try {
-        setButtonDisabled(true);
+        setButtonLoading(button, true);
         await delayAsync(createCategory, 3000);
         toast.success("Categoria adicionada com sucesso!");
     } catch (err) {
         toast.error(err.message);
     } finally {
-        setButtonDisabled(false);
+        setButtonLoading(button, false);
     }
 }
 
 async function handleSaveChanges(button) {
     const { toast } = window;
-    const { delayAsync } = window.functions;
-
-    button = $(button);
-
-    /** @param {boolean} disabled */
-    const setButtonDisabled = (disabled) => {
-        button.prop("disabled", disabled);
-        button.toggleClass("is-loading");
-    };
+    const { delayAsync, setButtonLoading } = window.functions;
 
     try {
-        setButtonDisabled(true);
+        setButtonLoading(button, true);
 
         const changesMade = await delayAsync(window.admin.save, 3000);
 
@@ -265,37 +250,21 @@ async function handleSaveChanges(button) {
     } catch (err) {
         toast.error(err.message);
     } finally {
-        setButtonDisabled(false);
+        setButtonLoading(button, false);
     }
 }
 
 async function handleResetChanges(button) {
-    const { delayAsync } = window.functions;
+    const { delayAsync, setButtonLoading } = window.functions;
 
-    button = $(button);
-
-    /** @param {boolean} disabled */
-    const setButtonDisabled = (disabled) => {
-        button.prop("disabled", disabled);
-        button.toggleClass("is-loading");
-    };
-
-    setButtonDisabled(true);
+    setButtonLoading(button, true);
     await delayAsync(window.admin.reset, 1500);
-    setButtonDisabled(false);
+    setButtonLoading(button, false);
 }
 
 async function handleLogout(button) {
     const { api, toast } = window;
-    const { delayAsync } = window.functions;
-
-    button = $(button);
-
-    /** @param {boolean} disabled */
-    const setButtonDisabled = (disabled) => {
-        button.prop("disabled", disabled);
-        button.toggleClass("is-loading");
-    };
+    const { delayAsync, setButtonLoading } = window.functions;
 
     const logout = async () => {
         const resp = await api.admin.logout();
@@ -303,15 +272,15 @@ async function handleLogout(button) {
     };
 
     try {
-        setButtonDisabled(true);
+        setButtonLoading(button, true);
 
         const resp = await delayAsync(logout, 3000);
-        setButtonDisabled(false);
+        setButtonLoading(button, false);
 
         toast.success(resp.message);
         await delayAsync(() => window.location.reload(), 2000);
     } catch (err) {
-        setButtonDisabled(false);
+        setButtonLoading(button, false);
         toast.error(err.message);
     }
 }

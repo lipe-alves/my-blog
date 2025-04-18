@@ -226,6 +226,16 @@
         });
     }
 
+    /** 
+     * @param {HTMLButtonElement} button 
+     * @param {boolean} loading
+     */
+    function setButtonLoading(button, loading) {
+        button = $(button);
+        button.prop("disabled", loading);
+        loading ? button.addClass("is-loading") : button.removeClass("is-loading");
+    }
+
     window.functions = {
         onEnterPress,
         createEndpoint,
@@ -238,6 +248,7 @@
         removeNewlines,
         generateId,
         convertToCamelCase,
-        delayAsync
+        delayAsync,
+        setButtonLoading
     };
 })();

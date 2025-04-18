@@ -148,29 +148,21 @@ function handleOpenUploadFolderModal() {
 /** @param {HTMLButtonElement} button */
 async function handleUploadFolder(button) {
     const { mediaLibrary } = window.admin;
-    const { removeWhitespaces, removeNewlines } = window.functions;
-
-    button = $(button);
+    const { removeWhitespaces, removeNewlines, setButtonLoading } = window.functions;
 
     const input = $("#new-folder-name");
     let name = input.val();
     name = removeWhitespaces(name);
     name = removeNewlines(name);
 
-    /** @param {boolean} disabled */
-    const setButtonDisabled = (disabled) => {
-        button.prop("disabled", disabled);
-        button.toggleClass("is-loading");
-    };
-
     try {
-        setButtonDisabled(true);
+        setButtonLoading(button, true);
         await mediaLibrary.createFolder(mediaLibrary.currentPath, name);
         toast.success("Pasta adicionada com sucesso!");
     } catch (err) {
         toast.error(err.message);
     } finally {
-        setButtonDisabled(false);
+        setButtonLoading(button, false);
     }
 }
 
