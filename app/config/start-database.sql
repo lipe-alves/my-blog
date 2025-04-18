@@ -19,14 +19,13 @@ CREATE TABLE
         slug VARCHAR(60) UNIQUE NOT NULL,
         title VARCHAR(60) NOT NULL,
         text TEXT NOT NULL,
-        post_id INT NULL,
-        is_draft TINYINT (1) NOT NULL DEFAULT 0,
         created_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
         updated_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+        published TINYINT (1) NOT NULL DEFAULT 0,
+        published_at DATETIME NULL,
         deleted TINYINT (1) NOT NULL DEFAULT 0,
         deleted_at DATETIME NULL,
-        PRIMARY KEY (id),
-        FOREIGN KEY (post_id) REFERENCES Post (id)
+        PRIMARY KEY (id)
     ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE
@@ -141,14 +140,18 @@ INSERT IGNORE INTO Post_x_Category (post_id, category_id)
 VALUES
     (1, 1);
 
+DELIMITER $$;
+
 CREATE TRIGGER IF NOT EXISTS settings_after_update BEFORE
 UPDATE ON Settings FOR EACH ROW 
 BEGIN
     SET new.updated_at = NOW();
-END;
+END$$;
+
+DELIMITER $$;
 
 CREATE TRIGGER IF NOT EXISTS post_after_update BEFORE
 UPDATE ON Post FOR EACH ROW 
 BEGIN
     SET new.updated_at = NOW();
-END;
+END$$;

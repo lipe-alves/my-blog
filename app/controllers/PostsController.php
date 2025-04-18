@@ -19,7 +19,7 @@ class PostsController extends ComponentsController
 
     // Api
 
-    public function listPosts(Request $request, Response $response)
+    public function listPosts(Request $request, Response $response): void
     {
         $get = $request->getGet();
         extract($get);
@@ -97,7 +97,7 @@ class PostsController extends ComponentsController
         $response->setStatus(200)->setJson($result)->send();
     }
 
-    public function updatePost(Request $request, Response $response)
+    public function updatePost(Request $request, Response $response): void
     {
         $post = $this->getCurrentPost();
         if (!$post) throw new ResourceNotFoundException("Post não encontrado!");
@@ -116,6 +116,50 @@ class PostsController extends ComponentsController
             $post_service->commit();
 
             $response->setStatus(200)->setJson($last_updated_post)->send();
+        } catch (\Exception $e) {
+            $post_service->rollback();
+            throw $e;
+        }
+    }
+
+    public function publishPost(Request $request, Response $response): void
+    {
+        $post = $this->getCurrentPost();
+        if (!$post) throw new ResourceNotFoundException("Post não encontrado!");
+
+        $post_service = new PostService();
+
+        try {
+            $post_service->startTransaction();
+
+            $published_post = $post_service->publishPost($post["id"]);
+            $success = $published_post !== false;
+            if (!$success) throw new InternalServerException();
+
+            $post_service->commit();
+
+            $response->setStatus(200)->setJson($published_post)->send();
+        } catch (\Exception $e) {
+            $post_service->rollback();
+            throw $e;
+        }
+    }
+
+    public function insertPost(Request $request, Response $response): void
+    {
+        $post_data = $request->getPost();
+        $post_service = new PostService();
+
+        try {
+            $post_service->startTransaction();
+
+            $last_created_post = $post_service->createPost($post_data);
+            $success = $last_created_post !== false;
+            if (!$success) throw new InternalServerException();
+
+            $post_service->commit();
+
+            $response->setStatus(200)->setJson($last_created_post)->send();
         } catch (\Exception $e) {
             $post_service->rollback();
             throw $e;
@@ -186,7 +230,7 @@ class PostsController extends ComponentsController
 
     // Views 
 
-    public function commentList()
+    public function commentList(): void
     {
         $post = $this->getCurrentPost();
 
@@ -202,7 +246,7 @@ class PostsController extends ComponentsController
         $this->view("posts/comment-list", ["post_comments" => $post_comments]);
     }
 
-    public function commentForm()
+    public function commentForm(): void
     {
         $post = $this->getCurrentPost();
         $get = $this->request->getGet();
@@ -223,13 +267,13 @@ class PostsController extends ComponentsController
         $this->view("posts/add-comment", $data);
     }
 
-    public function postArticle() 
+    public function postArticle(): void 
     {
         $post = $this->getCurrentPost();
         $this->view("posts/post-article", ["post" => $post]);
     }
 
-    public function index()
+    public function index(): void
     {
         $post = $this->getCurrentPost();
 
@@ -247,7 +291,7 @@ class PostsController extends ComponentsController
         ]);
     }
 
-    public function html(Request $request)
+    public function html(Request $request): void
     {
         try {
             $this->views["post-article"] = "postArticle";

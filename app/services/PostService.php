@@ -28,11 +28,6 @@ class PostService extends DatabaseService
 
     protected function treatPostData(array &$data): void 
     {
-        unset($data["id"]);
-        unset($data["slug"]);
-        unset($data["created_at"]);
-        unset($data["updated_at"]);
-
         extract($data);
 
         if (isset($title)) {
@@ -147,13 +142,13 @@ class PostService extends DatabaseService
     public function getRecentPosts(array $columns = ["*"], int $limit = 5)
     {
         $posts = $this->getPosts($columns, [
-            "p.deleted"  => "0",
-            "p.is_draft" => "0",
-            "order"      => [
+            "p.deleted"   => "0",
+            "p.published" => "1",
+            "order"       => [
                 "column"    => "p.created_at",
                 "direction" => "DESC",
             ],
-            "limit"      => $limit
+            "limit"       => $limit
         ]);
 
         return $posts;
@@ -167,6 +162,15 @@ class PostService extends DatabaseService
 
     public function updatePost(string $post_id, array $updates): array|false 
     {
+        unset($data["id"]);
+        unset($data["slug"]);
+        unset($data["deleted"]);
+        unset($data["deleted_at"]);
+        unset($data["created_at"]);
+        unset($data["updated_at"]);
+        unset($data["published"]);
+        unset($data["published_at"]);
+
         $this->treatPostData($updates);
         $this->validatePostData($updates);
 
@@ -201,6 +205,15 @@ class PostService extends DatabaseService
 
     public function createPost(array $data): array|false 
     {
+        unset($data["id"]);
+        unset($data["slug"]);
+        unset($data["deleted"]);
+        unset($data["deleted_at"]);
+        unset($data["created_at"]);
+        unset($data["updated_at"]);
+        unset($data["published"]);
+        unset($data["published_at"]);
+
         $data = array_merge([
             "title"      => "",
             "text"       => "",
@@ -218,6 +231,16 @@ class PostService extends DatabaseService
         $slug = $this->generatePostSlug($data["title"], $post_id);
         $post = $this->updatePost($post_id, ["slug"=> $slug]);
         
+        return $post;
+    }
+
+    public function publishPost(string $post_id): array|false 
+    {
+        $publish_date = date(DEFAULT_DATABASE_DATETIME_FORMAT);
+        $post = $this->updatePost($post_id, [
+            "published"    => "1",
+            "published_at" => $publish_date
+        ]);
         return $post;
     }
 }
