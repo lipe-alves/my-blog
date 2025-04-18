@@ -73,3 +73,7 @@ function handleAddCategory() {
     const { id, name } = window.admin.post.categories.selected;
     window.admin.post.categories.add(id, name);
 }
+
+function handlePublishPost() {
+    alert("Publishing post");
+}

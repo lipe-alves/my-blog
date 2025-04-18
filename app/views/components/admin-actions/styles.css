@@ -33,32 +33,12 @@
     width: 150px;
 }
 
-.AdminActions-saveDraft {
-    background-color: #f4a460;
-    border-color: #f4a460;
-}
-
-.AdminActions-loadDrafts {
-    background-color: #ff8c00;
-    border-color: #ff8c00;
-}
-
-.AdminActions-write {
+.AdminActions-write, .AdminActions-publish {
     background-color: #8a2be2;
     border-color: #8a2be2;
 }
 
-.AdminActions-saveDraft:hover {
-    background-color: #f7b07a; 
-    border-color: #f7b07a;
-}
-
-.AdminActions-loadDrafts:hover {
-    background-color: #ffa733; 
-    border-color: #ffa733;
-}
-
-.AdminActions-write:hover {
+.AdminActions-write:hover, .AdminActions-publish:hover {
     background-color: #9b3bf2; 
     border-color: #9b3bf2;
 }

@@ -1,5 +1,26 @@
 <?php $current_path = $this->request->getPath() ?>
 <div class="AdminActions">
+    <?php if ($current_path === "/posts/new/"): ?>
+        <button
+            class="AdminActions-action AdminActions-publish button"
+            type="button"
+            onclick="handlePublishPost(this)"
+            title="Publicar post"
+        >
+            <i class="fa-solid fa-star"></i>
+            <span>Publicar post</span>
+        </button>
+    <?php elseif (!str_contains($current_path, "/posts/")): ?>
+        <button
+            class="AdminActions-action AdminActions-write button"
+            type="button"
+            onclick="window.open('<?= BASE_URI ?>/posts/new')"
+            title="Escrever novo post"
+        >
+            <i class="fa-solid fa-pencil"></i>
+            <span>Escrever novo post</span>
+        </button>
+    <?php endif; ?>
     <button
         class="AdminActions-action AdminActions-save button is-warning"
         type="button"
@@ -18,36 +39,6 @@
         <i class="fa-solid fa-floppy-disk"></i>
         <span>Salvar alterações</span>
     </button>
-    <?php if (str_contains($current_path, "/posts/")): ?>
-        <button
-            class="AdminActions-action AdminActions-loadDrafts button"
-            type="button"
-            onclick="handleLoadDraft(this)"
-            title="Sair"
-        >
-            <i class="fa-solid fa-pen-ruler"></i>
-            <span>Carregar rascunho</span>
-        </button>
-        <button
-            class="AdminActions-action AdminActions-saveDraft button"
-            type="button"
-            onclick="handleSaveDraft(this)"
-            title="Sair"
-        >
-            <i class="fa-solid fa-box-archive"></i>
-            <span>Salvar rascunho</span>
-        </button>
-    <?php else: ?>
-        <button
-            class="AdminActions-action AdminActions-write button"
-            type="button"
-            onclick="window.open('<?= BASE_URI ?>/posts/new')"
-            title="Sair"
-        >
-            <i class="fa-solid fa-pencil"></i>
-            <span>Escrever novo post</span>
-        </button>
-    <?php endif; ?>
     <button
         class="AdminActions-action AdminActions-logout button is-info"
         type="button"
