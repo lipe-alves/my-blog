@@ -8,7 +8,7 @@ use App\Exceptions\MissingParamException;
 
 class PostService extends DatabaseService
 {
-    private function generatePostSlug(string $new_title, string $post_id): string
+    protected function generatePostSlug(string $new_title, string $post_id): string
     {
         $slug = $new_title;
         $slug = preg_replace("/[^\w]/u", " ", $slug);
@@ -195,6 +195,28 @@ class PostService extends DatabaseService
         if (!$success) return false;
 
         $post = $this->getPostById($post_id);
+        
+        return $post;
+    }
+
+    public function createPost(array $data): array|false 
+    {
+        $data = array_merge([
+            "title"      => "",
+            "text"       => "",
+            "categories" => []
+        ], $data);
+
+        $this->treatPostData($data);
+        $this->validatePostData($data);
+        
+        $success = $this->insert("Post", [$data]);
+        if (!$success) return false;
+
+        $post_id = $success;
+        
+        $slug = $this->generatePostSlug($data["title"], $post_id);
+        $post = $this->updatePost($post_id, ["slug"=> $slug]);
         
         return $post;
     }
