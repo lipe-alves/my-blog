@@ -1,5 +1,5 @@
 (() => {
-    const { admin } = window;
+    const { baseUrl, api, admin, views } = window;
     const { createController, createTextEditor, removeWhitespaces, removeNewlines } = window.functions;
     const postId = document.currentScript.dataset.postId;
 
@@ -140,9 +140,23 @@
     }
 
     admin.post = {
+        id: postId,
         title: createPostTitleEditor(),
         text: createPostTextEditor(),
-        categories: PostCategoryEditor.create()
+        categories: PostCategoryEditor.create(),
+        toJSON() {
+            const data = {};
+    
+            for (const [key, controller] of Object.entries(admin.post)) {
+                if (key === "categories") {
+                    data.categories = controller.list.map(category => category.id).join(",");
+                } else if (controller.value !== controller.old) {
+                    data[key] = controller.value;
+                }
+            }
+    
+            return data;
+        }
     };
 
     const originalReset = admin.reset;
@@ -157,32 +171,17 @@
     };
 
     admin.save = async function () {
-        const { baseUrl, api, admin, views } = window;
         let madeChanges = await originalSave();
 
-        const postUpdates = {};
+        const isNewPost = id === "new";
 
-        for (const [key, controller] of Object.entries(admin.post)) {
-            if (key === "categories") {
-                postUpdates.categories = controller.list.map(category => category.id).join(",");
-            } else if (controller.value !== controller.old) {
-                postUpdates[key] = controller.value;
-            }
+        if (isNewPost) {
+            // TODO: chamar a função createNewPost para acionar a rota da API de criação de post
+            madeChanges = true;
+        } else {
+            const madePostChanges = await savePostChanges();
+            madeChanges = madeChanges || madePostChanges;
         }
-
-        const madePostChanges = Object.keys(postUpdates).length > 0;
-        if (madePostChanges) {
-            const updatedPost = await api.posts.update(postId, postUpdates);
-
-            window.history.pushState(null, "", `${baseUrl}/posts/${updatedPost.slug}`);
-            await views.postArticle.reload();
-
-            admin.post.title = createPostTitleEditor();
-            admin.post.text = createPostTextEditor();
-            admin.categories = PostCategoryEditor.create();
-        }
-
-        madeChanges = madeChanges || madePostChanges;
 
         return madeChanges;
     };
@@ -195,5 +194,36 @@
 
     function createPostTextEditor() {
         return createTextEditor('[data-post-field="text"]');
+    }
+
+    async function savePostChanges() {
+        const postUpdates =  admin.post.toJSON();
+        const madePostChanges = Object.keys(postUpdates).length > 0;
+
+        if (madePostChanges) {
+            const updatedPost = await api.posts.update(postId, postUpdates);
+
+            window.history.pushState(null, "", `${baseUrl}/posts/${updatedPost.slug}`);
+            await views.postArticle.reload();
+
+            admin.post.title = createPostTitleEditor();
+            admin.post.text = createPostTextEditor();
+            admin.categories = PostCategoryEditor.create();
+        }
+
+        return madePostChanges;
+    }
+
+    async function createNewPost() {
+        const postData =  admin.post.toJSON();
+    }
+
+    async function syncPostEditor(post) {
+        window.history.pushState(null, "", `${baseUrl}/posts/${post.slug}`);
+        await views.postArticle.reload();
+
+        admin.post.title = createPostTitleEditor();
+        admin.post.text = createPostTextEditor();
+        admin.categories = PostCategoryEditor.create();
     }
 })();

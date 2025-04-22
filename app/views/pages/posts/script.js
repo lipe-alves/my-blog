@@ -75,5 +75,5 @@ function handleAddCategory() {
 }
 
 function handlePublishPost() {
-    alert("Publishing post");
+    
 }
