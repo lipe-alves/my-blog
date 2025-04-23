@@ -81,13 +81,18 @@
                 return resp.json();
             },
 
-            /**
-             * 
+            /** 
              * @param {string} id 
              * @param {{ [key: string]: any }} updates 
              */
             async update(id, updates) {
                 const resp = await apiEndpoint.patch(`/posts/${id}`, updates);
+                return resp.json();
+            },
+
+            /** @param {{ [key: string]: any }} data */
+            async create(data) {
+                const resp = await apiEndpoint.post("/posts", data);
                 return resp.json();
             }
         },

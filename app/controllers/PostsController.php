@@ -8,10 +8,10 @@ use App\Services\CommentsService;
 use App\Exceptions\MissingParamException;
 use App\Exceptions\InvalidFormatException;
 use App\Exceptions\InternalServerException;
+use App\Exceptions\ResourceNotFoundException;
 
 use App\Core\Request;
 use App\Core\Response;
-use App\Exceptions\ResourceNotFoundException;
 
 class PostsController extends ComponentsController
 {

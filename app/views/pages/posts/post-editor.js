@@ -144,18 +144,18 @@
         title: createPostTitleEditor(),
         text: createPostTextEditor(),
         categories: PostCategoryEditor.create(),
-        toJSON() {
-            const data = {};
-    
-            for (const [key, controller] of Object.entries(admin.post)) {
-                if (key === "categories") {
-                    data.categories = controller.list.map(category => category.id).join(",");
-                } else if (controller.value !== controller.old) {
-                    data[key] = controller.value;
-                }
+        async save() {
+            let madeChanges = false;
+            const isNewPost = this.id === "new";
+
+            if (isNewPost) {
+                await createNewPost();
+                madeChanges = true;
+            } else {
+                madeChanges = await savePostChanges();
             }
-    
-            return data;
+
+            return madeChanges;
         }
     };
 
@@ -171,19 +171,9 @@
     };
 
     admin.save = async function () {
-        let madeChanges = await originalSave();
-
-        const isNewPost = id === "new";
-
-        if (isNewPost) {
-            // TODO: chamar a função createNewPost para acionar a rota da API de criação de post
-            madeChanges = true;
-        } else {
-            const madePostChanges = await savePostChanges();
-            madeChanges = madeChanges || madePostChanges;
-        }
-
-        return madeChanges;
+        const madeChanges = await originalSave();
+        const postSaved = await admin.post.save();
+        return madeChanges || postSaved;
     };
 
     window.admin = admin;
@@ -197,31 +187,48 @@
     }
 
     async function savePostChanges() {
-        const postUpdates =  admin.post.toJSON();
+        const postUpdates = {};
+
+        for (const [key, controller] of Object.entries(admin.post)) {
+            if (key === "categories") {
+                postUpdates.categories = controller.list.map(category => category.id).join(",");
+            } else if (controller.value !== controller.old) {
+                postUpdates[key] = controller.value;
+            }
+        }
+
         const madePostChanges = Object.keys(postUpdates).length > 0;
 
         if (madePostChanges) {
             const updatedPost = await api.posts.update(postId, postUpdates);
-
-            window.history.pushState(null, "", `${baseUrl}/posts/${updatedPost.slug}`);
-            await views.postArticle.reload();
-
-            admin.post.title = createPostTitleEditor();
-            admin.post.text = createPostTextEditor();
-            admin.categories = PostCategoryEditor.create();
+            await syncPostEditor(updatedPost);
         }
 
         return madePostChanges;
     }
 
     async function createNewPost() {
-        const postData =  admin.post.toJSON();
+        const postData = {};
+
+        for (const [key, controller] of Object.entries(admin.post)) {
+            if (key === "categories") {
+                postData.categories = controller.list.map(category => category.id).join(",");
+            } else {
+                postData[key] = controller.value;
+            }
+        }
+
+        const post = await api.posts.create(postData);
+        await syncPostEditor(post);
+
+        return post;
     }
 
     async function syncPostEditor(post) {
         window.history.pushState(null, "", `${baseUrl}/posts/${post.slug}`);
         await views.postArticle.reload();
 
+        admin.post.id = post.id;
         admin.post.title = createPostTitleEditor();
         admin.post.text = createPostTextEditor();
         admin.categories = PostCategoryEditor.create();
