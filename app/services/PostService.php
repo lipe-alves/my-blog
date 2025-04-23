@@ -222,11 +222,26 @@ class PostService extends DatabaseService
 
         $this->treatPostData($data);
         $this->validatePostData($data);
+
+        $categories = $data["categories"] ?: [];
+        unset($data["categories"]);
         
         $success = $this->insert("Post", [$data]);
         if (!$success) return false;
 
         $post_id = $success;
+
+        if (count($categories) > 0) {
+            $category_service = new CategoryService($this->conn);
+
+            $success = $category_service->removeCategoriesFromPost($post_id);
+            if (!$success) return false;
+            
+            foreach ($categories as $id_or_name) {
+                $success = $category_service->addCategoryToPost($post_id, $id_or_name);
+                if (!$success) return false;
+            }
+        }
         
         $slug = $this->generatePostSlug($data["title"], $post_id);
         $post = $this->updatePost($post_id, ["slug"=> $slug]);
