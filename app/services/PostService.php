@@ -162,14 +162,14 @@ class PostService extends DatabaseService
 
     public function updatePost(string $post_id, array $updates): array|false 
     {
-        unset($data["id"]);
-        unset($data["slug"]);
-        unset($data["deleted"]);
-        unset($data["deleted_at"]);
-        unset($data["created_at"]);
-        unset($data["updated_at"]);
-        unset($data["published"]);
-        unset($data["published_at"]);
+        unset($updates["id"]);
+        unset($updates["slug"]);
+        unset($updates["deleted"]);
+        unset($updates["deleted_at"]);
+        unset($updates["created_at"]);
+        unset($updates["updated_at"]);
+        unset($updates["published"]);
+        unset($updates["published_at"]);
 
         $this->treatPostData($updates);
         $this->validatePostData($updates);

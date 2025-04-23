@@ -1,5 +1,5 @@
 (() => {
-    const { baseUrl, api, admin, views } = window;
+    const { baseUrl, api, admin } = window;
     const { createController, createTextEditor, removeWhitespaces, removeNewlines } = window.functions;
     const postId = document.currentScript.dataset.postId;
 
@@ -225,6 +225,8 @@
     }
 
     async function syncPostEditor(post) {
+        const { views } = window;
+        
         window.history.pushState(null, "", `${baseUrl}/posts/${post.slug}`);
         await views.postArticle.reload();
 
