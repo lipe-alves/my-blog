@@ -6,7 +6,7 @@ use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
 
-use App\Services\CategoryService;
+use App\Models\CategoryModel;
 
 use App\Exceptions\InternalServerException;
 use App\Exceptions\InvalidInputException;
@@ -37,7 +37,7 @@ class CategoriesController extends Controller {
             $filter_params["c.name"] = $category_name;
         }
 
-        $categories_service = new CategoryService();
+        $categories_service = new CategoryModel();
         $categories = $categories_service->getCategories($columns, $filter_params);
 
         $response->setStatus(200)->setJson($categories)->send();   
@@ -46,7 +46,7 @@ class CategoriesController extends Controller {
     public function insertCategory(Request $request, Response $response)
     {
         $category_data = $request->getPost();
-        $categories_service = new CategoryService();
+        $categories_service = new CategoryModel();
 
         try {
             $categories_service->startTransaction();
@@ -77,7 +77,7 @@ class CategoriesController extends Controller {
 
         extract($params);
 
-        $categories_service = new CategoryService();
+        $categories_service = new CategoryModel();
 
         try {
             $categories_service->startTransaction();
@@ -124,7 +124,7 @@ class CategoriesController extends Controller {
 
         extract($params);
 
-        $categories_service = new CategoryService();
+        $categories_service = new CategoryModel();
 
         try {
             $categories_service->startTransaction();

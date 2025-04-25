@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Models;
 
-use App\Core\DatabaseService;
+use App\Core\DatabaseModel;
 use App\Exceptions\MissingParamException;
 use App\Exceptions\InvalidFormatException;
 use App\Exceptions\ResourceNotFoundException;
 
-class CommentsService extends DatabaseService
+class CommentsModel extends DatabaseModel
 {
     public function getComments(array $columns, array $data)
     {
@@ -121,7 +121,7 @@ class CommentsService extends DatabaseService
             );
         }
 
-        $reader_service = new ReaderService($this->conn);
+        $reader_service = new ReaderModel($this->conn);
         $reader = $reader_service->getReader(["r.id"], ["r.email" => $reader_email]);
         $reader_found = (bool)$reader;
         $reader_id = null;

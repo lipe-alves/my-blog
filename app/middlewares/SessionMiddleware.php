@@ -6,8 +6,8 @@ use App\Core\Middleware;
 use App\Core\Request;
 use App\Core\Response;
 
-use App\Services\CategoryService;
-use App\Services\SettingsService;
+use App\Models\CategoryModel;
+use App\Models\SettingsModel;
 
 class SessionMiddleware extends Middleware
 {
@@ -31,7 +31,7 @@ class SessionMiddleware extends Middleware
         $admin_auth_loaded = array_key_exists("is_admin", $session);
 
         if (!$categories_loaded || $reload_session) {
-            $category_service = new CategoryService();
+            $category_service = new CategoryModel();
 
             $categories = $category_service->getAllCategories([
                 "c.*",
@@ -42,7 +42,7 @@ class SessionMiddleware extends Middleware
         }
 
         if (!$settings_loaded || $reload_session) {
-            $request->setSession("settings", SettingsService::getAll());
+            $request->setSession("settings", SettingsModel::getAll());
         }
 
         if (!$admin_auth_loaded) {

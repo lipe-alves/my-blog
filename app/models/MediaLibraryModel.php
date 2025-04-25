@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Models;
 
 use App\Exceptions\ApiException;
 use App\Exceptions\InternalServerException;
@@ -10,7 +10,7 @@ use App\Exceptions\DuplicateDataException;
 use App\Exceptions\InvalidInputException;
 use App\Exceptions\InvalidFormatException;
 
-class MediaLibraryService
+class MediaLibraryModel
 {
     private const PROHIBITED_CHARS = [
         "\\", 
@@ -34,7 +34,7 @@ class MediaLibraryService
 
     private static function treatFolderName(string $name): string 
     {
-        $name = str_replace(MediaLibraryService::PROHIBITED_CHARS, "", $name);
+        $name = str_replace(MediaLibraryModel::PROHIBITED_CHARS, "", $name);
         $name = remove_multiple_whitespaces($name);
         $name = remove_newlines($name);
         $name = substr($name, 0, 254);
@@ -46,7 +46,7 @@ class MediaLibraryService
         $tmp_name = $file["tmp_name"];
         $content = file_get_contents($tmp_name);
         $file_path = "$path/$file[name]";
-        $file_path = MediaLibraryService::treatPath($file_path);
+        $file_path = MediaLibraryModel::treatPath($file_path);
         
         file_put_contents($file_path, $content);
 
@@ -59,7 +59,7 @@ class MediaLibraryService
         array $params
     ): array 
     {
-        $path = MediaLibraryService::treatPath($path);
+        $path = MediaLibraryModel::treatPath($path);
 
         if (!file_exists($path)) {
             throw new ResourceNotFoundException("$path não existe!");
@@ -85,10 +85,10 @@ class MediaLibraryService
                 throw new InvalidFormatException("nome $field", ["texto"]);
             }
 
-            $name = MediaLibraryService::treatFolderName($name);
+            $name = MediaLibraryModel::treatFolderName($name);
 
             $folder_path = "$path/$name";
-            $folder_path = MediaLibraryService::treatPath($folder_path);
+            $folder_path = MediaLibraryModel::treatPath($folder_path);
             if (file_exists($folder_path)) {
                 throw new InvalidInputException("Nome de pasta (\"$name\") já existe!");
             }
@@ -113,7 +113,7 @@ class MediaLibraryService
             $results = [];
 
             foreach ($files as $file) {
-                $file_data = MediaLibraryService::uploadFile($path, $file);
+                $file_data = MediaLibraryModel::uploadFile($path, $file);
                 $results[] = $file_data;
             }
 
@@ -123,7 +123,7 @@ class MediaLibraryService
 
     public static function updateMedia(string $path, array $updates): array 
     {
-        $path = MediaLibraryService::treatPath($path);
+        $path = MediaLibraryModel::treatPath($path);
         $old_path = $path;
 
         if (!file_exists($old_path)) {
@@ -167,7 +167,7 @@ class MediaLibraryService
             $success = true;
 
             if ($child["type"] === "directory") {
-                $success = MediaLibraryService::deleteFolder($child["path"]);
+                $success = MediaLibraryModel::deleteFolder($child["path"]);
             } else {
                 $success = unlink($child["path"]);
             }
@@ -181,13 +181,13 @@ class MediaLibraryService
 
     public static function deleteMedia(string $path): bool
     {
-        $path = MediaLibraryService::treatPath($path);
+        $path = MediaLibraryModel::treatPath($path);
         $media_data = extract_data_from_path($path);
         $is_directory = $media_data["type"] === "directory";
         $success = false;
 
         if ($is_directory) {
-            $success = MediaLibraryService::deleteFolder($path);
+            $success = MediaLibraryModel::deleteFolder($path);
         } else {
             $success = unlink($path);
         }

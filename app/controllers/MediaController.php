@@ -7,7 +7,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Exceptions\InternalServerException;
 use App\Exceptions\MissingParamException;
-use App\Services\MediaLibraryService;
+use App\Models\MediaLibraryModel;
 
 class MediaController extends Controller {
     private function isFile(string $path)
@@ -61,7 +61,7 @@ class MediaController extends Controller {
             $params = $post;
         }
 
-        $results = MediaLibraryService::createMedia($path, $type, $params);
+        $results = MediaLibraryModel::createMedia($path, $type, $params);
 
         $response->setStatus(200)->setJson($results)->send();
     }
@@ -74,7 +74,7 @@ class MediaController extends Controller {
         $updates = $request->getPatch();
         $path = $get["path"];
         
-        $item = MediaLibraryService::updateMedia($path, $updates);
+        $item = MediaLibraryModel::updateMedia($path, $updates);
         if (!isset($item)) throw new InternalServerException();
 
         $response->setStatus(200)->setJson($item)->send();
@@ -88,7 +88,7 @@ class MediaController extends Controller {
         $path = $get["path"];
 
         $is_file = $this->isFile($path);
-        $success = MediaLibraryService::deleteMedia($path);
+        $success = MediaLibraryModel::deleteMedia($path);
         if (!$success) throw new InternalServerException();
 
         $response->setStatus(200)->setJson([

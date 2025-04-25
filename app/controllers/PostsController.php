@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Services\PostService;
-use App\Services\CommentsService;
+use App\Models\PostModel;
+use App\Models\CommentsModel;
 
 use App\Exceptions\MissingParamException;
 use App\Exceptions\InvalidFormatException;
@@ -79,7 +79,7 @@ class PostsController extends ComponentsController
             $filter_params["||p.text"] = $search_text_expression;
         }
 
-        $post_service = new PostService();
+        $post_service = new PostModel();
         $posts = $post_service->getPosts($columns, $filter_params);
 
         $total_posts = count($posts);
@@ -104,7 +104,7 @@ class PostsController extends ComponentsController
 
         $updates = $request->getPatch();
 
-        $post_service = new PostService();
+        $post_service = new PostModel();
 
         try {
             $post_service->startTransaction();
@@ -127,7 +127,7 @@ class PostsController extends ComponentsController
         $post = $this->getCurrentPost();
         if (!$post) throw new ResourceNotFoundException("Post não encontrado!");
 
-        $post_service = new PostService();
+        $post_service = new PostModel();
 
         try {
             $post_service->startTransaction();
@@ -148,7 +148,7 @@ class PostsController extends ComponentsController
     public function insertPost(Request $request, Response $response): void
     {
         $post_data = $request->getPost();
-        $post_service = new PostService();
+        $post_service = new PostModel();
 
         try {
             $post_service->startTransaction();
@@ -209,7 +209,7 @@ class PostsController extends ComponentsController
             "category_names"
         ];
 
-        $post_service = new PostService();
+        $post_service = new PostModel();
 
         if ($is_id) {
             $id = (int)$slug_or_id;
@@ -234,7 +234,7 @@ class PostsController extends ComponentsController
     {
         $post = $this->getCurrentPost();
 
-        $post_service = new CommentsService();
+        $post_service = new CommentsModel();
 
         $post_comments = $post_service->getPostComments($post["id"], [
             "comm.*",

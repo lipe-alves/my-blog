@@ -4,7 +4,7 @@ namespace App\Services;
 
 class AuthService
 {
-    public static function hashPassword(string $password): string 
+    public static function hashPassword(string $password): string
     {
         return password_hash($password, PASSWORD_DEFAULT);
     }

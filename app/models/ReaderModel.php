@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Models;
 
-use App\Core\DatabaseService;
+use App\Core\DatabaseModel;
 use App\Exceptions\InvalidFormatException;
 use App\Exceptions\MissingParamException;
-use App\Exceptions\InvalidInputException;
 
-class ReaderService extends DatabaseService
+class ReaderModel extends DatabaseModel
 {
     public function getReaders(array $columns, array $data)
     {

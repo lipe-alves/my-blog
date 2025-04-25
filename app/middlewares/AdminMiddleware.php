@@ -6,8 +6,6 @@ use App\Core\Middleware;
 use App\Core\Request;
 use App\Core\Response;
 
-use App\Services\AuthService;
-
 class AdminMiddleware extends Middleware
 {
     public function execute(Request $request, Response $response, \Exception $exception = null)

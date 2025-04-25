@@ -5,13 +5,13 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
-use App\Services\SettingsService;
+use App\Models\SettingsModel;
 use App\Exceptions\UnauthorizedException;
 use App\Exceptions\MissingParamException;
 
 class SettingsController extends Controller
 {
-    public function updateSettings(Request $request, Response $response)
+    public function updateSettings(Request $request, Response $response): void
     {
         $session = $request->getSession();
         $patch = $request->getPatch();
@@ -23,17 +23,17 @@ class SettingsController extends Controller
         }
 
         foreach ($patch as $key => $value) {
-            SettingsService::set($key, $value);
+            SettingsModel::set($key, $value);
         }
 
-        $settings = SettingsService::getAll();
+        $settings = SettingsModel::getAll();
 
         $request->reloadSession();
 
         $response->setStatus(200)->setJson($settings)->send();
     }
 
-    public function updateSingleSetting(Request $request, Response $response)
+    public function updateSingleSetting(Request $request, Response $response): void
     {
         $session = $request->getSession();
         $path_params = $request->getParams();
@@ -51,9 +51,9 @@ class SettingsController extends Controller
             throw new MissingParamException("value");
         }
 
-        SettingsService::set($key, $value);
+        SettingsModel::set($key, $value);
 
-        $settings = SettingsService::getAll();
+        $settings = SettingsModel::getAll();
 
         $request->reloadSession();
 

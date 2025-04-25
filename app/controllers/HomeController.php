@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Services\PostService;
+use App\Models\PostModel;
 use App\Core\Request;
 
 class HomeController extends ComponentsController
@@ -12,7 +12,7 @@ class HomeController extends ComponentsController
         $get = $this->request->getGet();
         $fetch_recent_posts = count(array_keys($get)) === 0;
 
-        $post_service = new PostService();
+        $post_service = new PostModel();
         $post_list = [];
         $columns = [
             "p.id",
@@ -66,7 +66,7 @@ class HomeController extends ComponentsController
     {
         $get = $this->request->getGet();
 
-        $post_service = new PostService();
+        $post_service = new PostModel();
 
         $recent_posts = $post_service->getRecentPosts([
             "p.id",

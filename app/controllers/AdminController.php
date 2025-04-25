@@ -26,7 +26,7 @@ class AdminController extends ComponentsController
                 "message" => "Senha inválida!"
             ])->send();
         }
-        
+
         $request->setSession("is_admin", true);
         $request->reloadSession();
 
@@ -49,7 +49,7 @@ class AdminController extends ComponentsController
 
     // Views
 
-    public function index() 
+    public function index()
     {
         $get = $this->request->getGet();
         $session = $this->request->getSession();
@@ -73,12 +73,12 @@ class AdminController extends ComponentsController
         $url = parse_url($get["location"]);
         $get["location"] = "$url[path]?$url[query]";
         $get["location"] = str_replace(BASE_URI, "", $get["location"]);
-        
+
         $this->page("admin", [
-            "title"       => $blog_name,
+            "title" => $blog_name,
             "description" => $blog_catchline,
-            "keywords"    => [],
-            "location"    => $get["location"]
+            "keywords" => [],
+            "location" => $get["location"]
         ]);
     }
 

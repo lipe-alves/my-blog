@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Models;
 
 use App\Core\DatabaseConnection;
 
-class SettingsService
+class SettingsModel
 {
     public static function get(string $id): string
     {

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services;
+namespace App\Models;
 
-use App\Core\DatabaseService;
+use App\Core\DatabaseModel;
 use App\Exceptions\ResourceNotFoundException;
 use App\Exceptions\MissingParamException;
 use App\Exceptions\InvalidFormatException;
 use App\Exceptions\InvalidInputException;
 
-class CategoryService extends DatabaseService
+class CategoryModel extends DatabaseModel
 {
     public function getCategories(array $columns, array $data)
     {

@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Services\CommentsService;
+use App\Models\CommentsModel;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
@@ -16,7 +16,7 @@ class CommentsController extends Controller
     {
         $post = $request->getPost();
 
-        $comments_service = new CommentsService();
+        $comments_service = new CommentsModel();
 
         $post = array_merge([
             "post_id"    => null,

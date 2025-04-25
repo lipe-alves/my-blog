@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-class DatabaseService
+class DatabaseModel
 {
     protected const ALIAS_X_CONNECTOR = [
         "&&" => "AND",

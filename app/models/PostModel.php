@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Models;
 
-use App\Core\DatabaseService;
+use App\Core\DatabaseModel;
 use App\Exceptions\InvalidInputException;
 use App\Exceptions\MissingParamException;
 
-class PostService extends DatabaseService
+class PostModel extends DatabaseModel
 {
     protected function generatePostSlug(string $new_title, string $post_id): string
     {
@@ -156,7 +156,7 @@ class PostService extends DatabaseService
 
     public function getPostCategories(string $post_id, array $columns = ["c.*"])
     {
-        $category_service = new CategoryService();
+        $category_service = new CategoryModel();
         return $category_service->getPostCategories($post_id, $columns);
     }
 
@@ -181,7 +181,7 @@ class PostService extends DatabaseService
         }
 
         if (isset($categories)) {
-            $category_service = new CategoryService($this->conn);
+            $category_service = new CategoryModel($this->conn);
 
             $success = $category_service->removeCategoriesFromPost($post_id);
             if (!$success) return false;
@@ -231,7 +231,7 @@ class PostService extends DatabaseService
         $post_id = $success;
 
         if (count($categories) > 0) {
-            $category_service = new CategoryService($this->conn);
+            $category_service = new CategoryModel($this->conn);
 
             $success = $category_service->removeCategoriesFromPost($post_id);
             if (!$success) return false;
