@@ -1,4 +1,7 @@
 <?php
+$session = $this->request->getSession();
+extract($session);
+
 if (date_is_valid($created_at)) {
     $created_at = strtotime($created_at);
     $created_at = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $created_at);
@@ -7,6 +10,11 @@ if (date_is_valid($created_at)) {
 if (date_is_valid($updated_at)) {
     $updated_at = strtotime($updated_at);
     $updated_at = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $updated_at);
+}
+
+if (isset($published_at) && date_is_valid($published_at)) {
+    $published_at = strtotime($published_at);
+    $published_at = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $published_at);
 }
 
 $post_categories = explode(",", $category_names);
@@ -23,15 +31,27 @@ $last_category_index = $total_categories - 1;
                 </a>
             </h2>
             <div class="PostCard-subheader">
-                <span class="PostCard-createdAt"><?= $created_at ?></span>
+                <span class="PostCard-date">
+                    Escrito em <?= $created_at ?>
+                </span>
+                <?php if ($is_admin): ?>
+                    <span class="PostCard-date">
+                        Atualizado em <?= $updated_at ?>
+                    </span>
+                <?php endif; ?>
+                <?php if ($published): ?>
+                    <span class="PostCard-date">
+                        Publicado em <?= $published_at ?>
+                    </span>
+                <?php elseif ($is_admin): ?>
+                    <span class="PostCard-date">
+                        [Não publicado ainda!]
+                    </span>
+                <?php endif; ?>
                 <span class="PostCard-categories">
                     <?php foreach ($post_categories as $i => $category_name): ?>
-                        <a
-                            class="PostCard-category"
-                            href="javascript:void(0)"
-                            data-filter-key="category"
-                            data-filter-value="<?= $category_name ?>"
-                            onclick="handleApplyFilter(this)">
+                        <a class="PostCard-category" href="javascript:void(0)" data-filter-key="category"
+                            data-filter-value="<?= $category_name ?>" onclick="handleApplyFilter(this)">
                             <?= $category_name ?>
                         </a><?= $i !== $last_category_index ? ", " : "" ?>
                     <?php endforeach; ?>

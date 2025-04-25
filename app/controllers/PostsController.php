@@ -210,6 +210,8 @@ class PostsController extends ComponentsController
             "p.text",
             "p.created_at",
             "p.updated_at",
+            "p.published",
+            "p.published_at",
             "category_names"
         ];
 

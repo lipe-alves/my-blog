@@ -38,7 +38,11 @@
     margin-bottom: 0 !important;
 }
 
-.PostCard-createdAt::after {
+.PostCard-date {
+    font-style: italic;
+}
+
+.PostCard-date::after {
     content: "\2022";
     margin-left: .4rem;
     margin-right: .2rem;

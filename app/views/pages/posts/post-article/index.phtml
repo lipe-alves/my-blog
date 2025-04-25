@@ -12,6 +12,11 @@ if (date_is_valid($post["updated_at"])) {
     $post["updated_at"] = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $post["updated_at"]);
 }
 
+if (isset($post["published_at"]) && date_is_valid($post["published_at"])) {
+    $post["published_at"] = strtotime($post["published_at"]);
+    $post["published_at"] = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $post["published_at"]);
+}
+
 $post["category_names"] = explode(",", $post["category_names"]);
 $post["category_names"] = array_map("trim", $post["category_names"]);
 $post["categories"] = [];
@@ -44,9 +49,19 @@ $last_category_index = $total_categories - 1;
         <?= $post["title"] ?>
     </h2>
     <p class="Post-subheader">
-        <span class="Post-createdAt">
-            <?= $post["created_at"] ?>
+        <span class="Post-date">
+            Escrito em <?= $post["created_at"] ?>
         </span>
+        <?php if ($is_admin): ?>
+            <span class="Post-date">
+                Atualizado em <?= $post["updated_at"] ?>
+            </span>
+        <?php endif; ?>
+        <?php if ($post["published"]): ?>
+            <span class="Post-date">
+                Publicado em <?= $post["published_at"] ?>
+            </span>
+        <?php endif; ?>
         <span class="Post-categories">
             <?php foreach ($post["categories"] as $i => $category): ?>
                 <a

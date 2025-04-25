@@ -29,7 +29,11 @@
     width: 100%;
 }
 
-.Post-createdAt::after {
+.Post-date {
+    font-style: italic;
+}
+
+.Post-date::after {
     content: "\2022";
     margin-left: .4rem;
     margin-right: .2rem;
