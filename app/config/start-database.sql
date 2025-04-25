@@ -85,8 +85,8 @@ CREATE TABLE
         post_id INT NOT NULL,
         category_id INT NOT NULL,
         PRIMARY KEY (post_id, category_id),
-        FOREIGN KEY (post_id) REFERENCES Post (id),
-        FOREIGN KEY (category_id) REFERENCES Category (id)
+        FOREIGN KEY (post_id) REFERENCES Post (id) ON UPDATE CASCADE ON DELETE CASCADE,
+        FOREIGN KEY (category_id) REFERENCES Category (id) ON UPDATE CASCADE ON DELETE CASCADE
     ) DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 INSERT IGNORE INTO Settings (id, title, description, hint, value)

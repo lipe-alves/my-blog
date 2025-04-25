@@ -163,7 +163,6 @@ class PostService extends DatabaseService
     public function updatePost(string $post_id, array $updates): array|false 
     {
         unset($updates["id"]);
-        unset($updates["slug"]);
         unset($updates["deleted"]);
         unset($updates["deleted_at"]);
         unset($updates["created_at"]);
@@ -242,8 +241,12 @@ class PostService extends DatabaseService
                 if (!$success) return false;
             }
         }
+
+        file_put_contents("post_id.txt", print_r($post_id, true));
         
         $slug = $this->generatePostSlug($data["title"], $post_id);
+
+        file_put_contents("slug.txt", print_r($slug, true));
         $post = $this->updatePost($post_id, ["slug"=> $slug]);
         
         return $post;
