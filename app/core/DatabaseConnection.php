@@ -9,9 +9,9 @@ class DatabaseConnection
     private const DATA_TYPES_X_BIND_TYPES = [
         "boolean" => \PDO::PARAM_BOOL,
         "integer" => \PDO::PARAM_INT,
-        "double"  => \PDO::PARAM_INT,
-        "string"  => \PDO::PARAM_STR,
-        "NULL"    => \PDO::PARAM_NULL
+        "double" => \PDO::PARAM_INT,
+        "string" => \PDO::PARAM_STR,
+        "NULL" => \PDO::PARAM_NULL
     ];
 
     protected function __construct()
@@ -31,7 +31,8 @@ class DatabaseConnection
 
         if ($data !== null) {
             foreach ($data as $key => $value) {
-                if (!str_contains($sql, ":$key")) continue;
+                if (!str_contains($sql, ":$key"))
+                    continue;
 
                 $data_type = gettype($value);
                 $bind_type = self::DATA_TYPES_X_BIND_TYPES[$data_type];
@@ -62,19 +63,22 @@ class DatabaseConnection
 
     public function update(string $sql, array|null $data = null): bool
     {
-        if (!preg_match("/^UPDATE/i", $sql)) return false;
+        if (!preg_match("/^UPDATE/i", $sql))
+            return false;
         return $this->execute($sql, $data);
     }
 
     public function insert(string $sql, array|null $data = null): bool
     {
-        if (!preg_match("/^INSERT/i", $sql)) return false;
+        if (!preg_match("/^INSERT/i", $sql))
+            return false;
         return $this->execute($sql, $data);
     }
 
     public function delete(string $sql, array|null $data = null): bool
     {
-        if (!preg_match("/^DELETE/i", $sql)) return false;
+        if (!preg_match("/^DELETE/i", $sql))
+            return false;
         return $this->execute($sql, $data);
     }
 

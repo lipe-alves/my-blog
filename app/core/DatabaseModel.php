@@ -9,11 +9,11 @@ class DatabaseModel
         "||" => "OR",
     ];
     protected const TABLE_X_ALIAS = [
-        "Post"            => "p",
-        "Comment"         => "comm",
-        "Category"        => "c",
+        "Post" => "p",
+        "Comment" => "comm",
+        "Category" => "c",
         "Post_x_Category" => "pc",
-        "Reader"          => "r"
+        "Reader" => "r"
     ];
 
     protected DatabaseConnection $conn;
@@ -81,7 +81,8 @@ class DatabaseModel
             $new_key = $old_key;
 
             foreach (self::ALIAS_X_CONNECTOR as $alias => $connector) {
-                if (!starts_with($key, $alias)) continue;
+                if (!starts_with($key, $alias))
+                    continue;
                 $new_key = str_replace($alias, "", $old_key);
                 $logical_connector = $connector;
             }
@@ -92,7 +93,8 @@ class DatabaseModel
 
             $value_is_column = $this->isColumn($value);
             $key_is_column = $this->isColumn($new_key);
-            if (!$key_is_column) continue;
+            if (!$key_is_column)
+                continue;
 
             $key = $new_key;
             $data[$key] = $value;
@@ -143,6 +145,27 @@ class DatabaseModel
         return $wheres;
     }
 
+    protected static function getTableBlankModel(string $table_name, DatabaseConnection $conn = null): array
+    {
+        if (!$conn) {
+            $conn = DatabaseConnection::create();
+        }
+
+        $columns = $conn->select("DESCRIBE $table_name");
+        $model = [];
+
+        foreach ($columns as $column) {
+            $model[$column["Field"]] = $column["Default"];
+        }
+
+        return $model;
+    }
+
+    public static function BlankModel(): array
+    {
+        return [];
+    }
+
     public function select(array $columns, array $data): array
     {
         $columns = implode(", ", $columns);
@@ -174,11 +197,9 @@ class DatabaseModel
         if (array_key_exists("order", $data)) {
             extract($data["order"]);
 
-            $data["order_column"] = $column;
-            $data["order_direction"] = $direction;
             unset($data["order"]);
 
-            $sql .= " ORDER BY :order_column :order_direction";
+            $sql .= " ORDER BY $column $direction";
         }
 
         if (array_key_exists("offset", $data) && array_key_exists("limit", $data)) {
@@ -225,7 +246,8 @@ class DatabaseModel
 
         $sql = "INSERT INTO $table ($columns) VALUES $values";
         $success = $this->conn->insert($sql, $data);
-        if (!$success) return false;
+        if (!$success)
+            return false;
 
         $last_id = $this->conn->getLastInsertedId();
         return $last_id;
@@ -235,7 +257,8 @@ class DatabaseModel
     {
         $amount_of_updates = array_keys($updates);
         $amount_of_updates = count($amount_of_updates);
-        if ($amount_of_updates == 0) return true;
+        if ($amount_of_updates == 0)
+            return true;
 
         $data = [];
 

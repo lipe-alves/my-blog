@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\DatabaseConnection;
 use App\Core\DatabaseModel;
 use App\Exceptions\InvalidInputException;
 use App\Exceptions\MissingParamException;
@@ -26,7 +27,7 @@ class PostModel extends DatabaseModel
         return $slug;
     }
 
-    protected function treatPostData(array &$data): void 
+    protected function treatPostData(array &$data): void
     {
         extract($data);
 
@@ -44,7 +45,7 @@ class PostModel extends DatabaseModel
             if (is_array($categories)) {
                 $categories = array_map("trim", $categories);
                 $categories = array_filter($categories, function ($category_name) {
-                    return (bool)$category_name;
+                    return (bool) $category_name;
                 });
             }
 
@@ -52,11 +53,11 @@ class PostModel extends DatabaseModel
         }
     }
 
-    protected function validatePostData(array $data): void 
+    protected function validatePostData(array $data): void
     {
         extract($data);
 
-        if (isset($title) && !$title) 
+        if (isset($title) && !$title)
             throw new MissingParamException('"título do post"');
 
         if (isset($categories)) {
@@ -67,7 +68,7 @@ class PostModel extends DatabaseModel
         }
     }
 
-    public function getPosts(array $columns, array $data)
+    public function getPosts(array $columns, array $data): array
     {
         $fetch_categories = false;
 
@@ -99,15 +100,15 @@ class PostModel extends DatabaseModel
             }
 
             $data["join"][] = [
-                "type"       => "LEFT",
-                "table"      => "Post_x_Category",
+                "type" => "LEFT",
+                "table" => "Post_x_Category",
                 "conditions" => [
                     "pc.post_id" => "p.id"
                 ]
             ];
             $data["join"][] = [
-                "type"       => "LEFT",
-                "table"      => "Category",
+                "type" => "LEFT",
+                "table" => "Category",
                 "conditions" => [
                     "c.id" => "pc.category_id"
                 ]
@@ -121,7 +122,7 @@ class PostModel extends DatabaseModel
         return $posts;
     }
 
-    public function getPostById(string $id, array $columns = ["*"])
+    public function getPostById(string $id, array $columns = ["*"]): array|null
     {
         $posts = $this->getPosts($columns, [
             "p.id" => $id
@@ -130,7 +131,7 @@ class PostModel extends DatabaseModel
         return count($posts) === 0 ? null : $posts[0];
     }
 
-    public function getPostBySlug(string $slug, array $columns = ["*"])
+    public function getPostBySlug(string $slug, array $columns = ["*"]): array|null
     {
         $posts = $this->getPosts($columns, [
             "p.slug" => $slug
@@ -139,28 +140,29 @@ class PostModel extends DatabaseModel
         return count($posts) === 0 ? null : $posts[0];
     }
 
-    public function getRecentPosts(array $columns = ["*"], int $limit = 5)
+    public function getRecentPosts(array $columns = ["*"], array $data = []): array
     {
-        $posts = $this->getPosts($columns, [
-            "p.deleted"   => "0",
-            "p.published" => "1",
-            "order"       => [
-                "column"    => "p.created_at",
+        $data = array_merge([
+            "p.deleted" => "0",
+            "order" => [
+                "column" => "p.created_at",
                 "direction" => "DESC",
             ],
-            "limit"       => $limit
-        ]);
+            "limit" => 5
+        ], $data);
+
+        $posts = $this->getPosts($columns, $data);
 
         return $posts;
     }
 
-    public function getPostCategories(string $post_id, array $columns = ["c.*"])
+    public function getPostCategories(string $post_id, array $columns = ["c.*"]): array
     {
         $category_service = new CategoryModel();
         return $category_service->getPostCategories($post_id, $columns);
     }
 
-    public function updatePost(string $post_id, array $updates): array|false 
+    public function updatePost(string $post_id, array $updates): array|false
     {
         unset($updates["id"]);
         unset($updates["deleted"]);
@@ -176,7 +178,7 @@ class PostModel extends DatabaseModel
         extract($updates);
 
         if (isset($title)) {
-            $slug = $this->generatePostSlug($title, $post_id); 
+            $slug = $this->generatePostSlug($title, $post_id);
             $updates["slug"] = $slug;
         }
 
@@ -184,25 +186,28 @@ class PostModel extends DatabaseModel
             $category_service = new CategoryModel($this->conn);
 
             $success = $category_service->removeCategoriesFromPost($post_id);
-            if (!$success) return false;
-            
+            if (!$success)
+                return false;
+
             foreach ($categories as $id_or_name) {
                 $success = $category_service->addCategoryToPost($post_id, $id_or_name);
-                if (!$success) return false;
+                if (!$success)
+                    return false;
             }
 
             unset($updates["categories"]);
         }
-        
+
         $success = $this->update("Post", $updates, ["p.id" => $post_id]);
-        if (!$success) return false;
+        if (!$success)
+            return false;
 
         $post = $this->getPostById($post_id);
-        
+
         return $post;
     }
 
-    public function createPost(array $data): array|false 
+    public function createPost(array $data): array|false
     {
         unset($data["id"]);
         unset($data["slug"]);
@@ -214,8 +219,8 @@ class PostModel extends DatabaseModel
         unset($data["published_at"]);
 
         $data = array_merge([
-            "title"      => "",
-            "text"       => "",
+            "title" => "",
+            "text" => "",
             "categories" => []
         ], $data);
 
@@ -224,9 +229,10 @@ class PostModel extends DatabaseModel
 
         $categories = $data["categories"] ?: [];
         unset($data["categories"]);
-        
+
         $success = $this->insert("Post", [$data]);
-        if (!$success) return false;
+        if (!$success)
+            return false;
 
         $post_id = $success;
 
@@ -234,31 +240,34 @@ class PostModel extends DatabaseModel
             $category_service = new CategoryModel($this->conn);
 
             $success = $category_service->removeCategoriesFromPost($post_id);
-            if (!$success) return false;
-            
+            if (!$success)
+                return false;
+
             foreach ($categories as $id_or_name) {
                 $success = $category_service->addCategoryToPost($post_id, $id_or_name);
-                if (!$success) return false;
+                if (!$success)
+                    return false;
             }
         }
 
-        file_put_contents("post_id.txt", print_r($post_id, true));
-        
         $slug = $this->generatePostSlug($data["title"], $post_id);
+        $post = $this->updatePost($post_id, ["slug" => $slug]);
 
-        file_put_contents("slug.txt", print_r($slug, true));
-        $post = $this->updatePost($post_id, ["slug"=> $slug]);
-        
         return $post;
     }
 
-    public function publishPost(string $post_id): array|false 
+    public function publishPost(string $post_id): array|false
     {
         $publish_date = date(DEFAULT_DATABASE_DATETIME_FORMAT);
         $post = $this->updatePost($post_id, [
-            "published"    => "1",
+            "published" => "1",
             "published_at" => $publish_date
         ]);
         return $post;
+    }
+
+    public static function BlankModel(DatabaseConnection $conn = null): array
+    {
+        return self::getTableBlankModel("Post", $conn);
     }
 }

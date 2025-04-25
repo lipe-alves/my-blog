@@ -9,6 +9,9 @@ class HomeController extends ComponentsController
 {
     public function postList()
     {
+        $session = $this->request->getSession();
+        extract($session);
+
         $get = $this->request->getGet();
         $fetch_recent_posts = count(array_keys($get)) === 0;
 
@@ -24,20 +27,26 @@ class HomeController extends ComponentsController
             "category_names"
         ];
 
+        $filter_params = [];
+
+        if (!$is_admin) {
+            $filter_params["p.published"] = "1";
+        }
+
         if ($fetch_recent_posts) {
-            $post_list = $post_service->getRecentPosts($columns);
+            $post_list = $post_service->getRecentPosts($columns, $filter_params);
         } else {
             extract($get);
 
-            $filter_params = [
+            $filter_params = array_merge($filter_params, [
                 "p.deleted" => "0",
-                "offset"    => 0,
-                "limit"     => 5,
-                "order"     => [
-                    "column"    => "p.created_at",
+                "offset" => 0,
+                "limit" => 5,
+                "order" => [
+                    "column" => "p.created_at",
                     "direction" => "DESC",
                 ],
-            ];
+            ]);
 
             if (isset($category)) {
                 if (is_numeric($category)) {
@@ -58,7 +67,7 @@ class HomeController extends ComponentsController
 
         $this->view("home/post-list", [
             "post_list" => $post_list,
-            "query"     => $get
+            "query" => $get
         ]);
     }
 
@@ -81,8 +90,8 @@ class HomeController extends ComponentsController
         $no_posts = $post_count === 0;
         $show_no_posts_msg = json_encode($no_posts);
         $show_filter_title = json_encode(
-            (array_key_exists("search", $get) && (bool)$get["search"]) ||
-                (array_key_exists("category", $get) && (bool)$get["category"])
+            (array_key_exists("search", $get) && (bool) $get["search"]) ||
+            (array_key_exists("category", $get) && (bool) $get["category"])
         );
 
         $session = $this->request->getSession();
@@ -90,13 +99,13 @@ class HomeController extends ComponentsController
         extract($settings);
 
         $this->page("home", [
-            "layout"            => "base-page",
-            "title"             => $blog_name,
-            "description"       => $blog_catchline,
-            "keywords"          => [],
-            "recent_posts"      => $recent_posts,
-            "post_count"        => $post_count,
-            "no_posts"          => $no_posts,
+            "layout" => "base-page",
+            "title" => $blog_name,
+            "description" => $blog_catchline,
+            "keywords" => [],
+            "recent_posts" => $recent_posts,
+            "post_count" => $post_count,
+            "no_posts" => $no_posts,
             "show_no_posts_msg" => $show_no_posts_msg,
             "show_filter_title" => $show_filter_title
         ]);

@@ -47,8 +47,8 @@ class PostsController extends ComponentsController
         $columns = explode(",", $columns);
         $columns = array_map("trim", $columns);
 
-        $page = (int)$page;
-        $size = (int)$size;
+        $page = (int) $page;
+        $size = (int) $size;
 
         $limit = $size + $size * $page;
         $offset = $limit - $size;
@@ -57,10 +57,10 @@ class PostsController extends ComponentsController
 
         $filter_params = [
             "p.deleted" => "0",
-            "offset"    => $offset,
-            "limit"     => $limit + 1,
-            "order"     => [
-                "column"    => "p.created_at",
+            "offset" => $offset,
+            "limit" => $limit + 1,
+            "order" => [
+                "column" => "p.created_at",
                 "direction" => "DESC",
             ],
         ];
@@ -90,7 +90,7 @@ class PostsController extends ComponentsController
         }
 
         $result = [
-            "list"      => $posts,
+            "list" => $posts,
             "next_page" => $next_page
         ];
 
@@ -100,7 +100,8 @@ class PostsController extends ComponentsController
     public function updatePost(Request $request, Response $response): void
     {
         $post = $this->getCurrentPost();
-        if (!$post) throw new ResourceNotFoundException("Post não encontrado!");
+        if (!$post)
+            throw new ResourceNotFoundException("Post não encontrado!");
 
         $updates = $request->getPatch();
 
@@ -111,7 +112,8 @@ class PostsController extends ComponentsController
 
             $last_updated_post = $post_service->updatePost($post["id"], $updates);
             $success = $last_updated_post !== false;
-            if (!$success) throw new InternalServerException();
+            if (!$success)
+                throw new InternalServerException();
 
             $post_service->commit();
 
@@ -125,7 +127,8 @@ class PostsController extends ComponentsController
     public function publishPost(Request $request, Response $response): void
     {
         $post = $this->getCurrentPost();
-        if (!$post) throw new ResourceNotFoundException("Post não encontrado!");
+        if (!$post)
+            throw new ResourceNotFoundException("Post não encontrado!");
 
         $post_service = new PostModel();
 
@@ -134,7 +137,8 @@ class PostsController extends ComponentsController
 
             $published_post = $post_service->publishPost($post["id"]);
             $success = $published_post !== false;
-            if (!$success) throw new InternalServerException();
+            if (!$success)
+                throw new InternalServerException();
 
             $post_service->commit();
 
@@ -155,7 +159,8 @@ class PostsController extends ComponentsController
 
             $last_created_post = $post_service->createPost($post_data);
             $success = $last_created_post !== false;
-            if (!$success) throw new InternalServerException();
+            if (!$success)
+                throw new InternalServerException();
 
             $post_service->commit();
 
@@ -168,17 +173,16 @@ class PostsController extends ComponentsController
 
     // Helpers
 
-    private function getBlankPost(): array 
+    private function getBlankPost(): array
     {
-        return [
-            "id"             => "new",
-            "slug"           => "",
-            "title"          => "Sem título",
-            "text"           => "<p>Escreva aqui suas ideias...</p>",
-            "created_at"     => date(DEFAULT_DATABASE_DATETIME_FORMAT),
-            "updated_at"     => date(DEFAULT_DATABASE_DATETIME_FORMAT),
-            "category_names" => ""
-        ];
+        $post = PostModel::BlankModel();
+        $post["id"] = "new";
+        $post["title"] = "Sem título";
+        $post["text"] = "<p>Escreva aqui suas ideias...</p>";
+        $post["category_names"] = "";
+        $post["created_at"] = date(DEFAULT_DATABASE_DATETIME_FORMAT);
+        $post["updated_at"] = date(DEFAULT_DATABASE_DATETIME_FORMAT);
+        return $post;
     }
 
     private function getCurrentPost(): array|null
@@ -186,7 +190,7 @@ class PostsController extends ComponentsController
         if (isset($this->post)) {
             return $this->post;
         }
-        
+
         $params = $this->request->getParams();
         $slug_or_id = $params["slug_or_id"];
 
@@ -212,10 +216,10 @@ class PostsController extends ComponentsController
         $post_service = new PostModel();
 
         if ($is_id) {
-            $id = (int)$slug_or_id;
+            $id = (int) $slug_or_id;
             $post = $post_service->getPostById($id, $columns);
         } else if ($is_slug) {
-            $slug = (string)$slug_or_id;
+            $slug = (string) $slug_or_id;
             $post = $post_service->getPostBySlug($slug, $columns);
         }
 
@@ -267,7 +271,7 @@ class PostsController extends ComponentsController
         $this->view("posts/add-comment", $data);
     }
 
-    public function postArticle(): void 
+    public function postArticle(): void
     {
         $post = $this->getCurrentPost();
         $this->view("posts/post-article", ["post" => $post]);
@@ -283,11 +287,11 @@ class PostsController extends ComponentsController
         extract($settings);
 
         $this->page("posts", [
-            "layout"      => "base-page",
-            "title"       => "$post[title] - $blog_name",
+            "layout" => "base-page",
+            "title" => "$post[title] - $blog_name",
             "description" => "Teste",
-            "keywords"    => $keywords,
-            "post"        => $post
+            "keywords" => $keywords,
+            "post" => $post
         ]);
     }
 
