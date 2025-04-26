@@ -113,7 +113,7 @@ class HomeController extends ComponentsController
         ]);
     }
 
-    public function html(Request $request)
+    public function html(Request $request): void
     {
         $this->views["post-list"] = "postList";
         $this->views["index"] = "index";

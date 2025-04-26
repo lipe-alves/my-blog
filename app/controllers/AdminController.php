@@ -9,7 +9,7 @@ use App\Exceptions\MissingParamException;
 
 class AdminController extends ComponentsController
 {
-    public function login(Request $request, Response $response)
+    public function login(Request $request, Response $response): void
     {
         $post = $request->getPost();
         extract($post);
@@ -21,10 +21,11 @@ class AdminController extends ComponentsController
         $passwords_match = AdminService::authenticate($password);
 
         if (!$passwords_match) {
-            return $response->setStatus(400)->setJson([
+            $response->setStatus(400)->setJson([
                 "success" => false,
                 "message" => "Senha inválida!"
             ])->send();
+            return;
         }
 
         $request->setSession("is_admin", true);
@@ -36,7 +37,7 @@ class AdminController extends ComponentsController
         ])->send();
     }
 
-    public function logout(Request $request, Response $response)
+    public function logout(Request $request, Response $response): void
     {
         $request->setSession("is_admin", false);
         $request->reloadSession();
@@ -49,7 +50,7 @@ class AdminController extends ComponentsController
 
     // Views
 
-    public function index()
+    public function index(): void
     {
         $get = $this->request->getGet();
         $session = $this->request->getSession();
@@ -82,7 +83,7 @@ class AdminController extends ComponentsController
         ]);
     }
 
-    public function html(Request $request)
+    public function html(Request $request): void
     {
         $this->views["index"] = "index";
         $this->views["default"] = "index";

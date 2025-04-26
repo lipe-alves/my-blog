@@ -4,32 +4,39 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Core\Request;
-use App\Core\Response;
 
 class ComponentsController extends Controller
 {
     public array $views = [
-        "post-filters"  => "postFilters",
-        "header"        => "header",
-        "media-library" => "mediaLibrary"
+        "post-filters" => "postFilters",
+        "header" => "header",
+        "media-library" => "mediaLibrary",
+        "admin-actions" => "adminActions"
     ];
 
-    public function postFilters()
+    public function adminActions(): void
+    {
+        $this->component("admin-actions");
+    }
+
+    public function postFilters(): void
     {
         $get = $this->request->getGet();
         $this->component("filters", ["query" => $get]);
     }
 
-    public function header() {
+    public function header()
+    {
         $this->component("header", []);
     }
 
-    public function mediaLibrary() {
+    public function mediaLibrary(): void
+    {
         $get = $this->request->getGet();
         $params = array_merge([
             "base_path" => "/",
-            "accept"    => "*",
-            "multiple"  => "true"
+            "accept" => "*",
+            "multiple" => "true"
         ], $get);
 
         $params["multiple"] = $params["multiple"] === "true" || $params["multiple"] === "1";
@@ -37,19 +44,20 @@ class ComponentsController extends Controller
         $this->component("media-library", $params);
     }
 
-    public function html(Request $request) 
+    public function html(Request $request): void
     {
         $get = $request->getGet();
-        
+
         if (!array_key_exists("view", $get)) {
             $get["view"] = "index";
         }
-        
+
         $view = $get["view"];
 
         foreach ($this->views as $view_name => $view_method) {
             if ($view_name === $view) {
-                return $this->{$view_method}();
+                $this->{$view_method}();
+                return;
             }
         }
 
