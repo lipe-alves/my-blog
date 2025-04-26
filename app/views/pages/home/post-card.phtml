@@ -31,10 +31,10 @@ $last_category_index = $total_categories - 1;
                 </a>
             </h2>
             <div class="PostCard-subheader">
-                <span class="PostCard-date">
-                    Escrito em <?= $created_at ?>
-                </span>
                 <?php if ($is_admin): ?>
+                    <span class="PostCard-date">
+                        Escrito em <?= $created_at ?>
+                    </span>
                     <span class="PostCard-date">
                         Atualizado em <?= $updated_at ?>
                     </span>

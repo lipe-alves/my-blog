@@ -94,6 +94,12 @@
             async create(data) {
                 const resp = await apiEndpoint.post("/posts", data);
                 return resp.json();
+            },
+
+            /** @param {string} id */
+            async publish(id) {
+                const resp = await apiEndpoint.post(`/posts/${id}/publish`);
+                return resp.json();
             }
         },
 

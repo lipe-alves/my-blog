@@ -165,12 +165,14 @@ class PostModel extends DatabaseModel
     public function updatePost(string $post_id, array $updates): array|false
     {
         unset($updates["id"]);
+        unset($updates["slug"]);
         unset($updates["deleted"]);
         unset($updates["deleted_at"]);
         unset($updates["created_at"]);
-        unset($updates["updated_at"]);
         unset($updates["published"]);
         unset($updates["published_at"]);
+
+        $updates["updated_at"] = date(DEFAULT_DATABASE_DATETIME_FORMAT);
 
         $this->treatPostData($updates);
         $this->validatePostData($updates);
@@ -251,7 +253,7 @@ class PostModel extends DatabaseModel
         }
 
         $slug = $this->generatePostSlug($data["title"], $post_id);
-        $post = $this->updatePost($post_id, ["slug" => $slug]);
+        $post = $this->update("Post", ["slug" => $slug], ["p.id" => $post_id]);
 
         return $post;
     }
@@ -259,10 +261,16 @@ class PostModel extends DatabaseModel
     public function publishPost(string $post_id): array|false
     {
         $publish_date = date(DEFAULT_DATABASE_DATETIME_FORMAT);
-        $post = $this->updatePost($post_id, [
+
+        $success = $this->update("Post", [
             "published" => "1",
             "published_at" => $publish_date
-        ]);
+        ], ["p.id" => $post_id]);
+
+        if (!$success)
+            return false;
+
+        $post = $this->getPostById($post_id);
         return $post;
     }
 

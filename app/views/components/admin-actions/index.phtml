@@ -1,16 +1,25 @@
-<?php $current_path = $this->request->getPath() ?>
-<div class="AdminActions">
-    <?php if ($current_path === "/posts/new/"): ?>
+<?php 
+$current_path = $this->request->getPath();
+$is_writing = str_contains($current_path, "/posts/");
+?>
+<div 
+    id="admin-actions"
+    data-view="admin-actions"
+    class="AdminActions"    
+>
+    <?php if ($is_writing): ?>
         <button
+            id="publish-post-button"
             class="AdminActions-action AdminActions-publish button"
             type="button"
             onclick="handlePublishPost(this)"
             title="Publicar post"
+            style="display: none;"
         >
             <i class="fa-solid fa-star"></i>
             <span>Publicar post</span>
         </button>
-    <?php elseif (!str_contains($current_path, "/posts/")): ?>
+    <?php else: ?>
         <button
             class="AdminActions-action AdminActions-write button"
             type="button"

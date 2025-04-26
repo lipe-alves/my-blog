@@ -17,13 +17,22 @@ $this->postFilters();
 <link
     rel="stylesheet"
     href="<?= BASE_URI ?>/app/views/pages/posts/comment-card/styles.css?v=<?= time() ?>" />
-<script
-    type="text/javascript"
-    src="<?= BASE_URI ?>/app/views/pages/posts/script.js?v=<?= time() ?>"></script>
-
 <?php if ($is_admin): ?>
     <script
         type="text/javascript"
-        data-post-id="<?=$post["id"]?>"
-        src="<?= BASE_URI ?>/app/views/pages/posts/post-editor.js?v=<?= time() ?>"></script>
+        src="<?= BASE_URI ?>/app/views/pages/posts/CategoryEditor.js?v=<?= time() ?>"></script>
+    <script
+        type="text/javascript"
+        src="<?= BASE_URI ?>/app/views/pages/posts/PostEditor.js?v=<?= time() ?>"></script>
+    <script
+        type="text/javascript"
+        <?php foreach ($post as $key => $value): ?>
+            <?php if ($key !== "text"): ?>
+                data-<?= $key ?>="<?= $value ?>"
+            <?php endif; ?>
+        <?php endforeach; ?>
+        src="<?= BASE_URI ?>/app/views/pages/posts/script.js?v=<?= time() ?>"></script>
 <?php endif; ?>
+<script
+    type="text/javascript"
+    src="<?= BASE_URI ?>/app/views/pages/posts/handlers.js?v=<?= time() ?>"></script>

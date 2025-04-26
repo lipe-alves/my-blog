@@ -33,6 +33,12 @@
     width: 150px;
 }
 
+.AdminActions-write:disabled, .AdminActions-publish:disabled {
+    background-color: #8a2be2;
+    border-color: #8a2be2;
+    opacity: 0.5;
+}
+
 .AdminActions-write, .AdminActions-publish {
     background-color: #8a2be2;
     border-color: #8a2be2;
