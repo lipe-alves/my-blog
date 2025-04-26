@@ -2,20 +2,7 @@
 $session = $this->request->getSession();
 extract($session);
 
-if (date_is_valid($created_at)) {
-    $created_at = strtotime($created_at);
-    $created_at = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $created_at);
-}
-
-if (date_is_valid($updated_at)) {
-    $updated_at = strtotime($updated_at);
-    $updated_at = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $updated_at);
-}
-
-if (isset($published_at) && date_is_valid($published_at)) {
-    $published_at = strtotime($published_at);
-    $published_at = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $published_at);
-}
+$summary = generate_summary($text);
 
 $post_categories = explode(",", $category_names);
 $total_categories = count($post_categories);
@@ -58,8 +45,8 @@ $last_category_index = $total_categories - 1;
                 </span>
             </div>
         </header>
-        <div class="PostCard-text">
-            <?= $text ?>
+        <div class="PostCard-summary">
+            <?= $summary ?>
         </div>
     </article>
 </li>

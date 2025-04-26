@@ -52,7 +52,29 @@ $filter_msg .= "...";
         </li>
     <?php endif;
     foreach ($post_list as $post):
-        $this->view("home/post-card", $post);
+        $this->view("home/post-card", format_post_dates($post));
     endforeach;
     ?>
 </ul>
+
+<?php 
+
+function format_post_dates(array $post): array 
+{
+    if (date_is_valid($post["created_at"])) {
+        $post["created_at"] = strtotime($post["created_at"]);
+        $post["created_at"] = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $post["created_at"]);
+    }
+    
+    if (date_is_valid($post["updated_at"])) {
+        $post["updated_at"] = strtotime($post["updated_at"]);
+        $post["updated_at"] = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $post["updated_at"]);
+    }
+    
+    if (isset($post["published_at"]) && date_is_valid($post["published_at"])) {
+        $post["published_at"] = strtotime($post["published_at"]);
+        $post["published_at"] = strftime(DEFAULT_DISPLAY_DATETIME_FORMAT, $post["published_at"]);
+    }
+
+    return $post;
+}

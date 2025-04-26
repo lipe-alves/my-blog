@@ -1,5 +1,18 @@
 <?php $this->postList() ?>
 <?php $this->postFilters() ?>
-<link
-    rel="stylesheet"
-    href="<?= BASE_URI ?>/app/views/pages/home/styles.css?v=<?= time() ?>">
+<link rel="stylesheet" href="<?= BASE_URI ?>/app/views/pages/home/styles.css?v=<?= time() ?>">
+<?php
+
+function generate_summary(string $html): string
+{
+    $summary = strip_tags($html);
+    $summary = remove_multiple_whitespaces($summary);
+    $summary = remove_newlines($summary);
+
+    if (strlen($summary) > 100) {
+        $summary = substr($summary, 0, 100);
+        $summary .= "...";
+    }
+
+    return $summary;
+}
