@@ -3,21 +3,22 @@ $session = $this->request->getSession();
 extract($session);
 
 $posts = $post_list["results"];
+$next_page = $post_list["next_page"];
 $post_count = count($posts);
 $no_posts = $post_count === 0;
 $show_no_posts_msg = $no_posts;
 $show_filter_title = (
-    (array_key_exists("search", $query) && (bool) $query["search"]) ||
-    (array_key_exists("category", $query) && (bool) $query["category"])
+    (isset($query["search"]) && (bool) $query["search"]) ||
+    (isset($query["category"]) && (bool) $query["category"])
 );
 
 $filter_msg = "Posts encontrados";
 
-if (array_key_exists("category", $query)) {
+if (isset($query["category"])) {
     $filter_msg .= " em \"$query[category]\"";
 }
 
-if (array_key_exists("search", $query)) {
+if (isset($query["search"])) {
     $filter_msg .= " com o texto \"$query[search]\"";
 }
 
@@ -45,7 +46,9 @@ $filter_msg .= "...";
     foreach ($posts as $post):
         $this->view("home/post-card", format_post_dates($post));
     endforeach;
-    ?>
+    if ($next_page): ?>
+        <li id="infinite-loader-detector"></li>
+    <?php endif; ?>
 </ul>
 
 <?php
@@ -68,4 +71,18 @@ function format_post_dates(array $post): array
     }
 
     return $post;
+}
+
+function generate_summary(string $html): string
+{
+    $summary = strip_tags($html);
+    $summary = remove_multiple_whitespaces($summary);
+    $summary = remove_newlines($summary);
+
+    if (strlen($summary) > 100) {
+        $summary = substr($summary, 0, 100);
+        $summary .= "...";
+    }
+
+    return $summary;
 }
