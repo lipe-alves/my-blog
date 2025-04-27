@@ -123,7 +123,7 @@ $last_category_index = $total_categories - 1;
 </article>
 <?php 
 
-function format_post_dates(array &$post): array 
+function format_post_dates(array &$post): void 
 {
     if (date_is_valid($post["created_at"])) {
         $post["created_at"] = strtotime($post["created_at"]);
