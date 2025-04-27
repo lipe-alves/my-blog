@@ -6,6 +6,7 @@ use App\Core\DatabaseConnection;
 use App\Core\DatabaseModel;
 use App\Exceptions\InvalidInputException;
 use App\Exceptions\MissingParamException;
+use App\Exceptions\ResourceNotFoundException;
 
 class PostModel extends DatabaseModel
 {
@@ -253,7 +254,11 @@ class PostModel extends DatabaseModel
         }
 
         $slug = $this->generatePostSlug($data["title"], $post_id);
-        $post = $this->update("Post", ["slug" => $slug], ["p.id" => $post_id]);
+        $success = $this->update("Post", ["slug" => $slug], ["p.id" => $post_id]);
+        if (!$success)
+            return false;
+
+        $post = $this->getPostById($post_id);
 
         return $post;
     }
@@ -271,6 +276,9 @@ class PostModel extends DatabaseModel
             return false;
 
         $post = $this->getPostById($post_id);
+        if (!$post)
+            throw new ResourceNotFoundException("Post precisa ser salvo primeiro");
+
         return $post;
     }
 
