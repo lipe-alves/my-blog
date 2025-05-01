@@ -7,8 +7,11 @@ $(document).ready(function () {
     let size = query.size;
 
     $(window).on("scroll", () => {
-        const infiniteLoaderDetector = $("#infinite-loader-detector");
-        const visible = infiniteLoaderDetector.is(":visible");
+        console.clear();
+        const infiniteLoaderDetector = $("#infinite-loader-detector")[0];
+        const rect = infiniteLoaderDetector.getBoundingClientRect();
+
+        const visible = rect.y <= window.innerHeight;
         if (!visible)
             return;
 
@@ -22,8 +25,8 @@ $(document).ready(function () {
         if (!size)
             size = 5;
 
-        query.page = page;
-        query.size = size;
+        query.page = 0;
+        query.size = (page + 1) * size;
 
         console.log("query", query);
 
