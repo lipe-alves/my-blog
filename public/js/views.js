@@ -47,9 +47,9 @@
                 this.loader.show();
 
             await api.views.reload(this.element, params, parent);
+            $(this.element).append(loader.prop("outerHTML"));
 
             if (load) {
-                $(this.element).append(loader.prop("outerHTML"));
                 this.loader.hide();
             }
         }
