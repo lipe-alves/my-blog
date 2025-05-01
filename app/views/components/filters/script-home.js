@@ -72,7 +72,7 @@ async function reloadPosts() {
 
     try {
         postList.loader.show();
-        await postList.reload(query);
+        await postList.reload({ params: query });
         await postList.loader.hide();
     } catch (err) {
         await postList.loader.hide();
@@ -87,7 +87,7 @@ async function reloadFilters() {
     const query = getQueryParams();
 
     try {
-        await views.postFilters.reload(query);
+        await views.postFilters.reload({ params: query });
     } catch (err) {
         toast.error(err.message);
     }

@@ -35,17 +35,23 @@
             }
         }
 
-        async reload(params = {}, parent = null) {
+        async reload({
+            params = {},
+            parent = null,
+            load = true
+        } = {}) {
             const { api } = window;
             const loader = $(`#${this.#loaderId}`).clone(true);
 
-            this.loader.show();
+            if (load)
+                this.loader.show();
 
             await api.views.reload(this.element, params, parent);
 
-            $(this.element).append(loader.prop("outerHTML"));
-
-            this.loader.hide();
+            if (load) {
+                $(this.element).append(loader.prop("outerHTML"));
+                this.loader.hide();
+            }
         }
 
         static create(viewElement) {
@@ -77,7 +83,7 @@
                 const query = getQueryParams();
                 params = query;
             }
-        
+
             await api.views.render(viewName, viewParent, params);
 
             const viewElement = $(viewParent).find(`[data-view="${viewName}"]`);
@@ -90,7 +96,7 @@
 
             for (const view of Object.values(window.views)) {
                 if ("reload" in view) {
-                    await view.reload(query);
+                    await view.reload({ params: query });
                 }
             }
         };

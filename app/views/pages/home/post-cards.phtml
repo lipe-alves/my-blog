@@ -1,0 +1,7 @@
+<?php 
+foreach ($posts as $post):
+        $this->view("home/post-card", format_post_dates($post));
+endforeach;
+if ($next_page): ?>
+    <li id="infinite-loader-detector"></li>
+<?php endif; ?>
