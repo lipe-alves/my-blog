@@ -40,55 +40,55 @@ $get = $this->request->getGet();
     type="text/javascript"
     data-api-url="<?= API_URL ?>"
     data-base-url="<?= WEBSITE_URL ?>"
-    src="<?= BASE_URI ?>/public/js/main.js?v=<?= time() ?>"></script>
+    src="<?= BASE_URI ?>/public/js/main.js?v=<?= $this->version ?>"></script>
 <script
     type="text/javascript"
-    src="<?= BASE_URI ?>/public/js/functions.js?v=<?= time() ?>"></script>
+    src="<?= BASE_URI ?>/public/js/functions.js?v=<?= $this->version ?>"></script>
 <script
     type="text/javascript"
-    src="<?= BASE_URI ?>/public/js/api.js?v=<?= time() ?>"></script>
+    src="<?= BASE_URI ?>/public/js/api.js?v=<?= $this->version ?>"></script>
 <script
     type="text/javascript"
-    src="<?= BASE_URI ?>/public/js/toast.js?v=<?= time() ?>"></script>
+    src="<?= BASE_URI ?>/public/js/toast.js?v=<?= $this->version ?>"></script>
 <script
     type="text/javascript"
-    src="<?= BASE_URI ?>/public/js/loader.js?v=<?= time() ?>"></script>
+    src="<?= BASE_URI ?>/public/js/loader.js?v=<?= $this->version ?>"></script>
 <script
     type="text/javascript"
-    src="<?= BASE_URI ?>/public/js/modal.js?v=<?= time() ?>"></script>
+    src="<?= BASE_URI ?>/public/js/modal.js?v=<?= $this->version ?>"></script>
 <script
     type="text/javascript"
-    src="<?= BASE_URI ?>/public/js/views.js?v=<?= time() ?>"></script>
+    src="<?= BASE_URI ?>/public/js/views.js?v=<?= $this->version ?>"></script>
 <?php if ($get["admin"] && !$session["is_admin"]): ?>
     <script
         type="text/javascript"
-        src="<?= BASE_URI ?>/public/js/admin-modal.js?v=<?= time() ?>"></script>
+        src="<?= BASE_URI ?>/public/js/admin-modal.js?v=<?= $this->version ?>"></script>
 <?php elseif ($session["is_admin"]): ?>
     <script
         type="text/javascript"
-        src="<?= BASE_URI ?>/public/js/admin.js?v=<?= time() ?>"></script>
+        src="<?= BASE_URI ?>/public/js/admin.js?v=<?= $this->version ?>"></script>
     <script
         type="text/javascript"
-        src="<?= BASE_URI ?>/public/js/media-library.js?v=<?= time() ?>"></script>
+        src="<?= BASE_URI ?>/public/js/media-library.js?v=<?= $this->version ?>"></script>
     <script
         type="text/javascript"
-        src="<?= BASE_URI ?>/public/js/text-editor.js?v=<?= time() ?>"></script>
+        src="<?= BASE_URI ?>/public/js/text-editor.js?v=<?= $this->version ?>"></script>
 <?php endif; ?>
 <!-- Local styles -->
 <link
     rel="stylesheet"
-    href="<?= BASE_URI ?>/public/css/main.css?v=<?= time() ?>" />
+    href="<?= BASE_URI ?>/public/css/main.css?v=<?= $this->version ?>" />
 <link
     rel="stylesheet"
-    href="<?= BASE_URI ?>/public/css/toast.css?v=<?= time() ?>" />
+    href="<?= BASE_URI ?>/public/css/toast.css?v=<?= $this->version ?>" />
 <link
     rel="stylesheet"
-    href="<?= BASE_URI ?>/public/css/loader.css?v=<?= time() ?>" />
+    href="<?= BASE_URI ?>/public/css/loader.css?v=<?= $this->version ?>" />
 <?php if ($session["is_admin"]): ?>
     <link
         rel="stylesheet"
-        href="<?= BASE_URI ?>/public/css/admin.css?v=<?= time() ?>" />
+        href="<?= BASE_URI ?>/public/css/admin.css?v=<?= $this->version ?>" />
     <link
         rel="stylesheet"
-        href="<?= BASE_URI ?>/public/css/text-editor.css?v=<?= time() ?>" />
+        href="<?= BASE_URI ?>/public/css/text-editor.css?v=<?= $this->version ?>" />
 <?php endif; ?>

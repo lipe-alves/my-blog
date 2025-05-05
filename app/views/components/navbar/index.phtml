@@ -25,7 +25,7 @@
             <a class="navbar-item<?= $current_path === "/" ? " active" : "" ?>" href="<?= BASE_URI ?>">
                 Início
             </a>
-            <a class="navbar-item<?= $current_path === "/about" ? " active" : "" ?>" href="<?= BASE_URI ?>/about">
+            <a class="navbar-item<?= $current_path === "/sobre-mim" ? " active" : "" ?>" href="<?= BASE_URI ?>/sobre-mim">
                 Sobre
             </a>
             <a class="navbar-item<?= $current_path === "/contact" ? " active" : "" ?>" href="<?= BASE_URI ?>/contact">
@@ -39,7 +39,7 @@
 </nav>
 <script
     type="text/javascript"
-    src="<?= BASE_URI ?>/app/views/components/navbar/script.js?v=<?= time() ?>"></script>
+    src="<?= BASE_URI ?>/app/views/components/navbar/script.js?v=<?= $this->version ?>"></script>
 <link
     rel="stylesheet"
-    href="<?= BASE_URI ?>/app/views/components/navbar/styles.css?v=<?= time() ?>" />
+    href="<?= BASE_URI ?>/app/views/components/navbar/styles.css?v=<?= $this->version ?>" />

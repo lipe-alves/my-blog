@@ -7,23 +7,23 @@ $this->postFilters();
 ?>
 <link
     rel="stylesheet"
-    href="<?= BASE_URI ?>/app/views/pages/posts/post-article/styles.css?v=<?= time() ?>" />
+    href="<?= BASE_URI ?>/app/views/pages/posts/post-article/styles.css?v=<?= $this->version ?>" />
 <link
     rel="stylesheet"
-    href="<?= BASE_URI ?>/app/views/pages/posts/add-comment/styles.css?v=<?= time() ?>" />
+    href="<?= BASE_URI ?>/app/views/pages/posts/add-comment/styles.css?v=<?= $this->version ?>" />
 <link
     rel="stylesheet"
-    href="<?= BASE_URI ?>/app/views/pages/posts/comment-list/styles.css?v=<?= time() ?>" />
+    href="<?= BASE_URI ?>/app/views/pages/posts/comment-list/styles.css?v=<?= $this->version ?>" />
 <link
     rel="stylesheet"
-    href="<?= BASE_URI ?>/app/views/pages/posts/comment-card/styles.css?v=<?= time() ?>" />
+    href="<?= BASE_URI ?>/app/views/pages/posts/comment-card/styles.css?v=<?= $this->version ?>" />
 <?php if ($is_admin): ?>
     <script
         type="text/javascript"
-        src="<?= BASE_URI ?>/app/views/pages/posts/CategoryEditor.js?v=<?= time() ?>"></script>
+        src="<?= BASE_URI ?>/app/views/pages/posts/CategoryEditor.js?v=<?= $this->version ?>"></script>
     <script
         type="text/javascript"
-        src="<?= BASE_URI ?>/app/views/pages/posts/PostEditor.js?v=<?= time() ?>"></script>
+        src="<?= BASE_URI ?>/app/views/pages/posts/PostEditor.js?v=<?= $this->version ?>"></script>
     <script
         type="text/javascript"
         <?php foreach ($post as $key => $value): ?>
@@ -31,8 +31,8 @@ $this->postFilters();
                 data-<?= $key ?>="<?= $value ?>"
             <?php endif; ?>
         <?php endforeach; ?>
-        src="<?= BASE_URI ?>/app/views/pages/posts/script.js?v=<?= time() ?>"></script>
+        src="<?= BASE_URI ?>/app/views/pages/posts/script.js?v=<?= $this->version ?>"></script>
 <?php endif; ?>
 <script
     type="text/javascript"
-    src="<?= BASE_URI ?>/app/views/pages/posts/handlers.js?v=<?= time() ?>"></script>
+    src="<?= BASE_URI ?>/app/views/pages/posts/handlers.js?v=<?= $this->version ?>"></script>

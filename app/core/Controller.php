@@ -16,6 +16,19 @@ class Controller
         $this->response = $response;
     }
 
+    public function __get(string $key) 
+    {
+        if ($key === "localhost") {
+            return $_SERVER["SERVER_NAME"] === "localhost" || $_SERVER["SERVER_NAME"] === "127.0.0.1";
+        }
+
+        if ($key === "version") {
+            return $this->localhost ? date("Y-m-d H:i:s") : VERSION;
+        }
+
+        return $this->$key;
+    }
+
     private function moveStylesheetsToHead(string $html)
     {
         preg_match_all("/<link[^>]*>/i", $html, $matches);
