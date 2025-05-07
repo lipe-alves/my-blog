@@ -1,12 +1,26 @@
+<?php 
+$session = $this->request->getSession();
+extract($session);
+extract($settings);
+?>
 <section class="AboutMe">
     <aside class="AboutMe-aside">
         <figure class="AboutMe-photo">
             <img src="" alt="">
         </figure>
     </aside>
-    <main class="AboutMe-main" contenteditable="true">
-        
+    <main class="AboutMe-main">
+        <div 
+            class="AboutMe-text"
+            <?php if ($is_admin): ?>
+                contenteditable="true"
+                data-settings="about_me"
+            <?php endif; ?>
+        >
+            <?= $about_me ?>
+        </div>
     </main>
 </section>
 
 <link rel="stylesheet" href="<?= BASE_URI ?>/app/views/pages/about-me/styles.css?v=<?= $this->version ?>">
+<script type="text/javascript" src="<?= BASE_URI ?>/app/views/pages/about-me/script.js?v=<?= $this->version ?>"></script>
