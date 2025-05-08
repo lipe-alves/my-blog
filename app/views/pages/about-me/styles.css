@@ -2,8 +2,9 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .AboutMe-aside {
@@ -13,9 +14,24 @@
     justify-content: flex-start;
     flex: 1;
     height: 100%;
+    min-width: 200px;
 }
 
 .AboutMe-main {
     flex: 1;
     height: 100%;
+    min-width: 500px;
+}
+
+.AboutMe-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.AboutMe-photo img {
+    border-radius: 50%;
+    width: 200px;
 }

@@ -113,6 +113,20 @@ VALUES
         'Teste'
     ),
     (
+        'profile_photo',
+        'Foto de perfil',
+        NULL,
+        NULL,
+        '/public/images/default-profile-photo.jpg'
+    ),
+    (
+        'writer_name',
+        'Seu nome',
+        NULL,
+        NULL,
+        'Seu nome'
+    ),
+    (
         'adm_password',
         'Senha mestre',
         NULL,
