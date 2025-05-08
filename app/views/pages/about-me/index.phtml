@@ -2,11 +2,27 @@
 $session = $this->request->getSession();
 extract($session);
 extract($settings);
+$profile_photo = hide_base_path($profile_photo, BASE_URI);
+$profile_photo = BASE_URI . $profile_photo;
 ?>
 <section class="AboutMe">
     <aside class="AboutMe-aside">
         <figure class="AboutMe-photo">
-            <img src="<?= BASE_URI . $profile_photo ?>" alt="Foto de <?= $writer_name ?>">
+            <?php if ($is_admin): ?>
+                <button 
+                    class="AboutMe-changePhoto button is-info icon-button is-large" 
+                    onclick="handleChangeProfilePhoto()"
+                >
+                    <i class="fa-solid fa-camera-retro"></i>
+                </button>
+            <?php endif; ?>
+            <img 
+                src="<?= $profile_photo ?>" 
+                alt="Foto de <?= $writer_name ?>"
+                <?php if ($is_admin): ?>
+                    data-settings="profile_photo"
+                <?php endif; ?>
+            >
         </figure>
     </aside>
     <main class="AboutMe-main">

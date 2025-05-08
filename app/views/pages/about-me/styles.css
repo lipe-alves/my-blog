@@ -24,6 +24,7 @@
 }
 
 .AboutMe-photo {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,4 +35,10 @@
 .AboutMe-photo img {
     border-radius: 50%;
     width: 200px;
+    height: 200px;
+}
+
+.AboutMe-changePhoto {
+    position: absolute;
+    top: 0;
 }

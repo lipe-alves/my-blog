@@ -25,7 +25,8 @@
         }
 
         get value() {
-            let text = $(this.selector).text();
+            const isImage = $(this.selector).prop("tagName") === "IMG";
+            let text = isImage ? $(this.selector).attr("src") : $(this.selector).text();
             text = removeWhitespaces(text);
             text = removeNewlines(text);
             return text;
@@ -35,7 +36,8 @@
         set value(value) {
             value = removeWhitespaces(value);
             value = removeNewlines(value);
-            $(this.selector).text(value);
+            const isImage = $(this.selector).prop("tagName") === "IMG";
+            isImage ? $(this.selector).attr("src", value) : $(this.selector).text(value);
         }
 
         get old() {
