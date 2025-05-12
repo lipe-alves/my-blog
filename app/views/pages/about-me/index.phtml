@@ -2,8 +2,8 @@
 $session = $this->request->getSession();
 extract($session);
 extract($settings);
-$profile_photo = hide_base_path($profile_photo, BASE_URI);
-$profile_photo = BASE_URI . $profile_photo;
+$writer_photo = hide_base_path($writer_photo, BASE_URI);
+$writer_photo = BASE_URI . $writer_photo;
 ?>
 <section class="AboutMe">
     <aside class="AboutMe-aside">
@@ -17,23 +17,32 @@ $profile_photo = BASE_URI . $profile_photo;
                 </button>
             <?php endif; ?>
             <img 
-                src="<?= $profile_photo ?>" 
+                src="<?= $writer_photo ?>" 
                 alt="Foto de <?= $writer_name ?>"
                 <?php if ($is_admin): ?>
-                    data-settings="profile_photo"
+                    data-settings="writer_photo"
                 <?php endif; ?>
             >
         </figure>
+        <h2
+            class="title"
+            <?php if ($is_admin): ?>
+                contenteditable="true"
+                data-settings="writer_name"
+            <?php endif; ?>
+        >
+            <?= $writer_name ?>
+        </h2>
     </aside>
     <main class="AboutMe-main">
         <div 
             class="AboutMe-text content"
             <?php if ($is_admin): ?>
                 contenteditable="true"
-                data-settings="about_me"
+                data-settings="writer_about"
             <?php endif; ?>
         >
-            <?= $about_me ?>
+            <?= $writer_about ?>
         </div>
     </main>
 </section>

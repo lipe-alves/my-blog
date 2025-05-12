@@ -1,6 +1,6 @@
 (() => {
     const { createTextEditor } = window.functions;
-    createTextEditor('[data-settings="about_me"]');
+    createTextEditor('[data-settings="writer_about"]');
 })();
 
 async function handleChangeProfilePhoto() {
@@ -17,6 +17,6 @@ async function handleChangeProfilePhoto() {
         const file = files[0];
         if (!file) return;
 
-        admin.settings.profile_photo.value = file.src;
+        admin.settings.writer_photo.value = file.src;
     });
 }

@@ -106,14 +106,14 @@ VALUES
         'Minha caixinha de pensamentos'
     ),
     (
-        'about_me',
+        'writer_about',
         'Texto Sobre Mim',
         NULL,
         NULL,
         'Teste'
     ),
     (
-        'profile_photo',
+        'write_photo',
         'Foto de perfil',
         NULL,
         NULL,
@@ -125,6 +125,13 @@ VALUES
         NULL,
         NULL,
         'Seu nome'
+    ),
+    (
+        'writer_summary',
+        'Seu resumo',
+        NULL,
+        NULL,
+        'Seu resumo'
     ),
     (
         'adm_password',
