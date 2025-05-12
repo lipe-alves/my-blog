@@ -53,7 +53,7 @@
          * @param {any} props 
          */
         static create(selector, props) {
-            return new AdminController(selector);
+            return new AdminController(selector, props);
         }
     }
 
