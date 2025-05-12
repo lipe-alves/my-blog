@@ -63,28 +63,3 @@ function handleCloseReplyForm(formId) {
     const form = $(`#${formId}`);
     form.attr("data-visible", "false");
 }
-
-/** @param {string} categoryId */
-function handleRemoveCategory(categoryId) {
-    window.admin.post.categories.delete(categoryId);
-}
-
-function handleAddCategory() {
-    const { id, name } = window.admin.post.categories.selected;
-    window.admin.post.categories.add(id, name);
-}
-
-async function handlePublishPost(button) {
-    const { admin, toast } = window;
-    const { delayAsync, setButtonLoading } = window.functions;
-
-    try {
-        setButtonLoading(button, true);
-        await delayAsync(() => admin.post.publishPost(), 3000);
-        toast.success("Post publicado com sucesso!");
-    } catch (err) {
-        toast.error(err.message);
-    } finally {
-        setButtonLoading(button, false);
-    }
-}

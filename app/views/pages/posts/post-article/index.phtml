@@ -112,6 +112,8 @@ $last_category_index = $total_categories - 1;
     >
         <?= $post["text"] ?>
     </div>
+    <hr class="Post-separator">
+    <?php $this->postAuthor() ?>
     <?php if ($post["id"] !== "new"): ?>
         <hr class="Post-separator">
         <div class="Post-comments">

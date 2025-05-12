@@ -279,6 +279,11 @@ class PostsController extends ComponentsController
         $this->view("posts/post-article", ["post" => $post]);
     }
 
+    public function postAuthor(): void 
+    {
+        $this->view("posts/post-author");
+    }
+
     public function index(): void
     {
         $post = $this->getCurrentPost();

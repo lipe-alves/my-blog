@@ -1,0 +1,48 @@
+<?php 
+$session = $this->request->getSession();
+extract($session);
+extract($settings);
+$writer_photo = hide_base_path($writer_photo, BASE_URI);
+$writer_photo = BASE_URI . $writer_photo;
+?>
+<section class="PostAuthor">
+    <aside class="PostAuthor-aside">
+        <figure class="PostAuthor-photo">
+            <?php if ($is_admin): ?>
+                <button 
+                    class="PostAuthor-changePhoto button is-info icon-button is-large" 
+                    onclick="handleChangeProfilePhoto()"
+                >
+                    <i class="fa-solid fa-camera-retro"></i>
+                </button>
+            <?php endif; ?>
+            <img 
+                src="<?= $writer_photo ?>" 
+                alt="Foto de <?= $writer_name ?>"
+                <?php if ($is_admin): ?>
+                    data-settings="writer_photo"
+                <?php endif; ?>
+            >
+        </figure>
+        <h2
+            class="title"
+            <?php if ($is_admin): ?>
+                contenteditable="true"
+                data-settings="writer_name"
+            <?php endif; ?>
+        >
+            <?= $writer_name ?>
+        </h2>
+    </aside>
+    <main class="PostAuthor-main">
+        <div 
+            class="PostAuthor-text content"
+            <?php if ($is_admin): ?>
+                contenteditable="true"
+                data-settings="writer_summary"
+            <?php endif; ?>
+        >
+            <?= $writer_summary ?>
+        </div>
+    </main>
+</section>

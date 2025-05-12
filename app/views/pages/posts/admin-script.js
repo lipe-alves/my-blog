@@ -1,5 +1,8 @@
 (() => {
     const { admin } = window;
+    const { createTextEditor } = window.functions;
+
+    createTextEditor('[data-settings="writer_summary"]');
     
     const post = {...document.currentScript.dataset};
     admin.post = PostEditor.create(post);

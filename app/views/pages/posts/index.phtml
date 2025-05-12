@@ -17,6 +17,9 @@ $this->postFilters();
 <link
     rel="stylesheet"
     href="<?= BASE_URI ?>/app/views/pages/posts/comment-card/styles.css?v=<?= $this->version ?>" />
+<link 
+    rel="stylesheet" 
+    href="<?= BASE_URI ?>/app/views/pages/posts/post-author/styles.css?v=<?= $this->version ?>">
 <?php if ($is_admin): ?>
     <script
         type="text/javascript"
@@ -31,7 +34,10 @@ $this->postFilters();
                 data-<?= $key ?>="<?= $value ?>"
             <?php endif; ?>
         <?php endforeach; ?>
-        src="<?= BASE_URI ?>/app/views/pages/posts/script.js?v=<?= $this->version ?>"></script>
+        src="<?= BASE_URI ?>/app/views/pages/posts/admin-script.js?v=<?= $this->version ?>"></script>
+    <script
+        type="text/javascript"
+        src="<?= BASE_URI ?>/app/views/pages/posts/admin-handlers.js?v=<?= $this->version ?>"></script>
 <?php endif; ?>
 <script
     type="text/javascript"
