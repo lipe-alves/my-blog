@@ -1,9 +1,10 @@
 .PostAuthor {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     flex-wrap: wrap;
+    gap: 1em;
     width: 100%;
 }
 
