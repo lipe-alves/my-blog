@@ -13,18 +13,16 @@ extract($session);
     ])
     ?>
     <title><?= $title ?></title>
-    <?php $this->component("dependencies") ?>
     <?php $this->component("fonts") ?>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/d5cb389dd1.js"></script>
+    <link rel="stylesheet" href="<?= BASE_URI ?>/public/css/main.css?v=<?= $this->version ?>" />
+    <link rel="stylesheet" href="<?= BASE_URI ?>/app/views/pages/404/styles.css?v=<?= $this->version ?>">
 </head>
 
 <body>
     <?php $this->component("navbar") ?>
     <?php $this->component("back-to-top") ?>
-    <?php $this->component("modal") ?>
-    <?php if ($is_admin):
-        $this->component("admin-actions");
-    endif; ?>
-    <link rel="stylesheet" href="<?= BASE_URI ?>/app/views/pages/404/styles.css?v=<?= $this->version ?>">
 </body>
 
 </html>
