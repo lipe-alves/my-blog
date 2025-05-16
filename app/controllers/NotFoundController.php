@@ -9,8 +9,9 @@ class NotFoundController extends Controller
     public function index()
     {
         $this->page("404", [
-            "layout" => "base-page",
-            "title"  => "Página não encontrada"
+            "title"       => "Página não encontrada",
+            "description" => "Página não encontrada, volte à inicial",
+            "keywords"    => []
         ]);
     }
 }

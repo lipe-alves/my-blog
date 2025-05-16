@@ -95,16 +95,8 @@ class Router
                 }
 
                 if ($route_matched) {
-                    if (isset($global)) {
-                        $this->executeRouteHandler($global, $request, $response);
-                    }
-
-                    foreach ($middlewares as $middleware) {
-                        $this->executeRouteHandler($middleware, $request, $response);
-                    }
-
+                    $this->executeMiddlewares($actual_path, $request, $response);
                     $this->executeRouteHandler($controller, $request, $response);
-
                     return;
                 }
             }
@@ -113,11 +105,13 @@ class Router
 
             if ($is_api) {
                 if (isset($route_not_found)) {
+                    $this->executeMiddlewares($actual_path, $request, $response);
                     $this->executeRouteHandler($route_not_found, $request, $response);
                     return;
                 }
             } else {
                 if (isset($page_not_found)) {
+                    $this->executeMiddlewares($actual_path, $request, $response);
                     $this->executeRouteHandler($page_not_found, $request, $response);
                     return;
                 }
@@ -283,7 +277,32 @@ class Router
         Request $request,
         Response $response,
         \Exception $exception = null
-    ) {
+    ) 
+    {
         execute_class_method($controller, [$request, $response, $exception]);
+    }
+
+    protected function executeMiddlewares(
+        string $actual_path,
+        Request $request,
+        Response $response
+    ) 
+    {
+        $middlewares = [];
+
+        foreach ($this->middlewares as $middleware) {
+            $middleware_matched = (bool)preg_match($middleware["path_pattern"], $actual_path);
+            if ($middleware_matched) {
+                $middlewares[] = $middleware["middleware"];
+            }
+        }
+
+        if (isset($this->handlers["global"])) {
+            $this->executeRouteHandler($this->handlers["global"], $request, $response);
+        }
+
+        foreach ($middlewares as $middleware) {
+            $this->executeRouteHandler($middleware, $request, $response);
+        }
     }
 }
