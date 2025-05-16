@@ -85,15 +85,6 @@ class Router
                     $request->setParams($key, $value);
                 }
 
-                $middlewares = [];
-
-                foreach ($this->middlewares as $middleware) {
-                    $middleware_matched = (bool)preg_match($middleware["path_pattern"], $actual_path);
-                    if ($middleware_matched) {
-                        $middlewares[] = $middleware["middleware"];
-                    }
-                }
-
                 if ($route_matched) {
                     $this->executeMiddlewares($actual_path, $request, $response);
                     $this->executeRouteHandler($controller, $request, $response);
