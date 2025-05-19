@@ -91,6 +91,10 @@ hr {
     gap: 1em;
 }
 
+.button.is-centered {
+    justify-content: center;
+}
+
 .input, .textarea {
     --bulma-input-placeholder-color: #95a0b8;
     --bulma-input-disabled-background-color: var(--input-background-color);
