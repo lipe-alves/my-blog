@@ -24,7 +24,6 @@ extract($session);
 </head>
 
 <body>
-    <?php $this->component("navbar") ?>
     <main class="PageNotFound">
         <div class="PageNotFound-inner">
             <aside class="PageNotFound-figure">
@@ -37,7 +36,6 @@ extract($session);
             </div>
         </div>
     </main>
-    <?php $this->component("back-to-top") ?>
     <script type="text/javascript" src="<?= BASE_URI ?>/app/views/pages/404/script.js?v=<?= $this->version ?>"></script>
 </body>
 

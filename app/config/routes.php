@@ -39,6 +39,8 @@ settings_router($router);
 admin_router($router);
 tests_router($router);
 
+$router->get("/404", "\\App\\Controllers\\NotFoundController::index");
+
 $router->setHandlers([
     "page_not_found" => "\\App\\Controllers\\NotFoundController::index",
     "error"          => "\\App\\Middlewares\\ErrorMiddleware::execute"

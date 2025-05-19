@@ -62,6 +62,7 @@ class Router
     {
         $actual_path = $request->getPath();
         $method = $request->getMethod();
+        $is_api = $request->isApi;
 
         extract($this->handlers);
 
@@ -91,8 +92,6 @@ class Router
                     return;
                 }
             }
-
-            $is_api = str_contains($actual_path, "api");
 
             if ($is_api) {
                 if (isset($route_not_found)) {

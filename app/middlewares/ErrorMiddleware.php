@@ -6,6 +6,7 @@ use App\Core\Middleware;
 use App\Core\Request;
 use App\Core\Response;
 use App\Exceptions\ApiException;
+use App\Exceptions\ResourceNotFoundException;
 
 class ErrorMiddleware extends Middleware
 {

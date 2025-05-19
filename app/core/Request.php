@@ -17,6 +17,7 @@ class Request
     private $headers;
     private $session;
     private $load;
+    private $isApi;
 
     public function __construct(array $params)
     {
@@ -48,6 +49,15 @@ class Request
         $this->headers = $headers;
         $this->session = $session;
         $this->load = $load;
+        $this->isApi = str_contains($path, "api");
+    }
+
+    public function __get(string $key)
+    {
+        if ($key === "isApi")
+            return $this->isApi;
+
+        return $this->{$key};
     }
 
     public function getParams()

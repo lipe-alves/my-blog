@@ -226,7 +226,11 @@ class PostsController extends ComponentsController
         }
 
         if (!$post) {
-            throw new ResourceNotFoundException("Post não encontrado");
+            if ($this->request->isApi) {
+                throw new ResourceNotFoundException("Post não encontrado");
+            } else {
+                $this->response->redirect(BASE_URI . "/404");
+            }
         }
 
         $this->post = $post;
