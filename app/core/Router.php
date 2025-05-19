@@ -60,17 +60,17 @@ class Router
 
     public function dispatch(Request $request, Response $response)
     {
-        try {
-            extract($this->handlers);
+        $actual_path = $request->getPath();
+        $method = $request->getMethod();
 
+        extract($this->handlers);
+
+        try {
             if (isset($error)) {
                 set_error_handler(function ($level, $message, $file, $line) {
                     throw new ApiException("Erro [$level]: $message em $file na linha $line", 500);
                 });
             }
-
-            $actual_path = $request->getPath();
-            $method = $request->getMethod();
 
             foreach ($this->routes as $route) {
                 $route_method = $route["method"];

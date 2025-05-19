@@ -9,6 +9,7 @@ class Request
     private $post;
     private $patch;
     private $put;
+    private $delete;
     private $files;
     private $method;
     private $requestUri;
